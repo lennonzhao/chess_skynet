@@ -7,3 +7,6 @@
 [submodule "3rd/lua-cjson"]
 	path = 3rd/lua-cjson
 	url = https://github.com/mpx/lua-cjson.git
+[submodule "luacheck"]
+	path = luacheck
+	url = https://github.com/mpeterv/luacheck.git
