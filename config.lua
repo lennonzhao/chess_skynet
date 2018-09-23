@@ -1,4 +1,3 @@
-if a = b then 
 root = "./skynet/"
 thread = 8
 harbor = 0
