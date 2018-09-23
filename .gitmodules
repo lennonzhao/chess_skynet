@@ -13,3 +13,6 @@
 [submodule "/usr/local/skynet_chess/3rd/luacheck"]
 	path = /usr/local/skynet_chess/3rd/luacheck
 	url = https://github.com/mpeterv/luacheck.git
+[submodule "3rd/lua-checker"]
+	path = 3rd/lua-checker
+	url = https://github.com/rjpower/lua-checker.git
