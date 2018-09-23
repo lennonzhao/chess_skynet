@@ -2,5 +2,5 @@
 
 for file in `git status -s | awk '{print $2}' | grep '\.lua'`;
 do
-    luacheck ${file}
+    sh 3rd/lua-checker/CHECK_LUA.sh ${file}
 done
