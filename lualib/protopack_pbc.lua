@@ -51,14 +51,14 @@ function M.unpack(str)
 	print("recv:", len, pblen)
 	local f = string.format(">I4I2I4c%d", pblen)
 	local _, code, check, pbstr = string.unpack(f, str)
-	print("recv pbstr:", bin2hex(pbstr), len, pblen)
+	print("recv pbstr:", bin2hex(pbstr), pblen)
 	-- local cmd = code2name[code]
 	local msg = pb.decode("common.BaseReq", pbstr)
-	local code = msg and msg.request.code
-	if not code then
-		print("recv:code(%d) but not regiest", code)
+	if not msg then
+		print("cmd not register")
 		return 
 	end
+	local code = msg.request.code
 	local pbName = "hall.LoginReq"
 	local msg = pb.decode(pbName, pbstr)
 	print(string.format("recv: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check))
