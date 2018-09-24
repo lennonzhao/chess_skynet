@@ -65,14 +65,16 @@ end
 
 local session = 0
 
-local function send_request(name, args)
+local function send_request(name, msg)
 	-- session = session + 1
-	-- local str = request(name, args, session)
+	-- local str = request(name, msg, session)
 	-- send_package(fd, str)
 	-- print("Request:", session)
-	local str = pb.encode(name, args)
-	local package = string.pack(">s2", str)
+	local package = protopack:pack(name, msg, 0)
 	socket.send(fd, package)
+	-- local str = pb.encode(name, msg)
+	-- local package = string.pack(">s2", str)
+	-- socket.send(fd, package)
 end
 
 local last = ""
