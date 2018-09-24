@@ -20,11 +20,11 @@ end
 
 --日志 --
 local function logger(str, level, color)
-  return function (...)
+  return function (fmt, ...)
     if level >= defaultLevel then
-        local info = table.pack(...)
-        info[#info+1] = "\x1b[0m"
-        skynet.error(string.format("%s%s%s", color, prefix, str), table.unpack(info)) 
+        local args = table.pack(...)
+        local tipStr = #args > 0 and string.format(fmt, ...) or fmt
+        skynet.error(string.format("%s%s%s", color, prefix, str), tipStr, "\x1b[0m") 
     end
   end
 end
