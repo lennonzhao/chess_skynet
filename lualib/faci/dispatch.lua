@@ -4,7 +4,6 @@ require "skynet.manager"
 local log = require "log"
 local env = require "faci.env"
 local protopack = require "protopack"
-require "libstring"
 local libsocket = require "libsocket"
 local tool = require "tool"
 
