@@ -1,5 +1,5 @@
 root = "$ROOT/"
-skynet_root = "$SKYNET_ROOT"
+skynet_root = "$SKYNET_ROOT/"
 
 logpath = root .. "run"
 log_level = "debug"
