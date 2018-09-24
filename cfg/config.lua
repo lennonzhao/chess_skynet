@@ -25,7 +25,8 @@ lua_path 	= 	skynet_root .. "lualib/?.lua;" ..
 				skynet_root .. "lualib/?/init.lua;" .. 
 				skynet_root .. "examples/?.lua"
 
-lua_cpath 	= 	skynet_root  ..  "luaclib/?.so"
+lua_cpath 	= 	skynet_root .. "luaclib/?.so"
+
 snax 		= 	skynet_root .. "examples/?.lua;" .. 
 				skynet_root .. "test/?.lua"
 cpath 		= 	skynet_root .. "cservice/?.so"
