@@ -4,7 +4,7 @@ package common;
 */
 message Request {
 	required uint32 code = 1; 		//操作码
-	required uint32 api  = 2; 		//API
+	optional uint32 api  = 2; 		//API
 }
 
 message BaseReq {

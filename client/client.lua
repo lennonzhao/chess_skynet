@@ -66,7 +66,7 @@ local function send_request(name, args)
 	-- send_package(fd, str)
 	-- print("Request:", session)
 	local str = pb.encode(name, args)
-	local package = string.pack(">s2", str)
+	local package = string.pack(">s4", str)
 	socket.send(fd, package)
 end
 
