@@ -2,7 +2,7 @@ local skynet = require "skynet"
 
 local function main()
     skynet.newservice("debug_console", 8081)
-    
+
     -- -- 登陆服务
     -- local login = skynet.newservice("login")
     -- skynet.call(login, "lua", "start", {
@@ -21,6 +21,8 @@ local function main()
 
     -- -- room_mgr
     -- skynet.uniqueservice("room_mgr")
+
+    skynet.newservice("pbc")
 
     skynet.exit()
 end
