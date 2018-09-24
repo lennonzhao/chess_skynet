@@ -31,6 +31,7 @@ cpath 		= 	skynet_root .. "cservice/?.so"
 --our path
 luaservice  = 	app_root .. "service/?.lua;" .. 
 			 	app_root .. "service/?/main.lua;" .. 
+			 	app_root .. "service/?/?.lua;" .. 
 			 	app_root .. "service/agent/?.lua;" .. 
 			 	app_root .. "service/room/?.lua;" .. 
 			 	luaservice
