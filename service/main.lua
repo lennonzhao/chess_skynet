@@ -24,10 +24,10 @@ local function main()
     printInfo('info')
     printError('error')
 
-    local person = Person:new(-1)
+    local person = Person.new(-1)
     person:debug()
 
-    local man = Man:new(2)
+    local man = Man.new(2)
     man:debug()
 
     -- 登陆服务

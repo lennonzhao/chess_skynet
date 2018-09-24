@@ -1,5 +1,4 @@
 inspect = require "inspect"
-class   = require "middleclass"
 
 require "error_code"
 require "logger_api"
