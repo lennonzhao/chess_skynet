@@ -41,7 +41,9 @@ luaservice  = 	app_root .. "service/?.lua;" ..
 
 lua_path 	= 	app_root .. "preload/?.lua;" .. 
 				app_root .. "cfg/?.lua;" .. 
+           		app_root .. "mod/?.lua;".. 
 				app_root .. "lualib/?.lua;" ..
+
 				lua_path
 
 lua_cpath 	= 	app_root .. "luaclib/?.so;" .. 
