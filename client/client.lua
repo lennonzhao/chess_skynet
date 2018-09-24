@@ -113,8 +113,7 @@ end
 
 send_request("hall.LoginReq", {
 	request = {
-		code = 0x1001,
-		api = 0x1001,
+		code = 1,
 	},
 	basic = {
 
