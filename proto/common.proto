@@ -1,0 +1,107 @@
+package common;
+/*
+	请求基本信息
+*/
+message Request {
+	required uint32 code = 1; 		//操作码
+	optional uint32 api  = 2; 		//API
+}
+
+message BaseReq {
+	required Request request = 1; 	//请求码
+}
+/*
+	请求结果基本信息
+*/
+message Result {
+	optional Request 	request 	= 1; 	//操作码
+	optional uint32 	status 		= 2;  	//状态码
+	optional string  	message  	= 3; 	//提示信息
+	optional uint32 	gameId 		= 4;  	//游戏ID
+}
+
+message BaseRsp {
+	optional common.Result result 	= 1;   	//结果状态
+}
+
+/*
+	玩家基本信息
+*/
+
+message PlayerInfo {
+	optional uint32 id 			= 1; 	//ID
+	optional uint32 sex 		= 2;	//性别
+	optional string nick 		= 3;	//名字
+	optional uint64 money 		= 4;	//金币
+	optional uint32 diamond 	= 5;	//钻石
+	optional uint32 winTimes 	= 6;	//胜
+	optional uint32 drawTimes 	= 7;	//平
+	optional uint32 loseTimes 	= 8;	//负
+	optional uint32 vipLevel 	= 9;	//vip等级
+	optional string headUrl 	= 10;	//头像地址
+	optional string headUrlSmall= 11;	//小头像地址
+	optional string jsonStr		= 12;	//透传信息json("latitude"：纬度 "longitude"：经度)
+	optional uint64 redPacket 	= 13;	//红包券
+	optional uint32 yuekaNum 	= 14;	//月卡数
+	optional uint32 yuekaUseRounds 	= 15;	//已激活月卡钻石数
+	optional uint32 yuekaNotUseNum 	= 16;	//未激活卡数
+}
+
+message Wallet {
+	optional int64 coin 		= 1; //金币
+	optional int64 diamond 		= 2; //钻石
+	optional int64 rmb 			= 3; //人民币
+	optional int64 redPacket 	= 4; //红包券
+}
+
+message Prop {
+	optional uint32 id 		 = 1; // 道具ID
+	optional string name 	 = 2; // 道具名称
+	optional uint32 count 	 = 3; // 道具数量
+	optional uint32 validity = 4; // 截止日期(0:永不过期 其他:截止日期(时间戳))
+}
+
+message Item {
+	optional uint32 id = 1;
+	optional uint32 count = 2;
+}
+
+message Attr {
+	optional uint32 id = 1;
+	optional int64 count = 2;
+}
+
+
+//	[[
+//		可以查询的属性ID
+//		local Attr {
+//			GOLD = 1,		金币
+//			CHARM = 2,		魅力值
+//			WIN = 3,		胜
+//			LOSE = 4,		负
+//			DRAW = 5,		平
+//			DIAMOND = 6,	钻石
+//			VIP = 7,		VIP等级
+//			STREAK = 8,		连胜局数
+//			CARD_TYPE = 9,	最大牌型
+//			MAX_WIN = 10,	最大赢钱
+//			MAX_LOSE = 11;	最大输钱
+//			PRAISE = 13,	点赞数
+//		}
+//	]]
+
+message PayWay { 
+	optional int32 payType 		= 1;  // 1房主付 2AA付 3大赢家付  4代开房付
+	optional uint32 diamond 	= 2;
+}
+/*
+	创建房间信息
+	每个gameType下 每个局数对应一个buildInfo 
+*/
+message BuildInfo {
+	optional uint32 round 	 	 = 1; 	// 局数
+	optional uint32 gameType 	 = 2; 	// 游戏类型
+	optional string buildJson 	 = 3; 	// 房间配置信息json串
+	repeated PayWay supportInfos = 4;	// 支持的支付方式
+	optional PayWay createInfo 	 = 5;	// 创建房间选择的支付方式
+}

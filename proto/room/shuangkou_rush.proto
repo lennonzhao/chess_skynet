@@ -1,0 +1,201 @@
+package shuangkou_rush;
+import "common.proto";
+import "room/room.proto";
+/*
+	游戏信息
+*/
+message GameInfo{
+	optional uint32 ante 				= 1; 	//底注
+	optional common.BuildInfo buildInfo = 2; 	//创建房间的配置信息
+	optional uint32 code 				= 4;	//房号
+}
+
+/*
+	游戏中的玩家信息
+*/
+message GamePlayer{
+	optional room.Player player     = 1;  //玩家信息
+	repeated uint32 cards           = 2;  //手牌 自己手牌为{n,...}, 其他玩家手牌为{}
+	optional bool play              = 3;  //false:旁观 true:在玩
+	optional bool banker            = 4;  //false:买家 true:庄家
+	optional bool pay               = 5;  //是否支付,根据state来判断
+	optional bool ready             = 6;	//false 未准备 true 准备
+	optional bool offline           = 7;  //false:在线 true:离开
+	optional int32 agree            = 8;  //0:未投 1:赞成 2:反对
+	optional int32 agreeStartGame   = 9;  //0:未投 1:赞成 2:反对
+	optional int32 points           = 10; //本局已经拿到的分数
+	optional int32 totalPoints      = 11; //目前已经拿到的总分数
+	optional uint32 leftCardNum     = 12; //手上剩余牌数量
+	repeated uint32 lastOutCard     = 13; //上一次打出的手牌
+	optional uint32 winMultiple     = 14; //赢的结算倍数
+	optional uint32 loseMultiple    = 15; //输的结算倍数
+	optional int32 bonusMultiple   = 16; //炸弹奖励的结算倍数
+	optional bool turn              = 17; //当前是否到我了
+
+}
+
+/*
+	投票信息
+*/
+message VoteInfo
+{
+	optional uint32 promoterId  = 1;	//发起投票者ID
+	optional bool   poll    = 2;	//是否发起投票
+	optional uint32 time    = 3;	//发起投票时间
+	optional uint32 expiryTime  = 4;	//发起投票总时间
+	optional uint32 leftTime  = 5;	//发起投票剩余时间
+}
+
+/*
+	游戏登录
+*/
+message GameLoginRsp {
+	optional common.Result result   = 1;    //结果状态
+	optional GameInfo gameInfo    = 2;  //游戏配置
+	optional uint32 state       = 3;  //处于玩牌状态
+	optional uint32 clockTime		= 4;	//倒计时
+	repeated GamePlayer players   = 5;  //所有玩家信息
+	optional uint32 masterId		= 6;	//房主id
+	optional uint32 round       = 7;	//第几局
+	optional uint32 totalRound    = 8;	//总局数
+	optional VoteInfo destroyVoteInfo = 9;		//解散房间的投票信息
+	optional VoteInfo startGameVoteInfo = 10;	//开始游戏的投票信息
+	optional uint32 basicPoints     = 11;     //基础分
+	repeated uint32 lastOutCard         = 12; //上一副出的牌，需要压过去
+}
+
+/*
+	广播登录房间
+*/
+message GamePlayerLoginRsp {
+	optional common.Result result   = 1;  //结果状态
+	repeated GamePlayer players   = 2;  //玩家信息
+}
+
+/*
+	游戏开始
+*/
+message StartRsp {
+	optional common.Result result   = 1;    //结果状态
+	optional uint32 round       = 2;	//第几局
+	optional uint32 totalRound    = 3;	//总局数
+	repeated uint32 readyUids     = 4;	//准备玩家的UID
+	optional uint32 bankerId    = 5;	//庄家ID(0：没有庄家)
+}
+
+/*
+	准备操作
+*/
+message ReadyReq {
+	optional common.Request request = 1;  // 请求码
+}
+
+/*
+	准备操作返回
+*/
+message ReadyRsp {
+	optional common.Result result 	= 1;	//结果状态 
+											//0:操作合法 
+											//1:游戏已开始 
+											//2:不在桌子上 
+											//3:已经准备了 
+											//4:钻石不足
+											//5:服务器错误
+											//6:等待房主续房
+	optional uint32 uid 			= 2;	//准备玩家
+}
+
+/*
+	发牌并且确定庄家
+*/
+message DealRsp {
+	optional common.Result result   = 1;    //结果状态
+	repeated uint32 cards       = 2;  //牌
+	optional bool isBanker = 3;       //是否庄家
+	optional uint32 fanCard = 4;      //翻出来的牌
+	optional uint32 hasCardId = 5;    //有这张牌的玩家id
+}
+
+
+/*
+	轮到某个玩家操作
+*/
+message TurnRsp{
+	optional common.Result result = 1;
+	optional uint32 id = 2;           //广播操作的玩家id
+	repeated uint32 lastOutCard = 3;  //操作玩家需要打出比这个大的牌，nil就可以随便出
+}
+
+/*
+	玩家出牌
+*/
+message OperationReq{
+	optional common.Request request = 1;  // 请求码
+	repeated uint32 cards = 2;      //玩家打出的牌，空就是过
+}
+
+/*
+	玩家操作
+	op = 1,玩家pss，不需要其他数据
+	op = 2,玩家出牌，cards是打出的牌
+	cardPoints，打出的手牌里的分值
+	specialCard，哪些牌是有分的
+*/
+message OperationRsp{
+	optional common.Result result = 1;
+	optional uint32 id = 2;      //操作的玩家id
+	optional uint32 op = 3;      //玩家行为
+	repeated uint32 cards = 4;    //玩家打出的牌
+}
+
+message StarRewardRsp {
+	optional common.Result result = 1;
+	repeated StarReward starReward = 2;  //胜负，贡献值
+}
+
+message StarReward {
+	optional uint32 id = 1;
+	optional uint32 winMultiple = 2;         //赢的结算倍数
+	optional uint32 loseMultiple = 3;        //输的结算倍数
+	optional int32 bonusMultiple = 4;       //炸弹奖励抵消后的倍数
+}
+
+/*
+	结算信息
+*/
+message EndInfo {
+	optional uint32 uid       = 1;  //玩家Id
+	optional int32  points      = 2;  //本局输赢
+	optional int32  totalPoints   = 3;  //最终积分
+	repeated uint32 cards         = 4;  //剩余手牌
+	optional uint32 bonus         = 5;  //炸弹的奖励倍数
+	optional uint32 times         = 6;  //炸弹导致的结算翻倍倍数
+	optional uint32 resultType    = 7;  //牌局结局，1双扣、2单扣、3平扣
+	optional uint32 resultTimes   = 8;  //结局翻倍次数，双扣4倍，单扣2倍，平扣1倍
+}
+
+/*
+	总结算信息
+*/
+message FinalInfo {
+	optional uint32 uid       = 1;	//玩家
+	optional int32 totalPoints    = 2;  //最终积分
+	optional int32 bankerTimes    = 3;	//当庄次数
+	optional int32 winTimes      = 4;    //胜利次数
+	optional int32 loseTimes     = 5;    //失败次数
+	optional int32 zhaDanTimes   = 6;    //炸弹次数
+	optional int32 maxTimes      = 7;    //最大的倍数
+	optional int32 maxPoints     = 8;    //单局最高分数
+	optional int32 maxBonus      = 9;    //单局最高炸弹奖励
+}
+
+/*
+	结算
+*/
+message EndRsp {
+	optional common.Result result   = 1;    //结果状态
+	optional bool lastRound     = 2;  //是否是最后一局
+	repeated EndInfo endInfos     = 3;    //结算
+	repeated FinalInfo finalInfos   = 4;  //总结算信息(只有最后一局才有)
+	optional bool destroy       = 5;	//是否中途解散
+}

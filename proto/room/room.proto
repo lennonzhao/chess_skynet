@@ -1,0 +1,915 @@
+package room;
+import "common.proto";
+
+/*
+	房间内玩家信息
+*/
+message Player {
+	optional common.PlayerInfo playerInfo 	= 1; //玩家信息
+	optional uint32 seatId 					= 2; //座位ID
+}
+
+/*
+	登录房间
+*/
+message LoginReq {
+	required common.Request request = 1; 	// 请求码
+											// 登录有两种方式
+											// 1.路径
+											// 2.识别码
+	optional uint32 gameId 			= 2;	// 登录路径
+	optional uint32 roomId 			= 3;
+	optional uint32 tableId 		= 4;
+	optional uint32 code 			= 5; 	// 登录识别码
+	optional string jsonStr			= 6;	// 透传信息json("latitude"：纬度 "longitude"：经度)
+											// 金币场额外加的字段，房卡场默认为空
+	optional uint32 gameType 		= 7; 	// 游戏类型
+	optional uint32 roomLevel 		= 8; 	// 房间等级
+	optional uint32 uid 			= 9; 	// 用户ID(服务器使用，并且有较验)
+	optional uint32 lastTableId 	= 10; 	// 上一个桌子ID
+}
+
+/*
+	登录房间
+*/
+message LoginRsp {
+	optional common.Result result 	= 1;   	// 结果状态
+											// 0:成功 
+											// 1:参数不正确
+											// 2:游戏ID不存在
+											// 3:房间已满
+											// 4:房间失效
+											// 5:房间不存在
+											// 6:数据库错误
+											// 7:用户未登录
+											// 8:金币场场次不存在
+											// 9:金币不足
+											// 10:钻石不足
+											// 11:有未完成牌局
+											// 302:重定向
+	optional uint32 gameId 			= 2;	// 登录路径
+	optional uint32 roomId 			= 3;
+	optional uint32 tableId 		= 4;
+	optional uint32 gameType 		= 5; 	// 游戏类型
+	optional uint32 roomLevel 		= 6; 	// 房间等级
+}
+
+/*
+	广播登录房间
+*/
+message BroadcastLoginRsp {
+	optional common.Result result  	= 1;  //结果状态
+	repeated Player players 		= 2;  //玩家信息
+}
+
+/*
+	登出房间
+*/
+message LogoutReq {
+	required common.Request request = 1; 	// 请求码
+}
+
+/*
+	登出房间
+*/
+message LogoutRsp {
+	optional common.Result result 	= 1;   	//结果状态 1:解散房间
+}
+
+/*
+	广播登出房间
+*/
+message BroadcastLogoutRsp {
+	optional common.Result result  	= 1;  //结果状态
+	repeated uint32 uids 			= 2;  //玩家ID
+}
+/*
+	踢出房间
+*/
+message KickoutReq {
+	required common.Request request = 1; 	// 请求码
+	optional uint32 uid = 2;				// 玩家ID
+}
+/*
+	踢出房间
+*/
+message KickoutRsp {
+	optional common.Result result 	= 1;   	//结果状态 1:异地登录 2:房主踢了你
+											//以下的状态码是踢人失败的时候返回，成功不返回
+											//101:参数不合法
+											//102:游戏已经开始了
+											//103:你不在桌子上
+											//104:你不是房主，没有权限踢人
+											//105:找不到你要踢的玩家
+											//106:不能踢自己
+											//107:代开房模式，在玩玩家不能踢人
+}
+
+
+/*
+	房间列表
+*/
+message RoomInfoReq {
+	required common.Request request = 1; 	// 请求码
+}
+
+message RoomInfo {
+	optional uint32 id 				= 1;
+	optional uint32 limit 			= 2;
+	optional uint32 ante 			= 3;
+	optional uint32 online 			= 4;
+}
+
+/*
+	房间列表
+*/
+message RoomInfoRsp {
+	optional common.Result  result 	= 1;   	//结果状态
+	required uint32 		gameId 	= 2; 	//游戏类型
+	repeated RoomInfo 		info 	= 3; 	//房间属性
+}
+
+// 请求房间在线信息
+message RoomOnlineReq {
+	required common.Request request = 1; 	// 请求码
+	optional uint32 gameId 			= 2;	// 请求的gameId
+}
+
+message RoomOnline {
+	optional uint32 id 				= 1;
+	optional uint32 online          = 2;
+}
+
+message RoomOnlineRsp {
+	optional common.Result  result 		= 1;   	//结果状态
+	optional uint32 		gameId 		= 2;	//gameId
+	repeated RoomOnline		onlines   	= 3; 	//在线信息
+}
+
+/*
+	房间内聊天
+*/
+message RoomChatReq {
+	required common.Request request 	= 1; 	// 请求码
+	required uint32 type 				= 2; 	// 聊天内容类型(1表情 2常用语 3文本)
+	required string message 			= 3; 	// 聊天内容(表情 + 常用语 + 文本)
+}
+
+/*
+	房间内聊天返回(广播)
+*/
+message RoomChatRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+	required uint32 uid 			= 2; 	// 发送者ID
+	required uint32 type 			= 3; 	// 聊天内容类型(0:表情 1:文本, 2:语音)
+	required string message 		= 4; 	// 聊天内容(表情 + 文本 + url)	
+}
+/*
+	破产(广播)
+*/
+message BankruptcyRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+	required uint32 uid 			= 2; 	// 破产玩家ID
+	optional string message 		= 4; 	// 破产文字提示
+}
+
+/*
+	房间内牌局时间奖励
+*/
+message TimeAwardReq {
+	required common.Request request 	= 1; 	// 请求码
+	required uint32 time 				= 2; 	// 时间增量(s)
+}
+
+/*
+	房间内牌局时间奖励
+*/
+message TimeAwardRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+	required uint32 money 			= 2; 	// 金币增量 
+	required uint32 nextTime 		= 3; 	// 下次时间增量(s)
+}
+
+/*
+	房间内扔道具
+*/
+message SendPropReq {
+	required common.Request request 	= 1; 	// 请求码
+	required uint32 recvId 				= 2; 	// 接收者ID
+	required uint32 pid 				= 3; 	// 道具类型
+												// 1:西红柿 
+												// 2:飞刀 
+												// 3:炸弹 
+												// 4:亲吻 
+												// 5:玫瑰 
+												// 6:泼水 
+												// 7:啤酒
+}
+
+/*
+	房间内扔道具(广播)
+*/
+message SendPropRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+											// 1.玩家不存在
+											// 2.数据库错误
+											// 3.玩家货币不足
+	required uint32 sendId 			= 2; 	// 发送者ID
+	repeated uint32 recvIds 		= 3; 	// 接收者ID
+	required uint32 pid 			= 4; 	// 道具ID
+	required int32	costType 		= 5; 	// 消耗的货币类型(1.金币 2.钻石 3.红包劵)
+	required int32	costValue 		= 6; 	// 消耗的货币值(注意只有costValue > 0的时候，totalValue才有值)
+	required int32	totalValue 		= 7; 	// 消耗之后的总货币值
+}
+
+
+message MoneyInfo {
+	required uint32 uid 			= 1;  // 用户ID
+	required uint64 coin 			= 2;  // 当前金币
+}
+/*
+	同步玩家金币
+*/
+message MoneyRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+	repeated MoneyInfo moneyInfos 	= 2;	// 金币信息
+}
+
+/*
+	玩家掉线
+*/
+message OfflineRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+	required uint32 uid 			= 2;
+}
+
+/*
+	玩家离开 0x1017
+*/
+message LeaveReq {
+	optional common.Request request = 1; 	//请求码
+	optional bool leave 			= 2; 	//true:离开 false:回来
+}
+/*
+	玩家离开 0x1017
+*/
+message LeaveRsp {
+	optional common.Result  result 	= 1;   	// 结果状态
+	optional uint32 uid 			= 2; 	// 用户ID
+	optional bool leave 			= 3; 	//true:离开 false:回来
+}
+
+
+/*
+	创建房间协议
+*/
+
+/*
+	创建配置 0x100F
+*/
+message BuildConfigReq {
+	optional common.Request request = 1; 	// 请求码
+}
+
+/*
+	创建配置 0x100F
+*/
+message BuildConfigRsp {
+	optional common.Result result 	= 1;   	// 结果状态
+	repeated common.BuildInfo buildInfos 	= 2;	// 创建信息
+	optional bool AA 				= 3; 	// 是否支持AA支付
+	optional string buildJson 		= 4; 	// 房间配置信息json串
+}
+
+/*
+	创建 0x1010
+*/
+message BuildReq {
+	optional common.Request request = 1; 	// 请求码
+	optional common.BuildInfo buildInfo 	= 2; 	// 创建信息
+	optional bool AA 				= 3; 	// 是否AA支付
+	
+}
+/*
+	创建 0x1010
+*/
+message BuildRsp {
+	optional common.Result result 	= 1;   	// 结果状态 
+											// 0:正常
+											// 1:参数不合法
+											// 2:配置不匹配
+											// 3:已经创建了一个房间
+											// 4:玩家不存在
+											// 5:余额不足
+											// 6:房间已满
+											// 7:服务器错误
+
+	optional uint32 code 			= 2; 	// 验证码(5位数)
+	optional uint64 diamond 		= 3;  	// 钻石
+}
+/*
+	关于code的创建信息 0x1011
+*/
+message BuildInfoReq {
+	optional common.Request request = 1; 	// 请求码
+	optional uint32 code 			= 2; 	// 验证码(6位数)
+}
+/*
+	关于code的创建信息 0x1011
+*/
+message BuildInfoRsp {
+	optional common.Result result 	= 1;   	// 结果状态 
+											// 0:正确 
+											// 1:客户端传入的code不合法 
+											// 2:关于code的创建信息不存在
+	optional uint32 code 			= 2; 	// 验证码(6位数)
+	optional common.BuildInfo buildInfo 	= 3; 	// 创建信息
+}
+
+/*
+	销毁 0x1012
+*/
+message DestroyReq {
+	optional common.Request request = 1; 	// 请求码
+	
+}
+/*
+	销毁 0x1012
+*/
+message DestroyRsp {
+	optional common.Result result 	= 1;   	// 结果状态 (该命令只有在失败的时候返回，
+											// 成功时走登出自动解散的流程)
+											// 1:玩家不存在
+											// 2:不是房主
+											// 3:正在打牌，且其他两玩家有一人以上在线，不能解散房间
+											// 4:代开房模式，在玩玩家不能解散房间
+}
+
+/*
+	已创建的信息 0x1013
+*/
+message BuiltReq {
+	optional common.Request request = 1; 	// 请求码
+	
+}
+/*
+	已创建的信息 0x1013
+*/
+message BuiltRsp {
+	optional common.Result result 	= 1;   	// 结果状态 0:成功 1:失败
+	repeated uint32 codes			= 2; 	// 验证码(6位数) 
+											// 可返回多个
+	optional uint32 gameId 			= 3; 	// 									
+	optional uint32 roomId 			= 4; 	// 									
+	optional uint32 tableId 		= 5; 	// 									
+}
+
+
+
+/*
+	房主支付 0x1014
+*/
+message MasterPayReq {
+	optional common.Request request 	= 1; 	// 请求码
+}
+
+/*
+	房主支付 
+*/
+message MasterPayRsp {
+	optional common.Result result 		= 1;	// 结果状态 
+												// 0:操作合法
+												// 1:参数不合法
+												// 2:时机不对
+												// 3:玩家不存在
+												// 4:不是房主
+												// 5:余额不足
+												// 6:代开房模式，不能继续开房
+	optional uint32 masterId 			= 2; 	// 房主ID
+	optional uint64 diamond 			= 3; 	// 房主支付后的钻石数
+	optional common.BuildInfo buildInfo = 4; 	// 创建房间的配置信息
+												// 非房主收到此消息，
+												// 如果是AA,那么就是发起 非房主支付 动作
+	optional uint32 code 				= 6; 	// 房主建房后的code
+
+}
+
+/*
+	非房主支付 0x1015
+*/
+message NonMasterPayReq {
+	optional common.Request request 	= 1; 	// 请求码
+}
+
+/*
+	非房主支付
+*/
+message NonMasterPayRsp {
+	optional common.Result result 	= 1;	//结果状态 
+											// 0:操作合法
+											// 1:时机不对
+											// 2:玩家不存在
+											// 3:你是房主，已经付过钱了
+											// 4:不是AA
+											// 5:余额不足
+											// 6:代开房模式，在玩玩家不需支付
+	optional uint32 uid 			= 2; 	//非房主ID
+	optional uint64 diamond 		= 3; 	//非房主支付后的钻石数
+}
+
+
+/*
+	钻石同步 0x1016
+*/
+message DiamondInfo {
+	optional common.Request request 	= 1; 	// 请求码
+	optional uint32 uid 				= 2; 	//玩家ID
+	optional uint64 diamond 			= 3; 	//玩家钻石数
+	optional int32 delta 				= 4; 	//玩家钻石变动
+	optional int32 reason 				= 5; 	//玩家钻石变动原因
+												// 1:五花牛奖励
+												// 2:五小牛奖励
+												// 3:四炸奖励
+												// 4:最大赢家奖励
+												// 5:最大赢家支付
+}
+/*
+	钻石同步
+*/
+message DiamondReq {
+	optional common.Request request 	= 1; 	// 请求码
+}
+
+/*
+	钻石同步
+*/
+message DiamondRsp {
+	optional common.Result result 	= 1;	//结果状态 1:退房
+	repeated DiamondInfo diamondInfos = 2;  //玩家钻石
+}
+
+/*
+	投票发起 0x1018
+*/
+message PollReq {
+	optional common.Request request 	= 1; 	// 请求码
+}
+
+/*
+	投票发起
+*/
+message PollRsp {
+	optional common.Result result 	= 1;	//结果状态
+											//1:玩家不存在
+											//2:投票正在进行中
+											//3:游戏未开始，无法解散房间
+											//4:代开房模式，不能发起投票
+	optional uint32 promoterId 		= 2; 	//发起人ID
+	optional uint32 expiryTime 		= 3; 	//投票持续时间
+
+}
+
+/*
+	投票 0x1019
+*/
+message VoteReq {
+	optional common.Request request 	= 1; 	// 请求码
+	optional bool agree 				= 2; 	// true:同意 false:不同意
+}
+
+/*
+	投票
+*/
+message VoteRsp {
+	optional common.Result result 	= 1;	//结果状态 
+											//1:玩家不存在
+											//2:你已投票
+											//3:未在有效时间内投票
+	optional uint32 voteId 			= 2; 	//投票者ID
+	optional bool agree 			= 3; 	//true:同意 false:不同意
+}
+
+/*
+	投票结果 0x1020
+*/
+message VoteEndRsp {
+	optional common.Result result 	= 1;	//结果状态 
+	optional bool pass 				= 2; 	//true:同意 false:不同意
+}
+
+/*
+	配牌 0x1021
+*/
+message PresetReq {
+	optional common.Request request 	= 1; 	// 请求码
+	repeated uint32 cards 				= 2; 	// 牌
+}
+
+/*
+	配牌
+*/
+message PresetRsp {
+	optional common.Result result 	= 1;	//结果状态 
+											//1:参数不正确
+}
+
+/*
+	代理踢出房间 0x1022
+*/
+message AgentKickoutReq {
+	required common.Request request = 1; 	// 请求码
+	optional uint32 code = 2;				// 房间号
+	optional uint32 uid = 3;				// 玩家ID
+}
+/*
+	代理踢出房间
+*/
+message AgentKickoutRsp {
+	optional common.Result result 	= 1;   	//结果状态 1:异地登录 2:房主踢了你
+											//以下的状态码是踢人失败的时候返回，成功不返回
+											//101:参数不合法
+											//102:游戏已经开始了
+											//104:你不是房主，没有权限踢人
+											//105:找不到你要踢的玩家
+											//106:不能踢自己
+											//107:房间不存在
+	optional uint32 code = 2;				// 房间号
+	optional uint32 uid = 3;				// 玩家ID
+}
+
+
+/*
+	销毁 0x1023
+*/
+message AgentDestroyReq {
+	optional common.Request request = 1; 	// 请求码
+	optional uint32 code = 2;				// 房间号
+	
+}
+/*
+	销毁 0x1012
+*/
+message AgentDestroyRsp {
+	optional common.Result result 	= 1;   	// 结果状态 (该命令只有在失败的时候返回，
+											// 成功时走登出自动解散的流程)
+											// 1:参数不合法
+											// 2:不是代开房的房间
+											// 3:玩家正在投票中
+											// 4:房间不存在
+											// 5:不是房主
+}
+
+
+/*
+	提示 0x1024
+*/
+message TipsRsp {
+	optional common.Result result 	= 1;	//结果状态 
+	optional string tips 			= 2; 	//提示
+}
+
+
+/*
+	开始游戏投票发起 0x1025
+*/
+message PollStartGameReq {
+	optional common.Request request 	= 1; 	// 请求码
+}
+
+/*
+	开始游戏投票发起 0x1025
+*/
+message PollStartGameRsp {
+	optional common.Result result 	= 1;	//结果状态
+											//1:玩家不存在
+											//2:你不是房主
+											//3:游戏已开始
+											//4:还有玩家没有准备
+	optional uint32 promoterId 		= 2; 	//发起人ID
+	optional uint32 expiryTime 		= 3; 	//投票持续时间
+
+}
+
+/*
+	开始游戏投票 0x1026
+*/
+message VoteStartGameReq {
+	optional common.Request request 	= 1; 	// 请求码
+	optional bool agree 				= 2; 	// true:同意 false:不同意
+}
+
+/*
+	开始游戏投票 0x1026
+*/
+message VoteStartGameRsp {
+	optional common.Result result 	= 1;	//结果状态 
+											//1:玩家不存在
+											//2:你已投票
+											//3:未在有效时间内投票
+											//4:游戏已经开始了
+	optional uint32 voteId 			= 2; 	//投票者ID
+	optional bool agree 			= 3; 	//true:同意 false:不同意
+}
+
+/*
+	开始游戏投票结束 0x1027
+*/
+message VoteStartGameEndRsp {
+	optional common.Result result 	= 1;	//结果状态 
+	optional bool pass 				= 2; 	//true:同意 false:不同意
+}
+
+/*
+	续房 0x1028
+*/
+message ReBuildReq {
+	optional common.Request request 	= 1; 	// 请求码
+}
+/*
+	续房 0x1028
+*/
+message ReBuildRsp {
+	optional common.Result result 	= 1;	//结果状态 
+											//1.玩家不存在
+											//2.不是重新创建房间阶段
+											//3.非房主不能续房
+											//4.钻石不足
+											//5.服务器错误
+}
+
+
+
+/*
+	gameType，报名参加的游戏
+	cancel为1，表示取消报名
+*/
+message MatchSignReq {
+	optional common.Request request = 1;
+	optional uint32 gameType = 2;
+	optional uint32 cancel = 3;
+}
+
+/*
+	0，成功
+	1，未登录
+	2.数据库错误
+	3.已经在排队了，返回的gameType是当前排的游戏
+	4.当前不是游戏时间
+	5.已经在比赛场中
+	6.有未完成的牌局，请结束再来比赛
+	7.开始比赛失败，请重新报名
+	8.您有牌局未完成，已经取消报名
+	9.取消报名成功
+	10.当天比赛场已经结束
+	11.不够报名费
+ */
+message MatchSignRsp {
+	optional common.Result result = 1;
+	optional uint32 gameType = 2;
+	optional uint32 playCode = 3;
+}
+
+message MatchCfgReq {
+	optional common.Request request = 1;
+	repeated uint32 gameType = 2;
+	repeated uint32 transmitType = 3;    //需要转发消息的gameType
+}
+
+message MatchRewardInfo {
+	optional uint32 rank = 1;
+	optional uint32 rewardType = 2;
+	optional uint32 rewardNum = 3;
+	optional string rewardDesc = 4;
+}
+message MatchInfo {
+	optional uint32 gameType 			= 1;
+	optional string name 				= 2;
+	optional uint32 round 				= 3;
+	optional uint32 capacity 			= 4;
+  	optional uint32 startTime 			= 5;
+	optional uint32 endTime 			= 6;
+	optional uint32 diamond 			= 7;
+	optional uint32 startNum 			= 8;    //报名人数要求
+	optional string desc 				= 9;
+	optional uint32 matchType  			= 10; //
+	repeated MatchRewardInfo rewardInfo = 11;
+}
+
+message MatchCfgRsp {
+	optional common.Result result = 1;
+	repeated MatchInfo info = 2;
+}
+
+message MatchBuildRsp {
+	optional common.Result result 	= 1;   	// 结果状态 
+											// 0:正常
+											// 1:用户不存在
+											// 2:配置不匹配
+											// 3:已经创建了一个房间
+											// 5:余额不足
+											// 7:服务器错误
+											// 8:玩家创建房间数量超出上限
+											// 9:你有正未完成的牌局
+
+	optional uint32 code 			= 2; 	// 房间号(6位数)
+	optional uint64 diamond 		= 3;  	// 钻石
+}
+
+message MatchAwardRsp {
+	optional common.Result result 	= 1;
+	optional uint32 rank 			= 2;        //排名
+	optional int32 point 			= 3;       //分数
+	optional uint32 rewardType 		= 4; //奖励类型
+	optional uint32 rewardNum 		= 5;  //奖励类型
+	optional uint32 inRoom 			= 6; 	//游戏房间内的推送，1为房间内，0为大厅
+	optional uint32 rewardTime 		= 7; //奖励日期
+	optional string matchName 		= 8;  //比赛场玩法
+}
+
+message PushRsp {
+	optional common.Result 	result 		= 1;   	// 结果状态
+	optional string json				= 2; 	// 推送 格式: {type = 0x1 /*有新的任务达成*/, type = 0x2 /*有新的宝箱*/}
+}
+
+message MatchRecord {
+	optional uint32 gameType 	= 1;
+	optional uint32 rank 		= 2;
+	optional uint32 rewardType	= 3;
+	optional uint32 rewardNum	= 4;
+	optional uint32 time 		= 5;
+	optional int32 point		= 6;
+	optional string	name 		= 7;
+	optional string title 		= 8;  //比赛场名字
+	optional uint32 matchType   = 9;
+}
+
+message MatchRecordReq {
+	optional common.Request request = 1;
+}
+
+message MatchRecordRsp {
+	optional common.Result result = 1;
+	repeated MatchRecord record = 2;
+}
+
+message MatchPointReq {
+	optional common.Request request = 1;
+	optional uint32 uid = 2;
+}
+
+/*
+
+	3 打立阶段被淘汰了，无排名
+	4 定居阶段被淘汰了，有排名
+	5 轮空，分数不变，等下一轮
+*/
+message MatchPointRsp {
+	optional common.Result result 	= 1;
+	optional uint32 gameType  		= 2;
+	optional int32 point 			= 3;
+	optional int32 rank 			= 4;
+	optional int32 totalNum 		= 5;
+	optional int32 maxPoint 		= 6;
+	optional int32 minPoint 		= 7;
+	optional int32 curRound 		= 8;       //0是打立阶段，1、2、3是决赛阶段
+	optional int32 leftTable 		= 9;
+}
+
+message MatchCountReq {
+	optional common.Request request = 1;
+	optional uint32 gameType = 2;
+}
+
+message MatchCountRsp {
+	optional common.Result result = 1;
+	optional uint32 gameType = 2;
+	optional uint32 count = 3;
+}
+
+/*
+
+	hasSign 为1表示已经报名了
+*/
+message MatchStatusRsp {
+	optional common.Result result 	= 1;
+	optional uint32 gameType 		= 2;
+	optional uint32 hasSign 		= 3;	//是否	
+	optional uint32 hasStart 		= 4;    //比赛是否已经开始了
+}
+
+/*
+
+*/
+message MatchRoomRsp {
+	optional common.Result result = 1;
+	optional uint32 gameType = 2;
+	optional uint32 roomLevel = 3;
+}
+
+message MatchProgressReq {
+	optional common.Request request = 1;
+}
+
+message MatchProgressRsp {
+	optional common.Result result = 1;
+	repeated uint32 playerCount = 2;  	//{128, 64}
+	optional uint32 curRound = 3;		//当前第几轮
+}
+
+message ThroughMatchAwardReq {
+	optional common.Request request = 1;
+}
+
+/*
+	3没通关
+*/
+message ThroughMatchAwardRsp {
+	optional common.Result result 	= 1;
+	optional uint32 gameType        = 2;
+	optional uint32 awardType 		= 3; //奖励类型
+	optional uint32 awardNum 		= 4;  //奖励类型
+}
+
+
+message ThroughMatchRoomRsp {
+	optional common.Result result   = 1;
+	optional uint32 gameType        = 2;
+	optional uint32 gameId          = 3;
+	optional uint32 tableId         = 4;
+}
+
+message ThroughMatchRebirthReq {
+	optional common.Request request = 1;
+	optional uint32 share           = 2;   //0钻石复活,1是分享复活,2是复活卡复活
+}
+
+/*
+	3.没挂，不用复活
+	4.不可以分享复活了
+	5.钻石不够扣费
+	6.复活卡不够
+*/
+message ThroughMatchRebirthRsp {
+	optional common.Result result = 1;
+	optional uint32 gameType      = 2;
+	optional uint32 share         = 3;	//只有share是0表示钻石复活的时候diamond才需要更新
+	optional uint32 diamond       = 4;
+	optional uint32 rebirthCard   = 5;  //share是2的是时候是复活卡复活
+}
+
+message ThroughMatchProgressReq {
+	optional common.Request request = 1;
+}
+
+message ThroughMatchProgressRsp {
+	optional common.Result result = 1;
+	optional uint32 gameType      = 2;
+	optional uint32 progress      = 3;
+	optional uint32 progressStatus    = 4;  //0表示还没打，1表示闯关失败，2表示闯关成功
+	optional uint32 rebirthDiamond    = 5;
+	optional uint32 rebirthShare      = 6;
+	optional uint32 maxProgress       = 7;
+	optional uint32 rebirthCard       = 8;
+	optional uint32 needRebirthCard   = 9;
+}
+
+message ThroughSettleProgressRsp {
+	optional common.Result result = 1;
+	optional uint32 gameType      = 2;
+	optional uint32 progress      = 3;
+	optional uint32 progressStatus    = 4;  //0表示还没打，1表示闯关失败，2表示闯关成功
+	optional uint32 rebirthDiamond    = 5;
+	optional uint32 rebirthShare      = 6;
+	optional uint32 maxProgress       = 7;
+	optional uint32 rebirthCard       = 8;
+	optional uint32 needRebirthCard   = 9;
+}
+
+/*
+	gameType，报名参加的游戏
+	cancel为1，表示取消报名
+*/
+message ThroughMatchSignReq {
+	optional common.Request request = 1;
+	optional uint32 gameType = 2;
+	optional uint32 cancel = 3;
+}
+
+/*
+	0，成功
+	1，未登录
+	2.数据库错误
+	3.已经在排队了，返回的gameType是当前排的游戏
+	4.当前不是游戏时间
+	5.已经在比赛场中
+	6.有未完成的牌局，请结束再来比赛
+	7.开始比赛失败，请重新报名
+	8.您有牌局未完成，已经取消报名
+	9.取消报名成功
+	10.当天比赛场已经结束
+	11.不够报名费
+ */
+message ThroughMatchSignRsp {
+	optional common.Result result 	= 1;
+	optional uint32 gameType = 2;
+}
