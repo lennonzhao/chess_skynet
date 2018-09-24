@@ -114,6 +114,7 @@ end
 send_request("hall.LoginReq", {
 	request = {
 		code = 1,
+		api = 1,
 	},
 	basic = {
 
