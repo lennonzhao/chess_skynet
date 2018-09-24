@@ -53,7 +53,7 @@ function M.unpack(str)
 	local _, code, check, pbstr = string.unpack(f, str)
 	print("recv pbstr:", bin2hex(pbstr), pblen)
 	-- local cmd = code2name[code]
-	local msg = pb.decode("common.BaseReq", pbstr)
+	local msg = pb.decode("hall.LoginReq", pbstr)
 	if not msg then
 		print("cmd not register")
 		return 
