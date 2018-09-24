@@ -1,6 +1,6 @@
 #!/bin/sh
 export ROOT=$(cd `dirname $0`; pwd)
-export DAEMON=true
+export DAEMON=false
 
 while getopts "Dk" arg
 do

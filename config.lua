@@ -17,7 +17,7 @@ cpath = root .. "skynet/cservice/?.so"
 luaservice = root .. "service/?.lua;" .. root .. "service/?/main.lua;" .. luaservice
 lua_path = root .. "lualib/?.lua;" .. lua_path
 lua_cpath = root .. "luaclib/?.so;" .. lua_cpath
-cpath = root .. "cservice/?.so" ..cpath
+cpath = root .. "cservice/?.so;" ..cpath
 
 if $DAEMON then
 	logger = root .. "run/skynet.log"
