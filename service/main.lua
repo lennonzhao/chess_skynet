@@ -1,21 +1,5 @@
 local skynet = require "skynet"
-
-local Person = class("Person")
-function Person:ctor(sex)
-    self.mAge = 1
-    self.mSex = sex
-end
-
-function Person:debug()
-    printInfo("self.mAge = %d", self.mAge)
-    printInfo("self.mSex = %d", self.mSex)
-end
-
-local Man = class("Man", Person)
-function Man:ctor(sex)
-    Man.super.ctor(self, sex)
-    self.mSex = sex
-end
+local json = require "cjson"
 
 local function main()
     skynet.newservice("debug_console", 8081)
@@ -24,22 +8,11 @@ local function main()
     printInfo('info')
     printError('error')
 
-    local person = Person.new(-1)
-    person:debug()
+    dump(json.encode({
+        a = 'b',
+        c = 11,
+    }))
 
-    local man = Man.new(2)
-    man:debug()
-
-    dump({
-        name = "zqq",
-        map = {
-            ["v1"] = 1,
-            ["v2"] = "test",
-            [2] = 100,
-        },
-        [1] = 11,
-        [2] = 22,
-    })
 
     -- 登陆服务
     -- local login = skynet.newservice("hall")
