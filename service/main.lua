@@ -30,6 +30,17 @@ local function main()
     local man = Man.new(2)
     man:debug()
 
+    dump({
+        name = "zqq",
+        map = {
+            ["v1"] = 1,
+            ["v2"] = "test"
+            [2] = 100,
+        },
+        [1] = 11,
+        [2] = 22,
+    })
+
     -- 登陆服务
     -- local login = skynet.newservice("hall")
     -- skynet.call(login, "hall", "start", {
