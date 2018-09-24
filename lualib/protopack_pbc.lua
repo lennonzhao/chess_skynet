@@ -39,15 +39,15 @@ function M.pack(pbName, msg, check)
 	local f = string.format(">I4I2I4c%d", pblen)
 	local str = string.pack(f, len, code, check, pbstr)
 	--调试
-	print("send:", bin2hex(str), len, pblen)
+	print("send:", bin2hex(str), len + 4, pblen)
 	print(string.format("send: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check))
     return str
 end
 
 function M.unpack(str)
-	local len, _, _, _ = string.unpack(">I4I2I4s2", str)
-	local pblen = len - 4 - 2
-	print("recv:", len, bin2hex(str), pblen)
+	local len = string.len(str)
+	local pbLen = len - 4 - 4 - 2
+	print("recv:", len, pbLen)
 	local f = string.format(">I4I2I4c%d", pblen)
 	local _, code, check, pbstr = string.unpack(f, str)
 	print("recv pbstr:", bin2hex(pbstr), len, pblen)
