@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local gateserver = require "snax.gateserver"
 local netpack = require "skynet.netpack"
+local protopack = require "protopack_pbc"
 
 local watchdog
 local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
