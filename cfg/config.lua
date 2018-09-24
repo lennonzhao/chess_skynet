@@ -27,7 +27,6 @@ lua_path = root .. "preload/?.lua;" .. root .. "cfg/?.lua;" .. root .. "lualib/?
 lua_cpath = root .. "luaclib/?.so;" .. lua_cpath
 cpath = root .. "cservice/?.so;" ..cpath
 
-
 if $DAEMON then
 	logger = root .. "run/skynet.log"
 	daemon = root .. "run/skynet.pid"

@@ -34,7 +34,7 @@ local function main()
         name = "zqq",
         map = {
             ["v1"] = 1,
-            ["v2"] = "test"
+            ["v2"] = "test",
             [2] = 100,
         },
         [1] = 11,
