@@ -46,7 +46,7 @@ local function send_package(pack)
 end
 
 local function decode_msg(msg, sz)
-	return "REQUEST", "hall.LoginReq", pb.decode(msg)
+	return "REQUEST", "hall.LoginReq", pb.decode("hall.LoginReq", msg)
 end
 
 skynet.register_protocol {
