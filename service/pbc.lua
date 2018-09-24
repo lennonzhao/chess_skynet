@@ -57,7 +57,6 @@ skynet.start(function ()
 		if not f then
 			skynet.ret(skynet.pack(nil, "Invalid command" .. command))
 		end
-
 		print(address, command, ...)
 		if command == "decode" then
 			local name, buf = unpack{...}
