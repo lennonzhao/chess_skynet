@@ -134,7 +134,8 @@ function gateserver.start(handler)
 		unpack = function ( msg, sz )
 			return netpack.filter( queue, msg, sz)
 		end,
-		dispatch = function (_, _, q, type, ...)
+		dispatch = function (p1, p2, q, type, ...)
+			printInfo(p1, p2, q, type, ...)
 			queue = q
 			if type then
 				MSG[type](...)
