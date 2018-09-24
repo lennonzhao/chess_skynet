@@ -1,8 +1,9 @@
 root = "./skynet/"
-thread = 8
+thread = 1
 harbor = 0
 logger = nil
-logpath = "."
+logpath = "./log/"
+
 start = "main"	-- main script
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
 luaservice = root.."service/?.lua;"..root.."test/?.lua;"..root.."examples/?.lua"
