@@ -56,8 +56,6 @@ skynet.register_protocol {
 	unpack = function (msg, sz)
 		printInfo("unpack a new message", sz)
 		dump(msg, "111")
-		local msg = core.unpack(msg, sz)
-		dump(msg, "222")
 		return decode_msg(msg, sz)
 		-- return host:dispatch(msg, sz)
 	end,
