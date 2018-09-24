@@ -22,6 +22,7 @@ end
 local function logger(str, level, color)
   return function (fmt, ...)
     if level >= defaultLevel then
+        print(...)
         local info = table.pack(...)
         info[#info+1] = "\x1b[0m"
         skynet.error(string.format("%s%s%s", color, prefix, str), table.unpack(info)) 
