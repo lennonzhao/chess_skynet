@@ -10,6 +10,7 @@ bootstrap = "snlua bootstrap"	-- The service for bootstrap
 
 runconfig = "runconfig"
 start = "main"	-- main script
+nodename = "node1"
 -- snax_interface_g = "snax_g"
 
 lualoader 	= 	skynet_root  ..  "lualib/loader.lua"
