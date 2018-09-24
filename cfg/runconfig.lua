@@ -24,21 +24,21 @@ return {
 		dbproxy_common = {
             --mongodb数据库配置表模板
             accountdb = {
-                db_type = "mongodb",
-                host = "127.0.0.1",
-                db_name = "account",
+                db_type = "mysqldb",
+                host = "120.79.7.201",
+                db_name = "sx_game",
                 enable=true,
             },
 			globaldb = {
-				db_type = "mongodb",
-				host = "127.0.0.1",
-				db_name = "global",
+				db_type = "mysqldb",
+				host = "120.79.7.201",
+				db_name = "sx_game",
 				enable=true,
 			},
             gamedb = {
-                db_type = "mongodb",
-                host = "127.0.0.1",
-                db_name = "game",
+                db_type = "mysqldb",
+                host = "120.79.7.201",
+                db_name = "sx_game",
                 enable = true,
             }
 		},
