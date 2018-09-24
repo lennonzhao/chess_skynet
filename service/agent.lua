@@ -34,10 +34,13 @@ function REQUEST:quit()
 end
 
 local function request(name, args, response)
-	local f = assert(REQUEST[name])
-	local r = f(args)
-	if response then
-		return response(r)
+	-- local f = assert(REQUEST[name])
+	-- local r = f(args)
+	-- if response then
+	-- 	return response(r)
+	-- end
+	if name == "hall.LoginReq" then
+		printInfo("hall.LoginReq", args.request.code)
 	end
 end
 
@@ -57,12 +60,11 @@ skynet.register_protocol {
 		printInfo("unpack a new message", sz)
 		local str = skynet.tostring(msg, sz)
 		return decode_msg(str, sz)
-		-- return host:dispatch(msg, sz)
 	end,
 	dispatch = function (_, _, type, ...)
 		printInfo("com a new message", type)
 		if type == "REQUEST" then
-			-- local ok, result  = pcall(request, ...)
+			local ok, result  = pcall(request, ...)
 			-- if ok then
 			-- 	if result then
 			-- 		send_package(result)
