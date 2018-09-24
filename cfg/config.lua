@@ -21,6 +21,7 @@ luaservice 	= 	skynet_root .. "service/?.lua;" ..
 				skynet_root .. "examples/?.lua"
 
 lua_path 	= 	skynet_root .. "lualib/?.lua;" .. 
+				skynet_root .. "lualib/compat10/?.lua;" .. 
 				skynet_root .. "lualib/?/init.lua;" .. 
 				skynet_root .. "examples/?.lua"
 
