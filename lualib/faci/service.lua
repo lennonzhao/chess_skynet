@@ -14,6 +14,7 @@ local service = {}
 function service.init(name, id)
 	env.name = name or "nameless server"
 	env.id = tonumber(id) or 0
+	INFO('service init', env.name, env.id)
 end
 
 local function init()
@@ -46,6 +47,7 @@ function env.exit()
 end
 
 skynet.start(function()
+	INFO('service start', env.name, env.id)
 	init()
     if env.init then
         env.init()

@@ -16,7 +16,7 @@ function dump(value, tag)
         string.format("%02d:%02d", timerTb.min, timerTb.sec),
         "] ",
     }
-    printInfo(table.concat(prefixTb) .. prefix .. inspect_lib(value, {indent="    "}) .. fixEnd)
+    printInfo(table.concat(prefixTb), prefix .. inspect_lib(value, {indent="    "}) .. fixEnd)
 end
 
 function inspect(value)
