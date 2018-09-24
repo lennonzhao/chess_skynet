@@ -57,7 +57,7 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		local str = skynet.tostring(msg, sz)
+		local str = skynet.unpack(msg, sz)
 		local tb = {}
 		for i=1, #str do
 			table.insert(tb, string.byte(str, 1, 1))
