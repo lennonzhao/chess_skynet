@@ -54,6 +54,7 @@ skynet.register_protocol {
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
 		printInfo("unpack a new message", sz)
+		dump(msg)
 		return decode_msg(msg, sz)
 		-- return host:dispatch(msg, sz)
 	end,
