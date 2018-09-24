@@ -22,7 +22,6 @@ function handler.message(fd, msg, sz)
 	local c = connection[fd]
 	local agent = c.agent
 	local str = skynet.tostring(msg, sz)
-	INFO("recv:" ..  bin2hex(str))
 	local cmd, pbName, msg, check = protopack.unpack(str)
 	local source = skynet.self()
 	if not cmd then

@@ -1,5 +1,4 @@
 local pb = require "protobuf"
-local tool = require "tool"
 
 --协议号映射表
 local name2code = {}
