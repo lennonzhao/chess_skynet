@@ -4,7 +4,7 @@ require "error_code"
 require "logger_api"
 require "functions"
 
-local inspect = require "inspect"
+local inspect_lib = require "inspect"
 local fixStart  = "\n||||||||||||||||t||||||||||||\n"
 local fixEnd    = "\n||||||||||||||||E N D||||||||||||"
 function dump(value, tag)
@@ -16,5 +16,23 @@ function dump(value, tag)
         string.format("%02d:%02d", timerTb.min, timerTb.sec),
         "] ",
     }
-    printInfo(table.concat(prefixTb) .. prefix .. inspect(value, {indent="    "}) .. fixEnd)
+    printInfo(table.concat(prefixTb) .. prefix .. inspect_lib(value, {indent="    "}) .. fixEnd)
+end
+
+function inspect(value)
+  return inspect_lib(value, {
+    process = function(item, path)
+      if type(item) == "function" then
+        return nil
+      end
+
+      if path[#path] == inspect_lib.METATABLE then
+        return nil
+      end
+
+      return item
+    end,
+    newline = " ",
+    indent = ""
+  })
 end
