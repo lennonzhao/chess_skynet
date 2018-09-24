@@ -1,9 +1,10 @@
-inspect = require "inspect"
+json = require "cjson"
 
 require "error_code"
 require "logger_api"
 require "functions"
 
+local inspect = require "inspect"
 local fixStart  = "\n||||||||||||||||t||||||||||||\n"
 local fixEnd    = "\n||||||||||||||||E N D||||||||||||"
 function dump(value, tag)

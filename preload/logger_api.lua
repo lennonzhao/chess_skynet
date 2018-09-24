@@ -39,6 +39,13 @@ local M = {
   printFatal = logger("[fatal]", log_level.LOG_FATAL,"\x1b[31m")
 }
 
+M.TRACE = M.printTrace
+M.DEBUG = M.printDebug
+M.INFO = M.printInfo
+M.WARN = M.printWarn
+M.ERROR = M.printError
+M.FATAL = M.printFatal
+
 -- 错误日志 --
 
 setmetatable(M, {

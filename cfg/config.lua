@@ -1,7 +1,7 @@
-root = "$ROOT/"
+app_root = "$ROOT/"
 skynet_root = "$SKYNET_ROOT/"
 
-logpath = root .. "run"
+logpath = app_root .. "run"
 log_level = "debug"
 
 thread = 1
@@ -12,7 +12,7 @@ runconfig = "runconfig"
 start = "main"	-- main script
 
 lualoader = skynet_root  ..  "lualib/loader.lua"
-preload    = root .. "preload/preload.lua"
+preload    = app_root .. "preload/preload.lua"
 
 luaservice = skynet_root .. "service/?.lua;" .. skynet_root .. "test/?.lua;" .. skynet_root .. "examples/?.lua"
 lua_path = skynet_root .. "lualib/?.lua;" .. skynet_root .. "lualib/?/init.lua;" .. skynet_root .. "examples/?.lua"
@@ -22,12 +22,12 @@ snax = skynet_root .. "examples/?.lua;" .. skynet_root .. "test/?.lua"
 cpath = skynet_root .. "cservice/?.so"
 
 --our path
-luaservice = root .. "service/?.lua;" .. root .. "service/?/main.lua;" .. luaservice
-lua_path = root .. "preload/?.lua;" .. root .. "cfg/?.lua;" .. root .. "lualib/?.lua;" .. lua_path
-lua_cpath = root .. "luaclib/?.so;" .. lua_cpath
-cpath = root .. "cservice/?.so;" ..cpath
+luaservice = app_root .. "service/?.lua;" .. app_root .. "service/?/main.lua;" .. luaservice
+lua_path = app_root .. "preload/?.lua;" .. app_root .. "cfg/?.lua;" .. app_root .. "lualib/?.lua;" .. lua_path
+lua_cpath = app_root .. "luaclib/?.so;" .. lua_cpath
+cpath = app_root .. "cservice/?.so;" .. cpath
 
 if $DAEMON then
-	logger = root .. "run/skynet.log"
-	daemon = root .. "run/skynet.pid"
+	logger = app_root .. "run/skynet.log"
+	daemon = app_root .. "run/skynet.pid"
 end
