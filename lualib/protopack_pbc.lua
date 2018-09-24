@@ -36,7 +36,7 @@ function M.pack(pbName, msg, check)
 	--len
 	local len = 4 + 2 + pblen
 	--组成发送字符串
-	local f = string.format(">I4I2I4c%d", pblen)
+	local f = string.format("<I4I2I4c%d", pblen)
 	local str = string.pack(f, len, code, check, pbstr)
 	--调试
 	print("send:", bin2hex(str), len + 4, pblen)
@@ -48,7 +48,7 @@ function M.unpack(str)
 	local len = string.len(str)
 	local pbLen = len - 4 - 4 - 2
 	print("recv:", len, pbLen)
-	local f = string.format(">I4I2I4c%d", pblen)
+	local f = string.format("<I4I2I4c%d", pblen)
 	local _, code, check, pbstr = string.unpack(f, str)
 	print("recv pbstr:", bin2hex(pbstr), len, pblen)
 	-- local cmd = code2name[code]
