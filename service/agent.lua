@@ -49,7 +49,7 @@ local function send_package(pack)
 	socket.write(client_fd, package)
 end
 
-local function decode_msg(msg, sz)
+local function decode_msg(msg)
 	return "REQUEST", "hall.LoginReq", pb.decode("hall.LoginReq", msg)
 end
 
@@ -59,7 +59,8 @@ skynet.register_protocol {
 	unpack = function (msg, sz)
 		printInfo("unpack a new message", sz)
 		local str = skynet.tostring(msg, sz)
-		return decode_msg(str, sz)
+		local msg = string.unpack(">s2", str)
+		return decode_msg(msg)
 	end,
 	dispatch = function (_, _, type, ...)
 		printInfo("com a new message", type, ...)
