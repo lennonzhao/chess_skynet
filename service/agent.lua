@@ -57,8 +57,8 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		printInfo("unpack a new message", sz)
 		local str = skynet.tostring(msg, sz)
+		printInfo("unpack a new message", str, sz, #str)
 		local msg = string.unpack(">s2", str)
 		return decode_msg(msg)
 	end,
