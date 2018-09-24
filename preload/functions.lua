@@ -375,6 +375,20 @@ function string.formatnumberthousands(num)
     return formatted
 end
 
+
+local setmetatableindex = function(t, index)
+    if type(t) == "table" then
+        local mt = getmetatable(t)
+        if not mt then mt = {} end
+        if not mt.__index then
+            mt.__index = index
+            setmetatable(t, mt)
+        elseif mt.__index ~= index then
+            setmetatableindex_(mt, index)
+        end
+    end
+end
+
 function class(classname, ...)
     local cls = {__cname = classname}
 
