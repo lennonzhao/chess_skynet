@@ -3,6 +3,7 @@ local netpack = require "skynet.netpack"
 local socket = require "skynet.socket"
 local sproto = require "sproto"
 local sprotoloader = require "sprotoloader"
+local pb = require "protobuf"
 
 local WATCHDOG
 local host
@@ -44,15 +45,21 @@ local function send_package(pack)
 	socket.write(client_fd, package)
 end
 
+local function decode_msg(msg, sz)
+	return "REQUEST", "hall.LoginReq", pb.decode(msg)
+end
+
 skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		return host:dispatch(msg, sz)
+		printInfo("unpack a new message", sz)
+		return decode_msg(msg, sz)
+		-- return host:dispatch(msg, sz)
 	end,
 	dispatch = function (_, _, type, ...)
+		printInfo("com a new message", type)
 		if type == "REQUEST" then
-			printInfo("client send a message!")
 			-- local ok, result  = pcall(request, ...)
 			-- if ok then
 			-- 	if result then
