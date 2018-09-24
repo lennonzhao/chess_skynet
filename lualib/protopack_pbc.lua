@@ -45,7 +45,7 @@ function M.pack(pbName, msg, check)
 end
 
 function M.unpack(str)
-	local len, _ = string.unpack(">I4s2", str)
+	local len, _, _, _ = string.unpack(">I4I2I4s2", str)
 	local pblen = len - 4 - 2
 	print("recv:", bin2hex(str), len, pblen)
 	local f = string.format(">I4I2I4c%d", pblen)
