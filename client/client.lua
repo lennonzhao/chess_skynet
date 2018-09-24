@@ -61,11 +61,13 @@ end
 local session = 0
 
 local function send_request(name, args)
-	session = session + 1
-	local str = request(name, args, session)
-	error('request')
-	send_package(fd, str)
-	print("Request:", session)
+	-- session = session + 1
+	-- local str = request(name, args, session)
+	-- send_package(fd, str)
+	-- print("Request:", session)
+	local str = pb.encode(name, args)
+	local package = string.pack(">s2", str)
+	socket.send(fd, package)
 end
 
 local last = ""
@@ -109,18 +111,26 @@ local function dispatch_package()
 	end
 end
 
-send_request("handshake")
-send_request("set", { what = "hello", value = "world" })
+send_request("hall.LoginReq", {
+	request = {
+		code = 0x1001,
+		api = 101,
+	},
+	basic = {
+
+	}
+})
+-- send_request("set", { what = "hello", value = "world" })
 while true do
 	dispatch_package()
-	local cmd = socket.readstdin()
-	if cmd then
-		if cmd == "quit" then
-			send_request("quit")
-		else
-			send_request("get", { what = cmd })
-		end
-	else
-		socket.usleep(100)
-	end
+	-- local cmd = socket.readstdin()
+	-- if cmd then
+	-- 	if cmd == "quit" then
+	-- 		send_request("quit")
+	-- 	else
+	-- 		send_request("get", { what = cmd })
+	-- 	end
+	-- else
+	-- 	socket.usleep(100)
+	-- end
 end
