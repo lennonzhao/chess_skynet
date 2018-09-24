@@ -62,7 +62,7 @@ skynet.register_protocol {
 		return decode_msg(str, sz)
 	end,
 	dispatch = function (_, _, type, ...)
-		printInfo("com a new message", type)
+		printInfo("com a new message", type, ...)
 		if type == "REQUEST" then
 			local ok, result  = pcall(request, ...)
 			-- if ok then
