@@ -54,7 +54,7 @@ local function register_pbfile(path, filename)
     end
     file:close()
     local nosuffix = string.sub(filename, 1, -7)
-    local pbfile = path.."/pb/"..nosuffix..".pb"
+    local pbfile = path.."/"..nosuffix..".pb"
     if not pbfilename[nosuffix] then
         pb.register_file(pbfile)
         pbfilename[nosuffix] = true
@@ -68,7 +68,7 @@ if not content or content ~= "" then
         local file = string.match(file, path.."/(.+%.proto)")
         if file then
             local nosuffix = string.sub(file, 1, -7)
-            local pbfile = path.."/pb/"..nosuffix..".pb"
+            local pbfile = path.."/"..nosuffix..".pb"
             local command = "protoc " .. "-I=" .. path .. " --descriptor_set_out "..pbfile.." "..path.."/"..file
             os.execute(command)
         end
