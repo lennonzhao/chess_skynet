@@ -25,7 +25,7 @@ function M.pack(pbName, msg, check)
 	--code
 	local code = msg.request.code
 	if not code then
-		log.error(string.format("protopack_pb fail, pbName:%s", pbName or "nil"))
+		print(string.format("protopack_pb fail, pbName:%s", pbName or "nil"))
 		return
 	end
 	--check
