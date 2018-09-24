@@ -7,12 +7,12 @@ local function main()
     log("main start")
     
     -- 登陆服务
-    local login = skynet.newservice("hall")
-    skynet.call(login, "hall", "start", {
-        port = 60000,
-        maxclient = 1000,
-        nodelay = true,
-    })
+    -- local login = skynet.newservice("hall")
+    -- skynet.call(login, "hall", "start", {
+    --     port = 60000,
+    --     maxclient = 1000,
+    --     nodelay = true,
+    -- })
     -- -- base_app_mgr
     -- skynet.uniqueservice("base_app_mgr")
     -- skynet.call("base_app_mgr", "lua", "start")

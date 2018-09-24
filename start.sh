@@ -16,4 +16,4 @@ do
 	esac
 done
 
-$SKYNET_ROOT/skynet $ROOT/config.lua
+$SKYNET_ROOT/skynet $ROOT/cfg/config.lua
