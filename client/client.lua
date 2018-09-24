@@ -8,6 +8,7 @@ end
 local socket = require "client.socket"
 local proto = require "proto"
 local sproto = require "sproto"
+local protopack = require ("protopack_pbc")
 
 local host = sproto.new(proto.s2c):host "package"
 local request = host:attach(sproto.new(proto.c2s))
@@ -24,9 +25,13 @@ end
 
 local fd = assert(socket.connect("127.0.0.1", 8888))
 
-local function send_package(fd, pack)
-	local package = string.pack(">s2", pack)
-	socket.send(fd, package)
+local function send_package(fd, msg)
+	local cmd = msg.request.code
+	local cmdName = "hall.LoginReq" 
+	local check = msg._check or 0
+	msg._check = nil
+	local data = protopack.pack(cmdName, msg, check)
+	libsocket.send(fd, data)
 end
 
 local function unpack_package(text)

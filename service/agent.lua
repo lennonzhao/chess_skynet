@@ -6,6 +6,8 @@ local sprotoloader = require "sprotoloader"
 local pb = require "protobuf"
 local core = require "sproto.core"
 
+local protopack = require ("protopack_pbc")
+
 local WATCHDOG
 local host
 local send_request
@@ -53,35 +55,77 @@ local function decode_msg(msg)
 	return "REQUEST", "hall.LoginReq", pb.decode("hall.LoginReq", msg)
 end
 
+--打印二进制string，用于调试
+local function bin2hex(s)
+    s=string.gsub(s, "(.)", function (x) return string.format("%02X ", string.byte(x)) end)
+    return s
+end
+
+local function client_dispatch(session, source, fd, cmd, check, msg)
+	INFO("client_dispatch", session, source, fd, cmd, check, msg)
+    -- local queue_id = get_queue_id(cmd)
+    -- if not queue_id then
+    --     client_dispatch_help(cmd, check, msg, fd, source)
+    --     return
+    -- end
+    -- if not env.waiting_queue[fd] then
+    --     env.waiting_queue[fd] = {}
+    -- end
+    -- if not env.waiting_queue[fd][queue_id] then
+    --     env.waiting_queue[fd][queue_id] = {}
+    -- end
+    -- local queues = env.waiting_queue[fd][queue_id]
+    -- if #queues  > 0 then
+    --     table.insert(queues, {cmd, check, msg, fd, source})
+    --     return
+    -- end
+
+    -- table.insert(queues, {cmd, check, msg, fd, source})
+    -- for i = 1, 100 do
+    --     local queue = table.remove(queues) 
+    --     if not queue then
+    --         return
+    --     end
+    --     client_dispatch_help(table.unpack(queue))
+    -- end
+    -- if #queues > 0 then
+    --     log.error("%s queue is full, queue_id: %d", fd, queue_id)
+    -- end
+    -- env.waiting_queue[fd][queue_id] = nil
+end
+
+-- skynet.register_protocol {
+-- 	name = "client",
+-- 	id = skynet.PTYPE_CLIENT,
+-- 	unpack = function (msg, sz)
+--     	local str = skynet.tostring(msg, sz)
+-- 		INFO("recv:" ..  bin2hex(str))
+-- 		local cmd, pbName, msg, check = protopack.unpack(str)
+-- 		return decode_msg(msg)
+-- 	end,
+-- 	dispatch = function (_, _, type, ...)
+-- 		printInfo("com a new message", type, ...)
+-- 		if type == "REQUEST" then
+-- 			local ok, result  = pcall(request, ...)
+-- 			-- if ok then
+-- 			-- 	if result then
+-- 			-- 		send_package(result)
+-- 			-- 	end
+-- 			-- else
+-- 			-- 	skynet.error(result)
+-- 			-- end
+-- 		else
+-- 			assert(type == "RESPONSE")
+-- 			error "This example doesn't support request client"
+-- 		end
+-- 	end
+-- }
+
 skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
-	unpack = function (msg, sz)
-		local str = skynet.unpack(msg, sz)
-		local tb = {}
-		for i=1, #str do
-			table.insert(tb, string.byte(str, 1, 1))
-		end
-		printInfo("unpack a new message", table.concat(tb, ","), str, sz, #str)
-		local msg = string.unpack(">s2", str)
-		return decode_msg(msg)
-	end,
-	dispatch = function (_, _, type, ...)
-		printInfo("com a new message", type, ...)
-		if type == "REQUEST" then
-			local ok, result  = pcall(request, ...)
-			-- if ok then
-			-- 	if result then
-			-- 		send_package(result)
-			-- 	end
-			-- else
-			-- 	skynet.error(result)
-			-- end
-		else
-			assert(type == "RESPONSE")
-			error "This example doesn't support request client"
-		end
-	end
+	unpack = skynet.unpack,
+	dispatch = client_dispatch,
 }
 
 function CMD.start(conf)

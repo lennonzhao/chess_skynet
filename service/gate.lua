@@ -21,8 +21,17 @@ function handler.message(fd, msg, sz)
 	-- recv a package, forward it
 	local c = connection[fd]
 	local agent = c.agent
+	local str = skynet.tostring(msg, sz)
+	INFO("recv:" ..  bin2hex(str))
+	local cmd, pbName, msg, check = protopack.unpack(str)
+	local source = skynet.self()
+	if not cmd then
+		CMD.kick(source, fd)
+		return
+	end
+	INFO(pbName, msg.request.api)
 	if agent then
-		skynet.redirect(agent, c.client, "client", 1, msg, sz)
+		skynet.redirect(agent, c.client, "client", 1, skynet.pack(fd, cmd, msg, check))
 	else
 		skynet.send(watchdog, "lua", "socket", "data", fd, netpack.tostring(msg, sz))
 	end
