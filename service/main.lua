@@ -3,8 +3,10 @@ local skynet = require "skynet"
 local function main()
     skynet.newservice("debug_console", 8081)
 
-    log("main start")
-    
+    printDebug('debug')
+    printInfo('info')
+    printError('error')
+
     -- 登陆服务
     -- local login = skynet.newservice("hall")
     -- skynet.call(login, "hall", "start", {
