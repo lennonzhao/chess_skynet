@@ -1,4 +1,3 @@
-local log = require "log"
 local skynet = require "skynet"
 
 local function main()

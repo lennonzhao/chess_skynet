@@ -8,8 +8,10 @@ thread = 1
 harbor = 0
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
 
+runconfig = "runconfig"
+
 lualoader = root  ..  "skynet/lualib/loader.lua"
--- preload = "./examples/preload.lua"	-- run preload.lua before every lua service run
+preload    = root .. "preload/preload.lua"
 
 luaservice = root .. "skynet/service/?.lua;" .. root .. "skynet/test/?.lua;" .. root .. "skynet/examples/?.lua"
 lua_path = root .. "skynet/lualib/?.lua;" .. root .. "skynet/lualib/?/init.lua"
@@ -20,7 +22,7 @@ cpath = root .. "skynet/cservice/?.so"
 
 --our path
 luaservice = root .. "service/?.lua;" .. root .. "service/?/main.lua;" .. luaservice
-lua_path = root .. "lualib/?.lua;" .. lua_path
+lua_path = root .. "cfg/?.lua;" .. root .. "lualib/?.lua;" .. lua_path
 lua_cpath = root .. "luaclib/?.so;" .. lua_cpath
 cpath = root .. "cservice/?.so;" ..cpath
 
