@@ -13,6 +13,7 @@ skynet.register_protocol {
 }
 
 local handler = {}
+local CMD = {}
 
 function handler.open(source, conf)
 	watchdog = conf.watchdog or source
@@ -76,8 +77,6 @@ end
 function handler.warning(fd, size)
 	skynet.send(watchdog, "lua", "socket", "warning", fd, size)
 end
-
-local CMD = {}
 
 function CMD.forward(source, fd, client, address)
 	local c = assert(connection[fd])
