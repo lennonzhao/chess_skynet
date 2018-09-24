@@ -1,5 +1,13 @@
 local pb = require "protobuf"
 
+local pb_files = {
+	"proto/common.pb",
+	"proto/hall/hall_hz.pb",
+}
+for _,v in ipairs(pb_files) do
+	pb.register_file(v)
+end
+
 --协议号映射表
 local name2code = {}
 local code2name = {}
@@ -53,7 +61,7 @@ function M.unpack(str)
 	local _, code, check, pbstr = string.unpack(f, str)
 	print("recv pbstr:", bin2hex(pbstr), pblen)
 	-- local cmd = code2name[code]
-	local msg = pb.decode("hall.LoginReq", pbstr)
+	local msg = pb.decode("common.BaseReq", pbstr)
 	if not msg then
 		print("cmd not register")
 		return 
