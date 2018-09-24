@@ -1,8 +1,5 @@
-local json = require "cjson"
 local log = require "log"
 local pb = require "protobuf"
-local io = require "io" 
-local crc32 = require "crc32" 
 local tool = require "tool"
 
 --协议号映射表
@@ -45,7 +42,7 @@ function M.pack(pbName, msg, check)
 	local str = string.pack(f, len, code, check, pbstr)
 	--调试
 	log.info("send:"..bin2hex(str))
-	log.info(string.format("send: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, tool.dump(msg)), check)
+	log.info(string.format("send: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check)
     return str
 end
 
@@ -64,7 +61,7 @@ function M.unpack(str)
 	end
 	local pbName = "hall.LoginReq"
 	local msg = pb.decode(pbName, pbstr)
-	log.info("recv: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, tool.dump(msg), check)
+	log.info("recv: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check)
     return code, pbName, msg, check
 end
 
@@ -82,7 +79,7 @@ function M.local_unpack(str)
     end
     local msg = pb.decode(cmd, pbstr)
 
-    log.info("recv:cmd(%s) check(%d) msg->%s", cmd, check, tool.dump(msg))
+    log.info("recv:cmd(%s) check(%d) msg->%s", cmd, check, msg)
     return cmd, check, msg
 end
 
