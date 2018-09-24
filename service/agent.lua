@@ -4,6 +4,7 @@ local socket = require "skynet.socket"
 local sproto = require "sproto"
 local sprotoloader = require "sprotoloader"
 local pb = require "protobuf"
+local core = require "sproto.core"
 
 local WATCHDOG
 local host
@@ -54,7 +55,9 @@ skynet.register_protocol {
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
 		printInfo("unpack a new message", sz)
-		dump(msg)
+		dump(msg, "111")
+		local msg = core.unpack(msg, sz)
+		dump(msg, "222")
 		return decode_msg(msg, sz)
 		-- return host:dispatch(msg, sz)
 	end,
