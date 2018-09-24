@@ -47,7 +47,7 @@ local function register_pbfile(path, filename)
         if c > 0 then
             local stmp = string.sub(s, 1, -2)
             if not pbfilename[stmp] then
-                pb.register_file(path .. "/pb/"..stmp..".pb")
+                pb.register_file(path .. "/"..stmp..".pb")
                 pbfilename[stmp] = true
             end
         end
