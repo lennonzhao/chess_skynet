@@ -22,7 +22,7 @@ cpath = root .. "skynet/cservice/?.so"
 
 --our path
 luaservice = root .. "service/?.lua;" .. root .. "service/?/main.lua;" .. luaservice
-lua_path = root .. "cfg/?.lua;" .. root .. "lualib/?.lua;" .. lua_path
+lua_path = root .. "preload/?.lua;" .. root .. "cfg/?.lua;" .. root .. "lualib/?.lua;" .. lua_path
 lua_cpath = root .. "luaclib/?.so;" .. lua_cpath
 cpath = root .. "cservice/?.so;" ..cpath
 
