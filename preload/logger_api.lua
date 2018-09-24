@@ -14,6 +14,8 @@ local log_level = {
 
 local defaultLevel = tonumber(skynet.getenv "log_default_lv") or log_level.LOG_DEBUG
 local daemon = skynet.getenv "DAEMON"
+
+skynet.error('daemon = ' .. tostring(daemon))
 local prefix = ""
 function LOG_PREFIX(pre)
   prefix = "[" .. pre .. "]"
