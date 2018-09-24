@@ -9,6 +9,7 @@ harbor = 0
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
 
 runconfig = "runconfig"
+start = "main"	-- main script
 
 lualoader = root  ..  "skynet/lualib/loader.lua"
 preload    = root .. "preload/preload.lua"
@@ -26,7 +27,6 @@ lua_path = root .. "preload/?.lua;" .. root .. "cfg/?.lua;" .. root .. "lualib/?
 lua_cpath = root .. "luaclib/?.so;" .. lua_cpath
 cpath = root .. "cservice/?.so;" ..cpath
 
-start = "main"	-- main script
 
 if $DAEMON then
 	logger = root .. "run/skynet.log"
