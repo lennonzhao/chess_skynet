@@ -39,17 +39,19 @@ function M.pack(pbName, msg, check)
 	local f = string.format(">I4I2I4c%d", pblen)
 	local str = string.pack(f, len, code, check, pbstr)
 	--调试
-	print("send:"..bin2hex(str))
+	print("send:", bin2hex(str), len, pblen)
 	print(string.format("send: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check))
     return str
 end
 
 function M.unpack(str)
-	print("recv:", bin2hex(str), string.len(str))
-	local pblen = string.len(str)-4-2-4
+	local f = string.format(">I4s2", str)
+	local len, _ = string.unpack(str)
+	local pblen = len - 4 - 2
+	print("recv:", bin2hex(str), pblen)
 	local f = string.format(">I4I2I4c%d", pblen)
-	local len, code, check, pbstr = string.unpack(f, str)
-	print("recv pbstr:"..bin2hex(pbstr))
+	local _, code, check, pbstr = string.unpack(f, str)
+	print("recv pbstr:", bin2hex(pbstr), len, pblen)
 	-- local cmd = code2name[code]
 	local msg = pb.decode("common.BaseReq", pbstr)
 	local code = msg and msg.request.code
