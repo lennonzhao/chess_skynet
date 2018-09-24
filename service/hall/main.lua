@@ -3,14 +3,13 @@
 ]]
 local skynet = require "skynet"
 require "skynet.manager"
-local LoginMgr = nil
-local sock_mgr = require("hall.")
+local sock_mgr = require("hall.sock_mgr")
 
 local CMD = {}
 
 function CMD.start(conf)
     -- account_mgr:init()
-    -- sock_mgr:start(conf)
+    sock_mgr:start(conf)
 end
 
 skynet.start(function()
@@ -27,7 +26,6 @@ skynet.start(function()
             else
                 skynet.ret(skynet.pack(f(subcmd, ...)))
             end
-
         end
     end)
     skynet.register("hall")

@@ -1,16 +1,18 @@
+local log = require "log"
 local skynet = require "skynet"
 
 local function main()
     skynet.newservice("debug_console", 8081)
 
-    -- 登陆服务
-    -- local login = skynet.newservice("hall")
-    -- skynet.call(login, "hall", "start", {
-    --     port = 60000,
-    --     maxclient = 1000,
-    --     nodelay = true,
-    -- })
+    log("main start")
     
+    -- 登陆服务
+    local login = skynet.newservice("hall")
+    skynet.call(login, "hall", "start", {
+        port = 60000,
+        maxclient = 1000,
+        nodelay = true,
+    })
     -- -- base_app_mgr
     -- skynet.uniqueservice("base_app_mgr")
     -- skynet.call("base_app_mgr", "lua", "start")
@@ -22,7 +24,7 @@ local function main()
     -- -- room_mgr
     -- skynet.uniqueservice("room_mgr")
 
-    skynet.newservice("pbc")
+    skynet.uniqueservice("pbc")
 
     skynet.exit()
 end

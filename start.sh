@@ -1,5 +1,6 @@
 #!/bin/sh
 export ROOT=$(cd `dirname $0`; pwd)
+export SKYNET_ROOT=$ROOT/skynet
 export DAEMON=false
 
 while getopts "Dk" arg
@@ -15,4 +16,4 @@ do
 	esac
 done
 
-$ROOT/skynet/skynet $ROOT/config.lua
+$SKYNET_ROOT/skynet $ROOT/config.lua
