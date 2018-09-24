@@ -47,7 +47,7 @@ end
 function M.unpack(str)
 	local len, _, _, _ = string.unpack(">I4I2I4s2", str)
 	local pblen = len - 4 - 2
-	print("recv:", bin2hex(str), len, pblen)
+	print("recv:", len, bin2hex(str), pblen)
 	local f = string.format(">I4I2I4c%d", pblen)
 	local _, code, check, pbstr = string.unpack(f, str)
 	print("recv pbstr:", bin2hex(pbstr), len, pblen)
