@@ -5,85 +5,10 @@ local pb = require("protobuf")
 local io = require "io" 
 local crc32 = require "crc32" 
 local tool = require "tool"
-local lfstool = require "lfstool"
 
 --协议号映射表
 local name2code = {}
 local code2name = {}
-
-local pbfilename = {}
-
---分析proto文件，计算映射表
-local function analysis_file(pathfile, path)
-	local file = io.open(pathfile, "r") 
-	local package = ""
-	
-	for line in file:lines() do
-		local s, c = string.gsub(line, "^%s*package%s*([%w%._]+).*$", "%1")
-		if c > 0 then
-			package = s
-		end
-		local s, c = string.gsub(line, "^%s*message%s*([%w%._]+).*$", "%1")
-		if c > 0 then
-			local name = package.."."..s
-			local code = crc32.hash(name)
-			--print(string.format("analysis proto file:%s->%d(%x)", name, code, code))
-			name2code[name] = code
-			code2name[code] = name
-		end
-	end
-	file:close()  
-end
-
---导入proto文件，并analysis_file
-local path = skynet.getenv("app_root").."proto"
-
-local function register_pbfile(path, filename)
-    local pathfile = path .. "/" .. filename
-    local file = io.open(pathfile, "r")
-
-    for line in file:lines() do
-        local s, c = string.gsub(line, '^%s*import%s*%"([%w%.%/]+).proto"%;', "%1")
-        if c > 0 then
-            local stmp = string.sub(s, 1, -2)
-            if not pbfilename[stmp] then
-                pb.register_file(path .. "/"..stmp..".pb")
-                pbfilename[stmp] = true
-            end
-        end
-    end
-    file:close()
-    local nosuffix = string.sub(filename, 1, -7)
-    local pbfile = path.."/"..nosuffix..".pb"
-    if not pbfilename[nosuffix] then
-        pb.register_file(pbfile)
-        pbfilename[nosuffix] = true
-    end
-end
-
-local pb_file = io.open(path.."/pbfile", "a+")
-local content = pb_file:read()
-if not content or content ~= "" then
-    lfstool.attrdir(path, function(file)
-        local file = string.match(file, path.."/(.+%.proto)")
-        if file then
-            local nosuffix = string.sub(file, 1, -7)
-            local pbfile = path.."/"..nosuffix..".pb"
-            local command = "protoc " .. "-I=" .. path .. " --descriptor_set_out "..pbfile.." "..path.."/"..file
-            os.execute(command)
-        end
-    end)
-    pb_file:write("pbfile has been generated")
-end
-pb_file:close()
-
-lfstool.attrdir(path, function(file)
-	local file = string.match(file, path.."/(.+%.proto)") --获取文件名
-	if file then
-		analysis_file(path.."/"..file, path) 
-        register_pbfile(path, file)
-	end
-end)
 
 --打印二进制string，用于调试
 local function bin2hex(s)

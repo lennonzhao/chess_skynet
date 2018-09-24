@@ -7,6 +7,8 @@
 local skynet=require "skynet"
 local log=require "log"
 require "skynet.manager"
+local pb = require "protobuf"
+
 local pool={}
 local agentlist={}
 local agentname
@@ -14,11 +16,21 @@ local maxnum
 local recycle_poll
 local CMD={}
 
+local pb_files = {
+    "proto/common.pb",
+    "proto/hall/hall_hz.pb",
+}
+
 --初始化池子,预先创建好连接的服务
 function CMD.init_pool(cnf)
     agentname=cnf.agentname
     maxnum=cnf.maxnum
     recycle_poll=cnf.recycle
+
+    -- 注册协议
+    for _,v in ipairs(pb_files) do
+        pb.register_file(v)
+    end
 
     for i=1, maxnum do
         local agent=skynet.newservice(agentname)

@@ -13,13 +13,11 @@ local libsocket=require "libsocket"
 local queue=require "skynet.queue"
 
 local cmdfunc_queue=queue()
-local CMD={}
 local clientfd
 local accountdata
-require "libstring"
 require "agent.agent"
 
-
+local CMD={}
 --客户端消息处理服务初始化
 function CMD.start(conf)
     log.debug("agent start clientfd:%d",conf.clientfd)

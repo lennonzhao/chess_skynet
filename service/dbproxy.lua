@@ -1,3 +1,4 @@
 local name,id=...
 local s=require "faci.service"
-s.init(name,id)
+printInfo("name = %s, id = %s", name, id)
+-- s.init(name,id)
