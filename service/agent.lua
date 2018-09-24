@@ -55,8 +55,10 @@ skynet.register_protocol {
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
 		printInfo("unpack a new message", sz)
-		dump(msg, "111")
-		return decode_msg(msg, sz)
+		printInfo("unpack", string.unpack(">s2", msg))
+		local data = string.unpack(">s2", msg)
+		dump(data, "111")
+		return decode_msg(data, sz)
 		-- return host:dispatch(msg, sz)
 	end,
 	dispatch = function (_, _, type, ...)
