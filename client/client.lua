@@ -1,5 +1,5 @@
 package.cpath = "luaclib/?.so;skynet/luaclib/?.so"
-package.path = "lualib/?.lua;skynet/lualib/?.lua;"
+package.path = "client/?.lua;lualib/?.lua;skynet/lualib/?.lua;"
 
 if _VERSION ~= "Lua 5.3" then
 	error "Use lua 5.3"
