@@ -59,7 +59,7 @@ function M.pack(gameId, pbName, msg, session)
 	local str = string.pack("<I2I4I2I4s2", pblen + 10, pblen + 6, gameId, session, pbstr)
 
 	print("send:", bin2hex(str), string.len(str), pblen)
-	print(string.format("send: gameId(%d) cmd(%0x04x) pbName(%s) msg->%s session(%d)", gameId, msg.request.code, pbName, msg, session))
+	print(string.format("send: gameId(%d) cmd(0x%04x) pbName(%s) msg->%s session(%d)", gameId, msg.request.code, pbName, msg, session))
     return str
 end
 
