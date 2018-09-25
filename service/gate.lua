@@ -1,7 +1,7 @@
 local skynet = require "skynet"
 local gateserver = require "snax.gateserver"
 local netpack = require "skynet.netpack"
-local protopack = require "protopack_pbc"
+local protopack = require "protopack"
 
 local watchdog
 local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
@@ -31,7 +31,6 @@ function handler.message(fd, msg, sz)
 		CMD.kick(source, fd)
 		return
 	end
-	INFO(pbName, msg.request.api)
 	if agent then
 		skynet.redirect(agent, c.client, "client", 1, skynet.pack(fd, cmd, msg, check))
 	else
