@@ -15,9 +15,10 @@ end
 
 local M = { pbc = nil }
 
+print('init protopack_pbc =======================')
+
 function M.init()
 	M.pbc = skynet.uniqueservice("pbc")
-	print('uniqueservice pbc', M.pbc)
 end
 
 function M.register(file)
@@ -43,7 +44,6 @@ end
 
 local function _decode(pbName, pbstr)
 	print('_decode 1', pbName, pbstr)
-	print('_encode pbc', M.pbc)
 	if skynet and skynet.call then
 		print('_decode 2', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
