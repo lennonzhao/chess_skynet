@@ -1,16 +1,6 @@
 local pb = require "protobuf"
-
-local pb_files = {
-	"proto/common.pb",
-	"proto/hall/hall_hz.pb",
-}
-for _,v in ipairs(pb_files) do
-	pb.register_file(v)
-end
-
 --协议号映射表
-local name2code = {}
-local code2name = {}
+local print = skynet and skynet.error or print
 
 --打印二进制string，用于调试
 local function bin2hex(s)
@@ -18,59 +8,73 @@ local function bin2hex(s)
     return s
 end
 
-local M = {}
+local M = { pbc = nil }
 
---cmd:login.Login
---checkcode:1234
---msg:{account="1",password="1234"}
-function M.pack(pbName, msg, check)
-	--格式说明
-	--> >:big endian
-	-->I4:前面无符号int 后面内容的长度
-	-->I2:无符号short 命令字
-    -->I4:无符号int check 
-	
-	--code
-	local code = msg.request.code
-	if not code then
-		print(string.format("protopack_pb fail, pbName:%s", pbName or "nil"))
-		return
+function M.register(file)
+	if skynet and skynet.call then
+		skynet.call(M.pbc, "lua", "register", file)
+	else
+		pb.register_file(file)
 	end
-	--check
-	check = check or 0
-	--pbstr
-	local pbstr = pb.encode(pbName, msg)
+end
+
+function M.merge(send, recv)
+	
+end
+
+local function _encode(pbName, msg)
+	if skynet and skynet.call then
+		return skynet.call(M.pbc, "lua", "encode", pbName, msg)
+	else
+		return pb.encode(pbName, msg)
+	end
+end
+
+local function _decode(pbName, str)
+	if skynet and skynet.call then
+		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
+	else
+		return pb.decode(pbName, pbstr)
+	end
+end
+
+local function _findPbName(cmd)
+	if skynet and skynet.call then
+		return skynet.call(M.pbc, "lua", "findPbName", cmd)
+	else
+		return "hall.LoginReq"
+	end
+end
+
+-- 格式说明
+--> <:小端
+-->I4:前面无符号int 后面内容的长度
+-->I2:无符号short 命令字
+-->I4:无符号int session 
+function M.pack(gameId, pbName, msg, session)
+	session = session or 0
+	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)
-	--len
-	local len = 4 + 2 + pblen
-	--组成发送字符串
-	local f = string.format(">i2I4I2I4c%d", pblen)
-	local str = string.pack(f, len + 4, len, code, check, pbstr)
-	--调试
+	--组成发送字符串 前面两个字节表示包的总长度
+	local str = string.pack("<HI4I2I4s2", pblen + 10, pblen + 6, gameId, session, pbstr)
+
 	print("send:", bin2hex(str), string.len(str), pblen)
-	print(string.format("send: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check))
+	print(string.format("send: gameId(%d) cmd(%0x04x) pbName(%s) msg->%s session(%d)", gameId, msg.request.code, pbName, msg, session))
     return str
 end
 
 function M.unpack(str)
-	local len = string.len(str)
-	local pblen = len - 4 - 4 - 2
-	print("recv:", bin2hex(str), len, pblen)
-	print("recv:", len, pblen)
-	local f = string.format(">I4I2I4c%d", pblen)
-	local _, code, check, pbstr = string.unpack(f, str)
-	print("recv pbstr:", bin2hex(pbstr), pblen)
-	-- local cmd = code2name[code]
-	local msg = pb.decode("common.BaseReq", pbstr)
-	if not msg then
-		print("cmd not register")
-		return 
-	end
-	local code = msg.request.code
-	local pbName = "hall.LoginReq"
-	local msg = pb.decode(pbName, pbstr)
-	print(string.format("recv: code(%0x04x) pbName(%s) msg->%s check(%d)", code, pbName, msg, check))
-    return code, pbName, msg, check
+	local len, gameId, session, pbstr = string.unpack("<I4I2I4s2", str)
+	print("unpack", bin2hex(pbstr), string.len(pbstr))
+	
+	local msgHead = _decode("common.BaseReq", pbstr)
+	if not msgHead then print("cmd not register") return end
+
+	local pbName = _findPbName(msgHead.request.code)
+	local msg = _decode(pbName, pbstr)
+
+	print(string.format("recv: code(%0x04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
+    return code, pbName, msg, session
 end
 
 --本地测试解包使用,因为前两个字节是协议包大小。网络传递的会被拿掉。本地传递的不会

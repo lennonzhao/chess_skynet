@@ -8,11 +8,17 @@ local pb_files = {
 }
 
 local cmd = {}
+local proto = {}
 
 function cmd.init()
 	for _,v in ipairs(pb_files) do
-		pb.register_file(v)
+		cmd.register(v)
 	end
+end
+
+function cmd.register(file)
+	pb.register_file(v)
+	proto[file] = true
 end
 
 function cmd.encode(msg_name, msg)
@@ -23,6 +29,10 @@ end
 function cmd.decode(msg_name, data)
 	skynet.error("decode ".. msg_name.. " " .. type(data) .." " .. #data)
 	return pb.decode(msg_name, data)
+end
+
+function cmd.findPbName(code)
+	return "hall.LoginReq"
 end
 
 function cmd.test()
@@ -51,18 +61,13 @@ end
 skynet.start(function ()
 	skynet.error("init pbc...")
 	cmd.init()
-	cmd.test()
+	-- cmd.test()
 	skynet.dispatch("lua", function (session, address, command, ...)
 		local f = cmd[command]
 		if not f then
 			skynet.ret(skynet.pack(nil, "Invalid command" .. command))
 		end
-		print(address, command, ...)
-		if command == "decode" then
-			local name, buf = unpack{...}
-			skynet.ret(skynet.pack(cmd.decode(name,buf)))
-			return
-		end
+		print('pbc', address, command, ...)
 		local ret = f(...)
 		skynet.ret(skynet.pack(ret))
 	end)
