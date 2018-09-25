@@ -17,7 +17,7 @@ function cmd.init()
 end
 
 function cmd.register(file)
-	pb.register_file(v)
+	pb.register_file(file)
 	proto[file] = true
 end
 
