@@ -30,7 +30,7 @@ local function _encode(pbName, msg)
 	end
 end
 
-local function _decode(pbName, str)
+local function _decode(pbName, pbstr)
 	if skynet and skynet.call then
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
 	else
