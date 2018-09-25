@@ -61,8 +61,8 @@ local function bin2hex(s)
     return s
 end
 
-local function client_dispatch(session, source, fd, cmd, msg, check)
-	INFO("client_dispatch", session, source, fd, cmd, msg, check)
+local function client_dispatch(cmd, msg, check)
+	INFO("client_dispatch", cmd, msg, check)
 
     -- local queue_id = get_queue_id(cmd)
     -- if not queue_id then
