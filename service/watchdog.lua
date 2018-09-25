@@ -1,6 +1,5 @@
 local skynet = require "skynet"
 local protopack = require "protopack"
-local pbc
 
 local CMD = {}
 local SOCKET = {}
@@ -43,8 +42,7 @@ end
 
 function CMD.start(conf)
 	skynet.call(gate, "lua", "open" , conf)
-    pbc = skynet.uniqueservice("pbc")
-    protopack.pbc = pbc
+	protopack.init()
 end
 
 function CMD.close(fd)

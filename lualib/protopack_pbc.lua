@@ -15,6 +15,10 @@ end
 
 local M = { pbc = nil }
 
+function M.init()
+	M.pbc = skynet.uniqueservice("pbc")
+end
+
 function M.register(file)
 	if skynet and skynet.call then
 		skynet.call(M.pbc, "lua", "register", file)
@@ -37,7 +41,7 @@ local function _encode(pbName, msg)
 end
 
 local function _decode(pbName, pbstr)
-		print('_decode 1', pbName, pbstr)
+	print('_decode 1', pbName, pbstr)
 	if skynet and skynet.call then
 		print('_decode 2', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
