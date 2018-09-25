@@ -13,14 +13,7 @@ local function bin2hex(s)
     return s
 end
 
-local M = { pbc = nil }
-
-print('init protopack_pbc =======================')
-
-function M.init()
-	M.pbc = skynet.uniqueservice("pbc")
-	print('init protopack_pbc', M.pbc)
-end
+local M = { pbc = skynet.queryservice('pbc') }
 
 function M.register(file)
 	if skynet and skynet.call then

@@ -42,7 +42,6 @@ end
 
 function CMD.start(conf)
 	skynet.call(gate, "lua", "open" , conf)
-	protopack.init()
 end
 
 function CMD.close(fd)

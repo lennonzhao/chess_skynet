@@ -11,6 +11,8 @@ skynet.start(function()
     end
     skynet.newservice("debug_console",8000)
 
+    skynet.uniqueservice("pbc")
+    
     local watchdog = skynet.newservice("watchdog")
     skynet.call(watchdog, "lua", "start", {
         port = 60000,
