@@ -107,7 +107,7 @@ end
 
 if skynet then
 	skynet.init(function()
-		M.pbc = skynet.queryservice('pbc') 
+		M.pbc = skynet.queryservice('pbc')
 	end)
 end
 

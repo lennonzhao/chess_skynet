@@ -119,13 +119,18 @@ local function dispatch_package()
 end
 
 send_request("hall.LoginReq", {
-	request = {
-		code = 1,
-		api = 1,
-	},
-	basic = {
-
-	}
+    basic = {
+        api = 122,
+        hotCode = 999,
+        userType = 0,
+        verName = "1.0.4"
+    },
+    imei = "00b204e9800998ecf8427e6878553627",
+    modelName = "Coolpad 5219",
+    os = "windows",
+    simType = 0,
+    tel = "",
+    thirdInfo = ""
 })
 -- send_request("set", { what = "hello", value = "world" })
 -- while true do

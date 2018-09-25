@@ -1,5 +1,4 @@
 local skynet = require "skynet"
-local protopack = require "protopack"
 
 local CMD = {}
 local SOCKET = {}
@@ -37,7 +36,8 @@ function SOCKET.warning(fd, size)
 	print("socket warning", fd, size)
 end
 
-function SOCKET.data(fd, msg)
+function SOCKET.data(fd, cmd, msg, check)
+	print("socket data", fd, cmd, msg, check)
 end
 
 function CMD.start(conf)
