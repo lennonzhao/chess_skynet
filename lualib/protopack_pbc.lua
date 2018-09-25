@@ -33,7 +33,6 @@ function M.merge(send, recv)
 end
 
 local function _encode(pbName, msg)
-		print('_encode pbc', M.pbc)
 	if skynet and skynet.call then
 		print('_encode', pbName, msg)
 		return skynet.call(M.pbc, "lua", "encode", pbName, msg)
@@ -44,6 +43,7 @@ end
 
 local function _decode(pbName, pbstr)
 	print('_decode 1', pbName, pbstr)
+	print('_encode pbc', M.pbc)
 	if skynet and skynet.call then
 		print('_decode 2', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
