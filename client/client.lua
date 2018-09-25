@@ -119,6 +119,10 @@ local function dispatch_package()
 end
 
 send_request("hall.LoginReq", {
+	request = {
+		code = 0x0001,
+		api = 122,
+	},
     basic = {
         api = 122,
         hotCode = 999,
