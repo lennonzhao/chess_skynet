@@ -13,7 +13,7 @@ local function bin2hex(s)
     return s
 end
 
-local M = { pbc = skynet.queryservice('pbc') }
+local M = {}
 
 function M.register(file)
 	if skynet and skynet.call then
@@ -103,6 +103,10 @@ function M.local_unpack(str)
     print(string.format("recv:cmd(%s) check(%d) msg->%s", cmd, check, msg))
     return cmd, check, msg
 end
+
+skynet.init(function()
+	M.pbc = skynet.queryservice('pbc') 
+end)
 
 return M
 
