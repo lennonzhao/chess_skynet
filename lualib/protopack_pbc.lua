@@ -104,9 +104,11 @@ function M.local_unpack(str)
     return cmd, check, msg
 end
 
-skynet.init(function()
-	M.pbc = skynet.queryservice('pbc') 
-end)
+if skynet then
+	skynet.init(function()
+		M.pbc = skynet.queryservice('pbc') 
+	end)
+end
 
 return M
 
