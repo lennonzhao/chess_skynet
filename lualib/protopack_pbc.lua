@@ -19,6 +19,7 @@ print('init protopack_pbc =======================')
 
 function M.init()
 	M.pbc = skynet.uniqueservice("pbc")
+	print('init protopack_pbc', M.pbc)
 end
 
 function M.register(file)
