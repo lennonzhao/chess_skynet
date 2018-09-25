@@ -28,6 +28,7 @@ function handler.message(fd, msg, sz)
 	local cmd, pbName, msg, check = protopack.unpack(str)
 	local source = skynet.self()
 	if not cmd then
+		print('kick')
 		CMD.kick(source, fd)
 		return
 	end

@@ -65,7 +65,8 @@ end
 
 function M.unpack(str)
 	local len, gameId, session, pbstr = string.unpack("<I4I2I4s2", str)
-	print("unpack", bin2hex(pbstr), string.len(pbstr))
+	print("unpack", bin2hex(pbstr))
+	print("pblen", string.len(pbstr))
 
 	local msgHead = _decode("common.BaseReq", pbstr)
 	if not msgHead then print("cmd not register") return end
