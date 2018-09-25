@@ -33,6 +33,7 @@ function cmd.decode(pbName, data)
 end
 
 function cmd.findPbName(code)
+	skynet.error("findPbName ".. code)
 	return "hall.LoginReq"
 end
 
