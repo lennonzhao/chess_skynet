@@ -17,18 +17,19 @@ function cmd.init()
 end
 
 function cmd.register(file)
+	if proto[file] then return end
 	pb.register_file(file)
 	proto[file] = true
 end
 
-function cmd.encode(msg_name, msg)
-	skynet.error("encode"..msg_name)
-	return pb.encode(msg_name, msg)
+function cmd.encode(pbName, msg)
+	skynet.error("encode"..pbName)
+	return pb.encode(pbName, msg)
 end
 
-function cmd.decode(msg_name, data)
-	skynet.error("decode ".. msg_name.. " " .. type(data) .." " .. #data)
-	return pb.decode(msg_name, data)
+function cmd.decode(pbName, data)
+	skynet.error("decode ".. pbName.. " " .. type(data) .." " .. #data)
+	return pb.decode(pbName, data)
 end
 
 function cmd.findPbName(code)
@@ -63,11 +64,11 @@ skynet.start(function ()
 	cmd.init()
 	-- cmd.test()
 	skynet.dispatch("lua", function (session, address, command, ...)
+		print('[pbc]', address, command, ...)
 		local f = cmd[command]
 		if not f then
 			skynet.ret(skynet.pack(nil, "Invalid command" .. command))
 		end
-		print('pbc', address, command, ...)
 		local ret = f(...)
 		skynet.ret(skynet.pack(ret))
 	end)
