@@ -24,6 +24,7 @@ end
 
 local function _encode(pbName, msg)
 	if skynet and skynet.call then
+		print('_encode', pbName, msg)
 		return skynet.call(M.pbc, "lua", "encode", pbName, msg)
 	else
 		return pb.encode(pbName, msg)
@@ -32,6 +33,7 @@ end
 
 local function _decode(pbName, pbstr)
 	if skynet and skynet.call then
+		print('_decode', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
 	else
 		return pb.decode(pbName, pbstr)
