@@ -33,6 +33,7 @@ function M.merge(send, recv)
 end
 
 local function _encode(pbName, msg)
+		print('_encode pbc', M.pbc)
 	if skynet and skynet.call then
 		print('_encode', pbName, msg)
 		return skynet.call(M.pbc, "lua", "encode", pbName, msg)
