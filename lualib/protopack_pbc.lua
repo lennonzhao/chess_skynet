@@ -1,5 +1,8 @@
 local pb = require "protobuf"
-local skynet = pcall(function() require "skynet" end)
+local skynet 
+pcall(function() 
+	skynet = require "skynet" 
+end)
 
 --协议号映射表
 local print = skynet and skynet.error or print
