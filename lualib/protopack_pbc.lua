@@ -1,4 +1,6 @@
 local pb = require "protobuf"
+local skynet = pcall(function() require "skynet" end)
+
 --协议号映射表
 local print = skynet and skynet.error or print
 
@@ -32,8 +34,9 @@ local function _encode(pbName, msg)
 end
 
 local function _decode(pbName, pbstr)
+		print('_decode 1', pbName, pbstr)
 	if skynet and skynet.call then
-		print('_decode', pbName, pbstr)
+		print('_decode 2', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
 	else
 		return pb.decode(pbName, pbstr)
