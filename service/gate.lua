@@ -23,7 +23,7 @@ function handler.message(fd, msg, sz)
 	-- recv a package, forward it
 	local c = connection[fd]
 	local agent = c.agent
-	print(recv, msg, sz)
+	print('recv', msg, sz)
 	local str = skynet.tostring(msg, sz)
 	local cmd, pbName, msg, check = protopack.unpack(str)
 	local source = skynet.self()
