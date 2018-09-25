@@ -17,7 +17,7 @@ local M = { pbc = nil }
 
 function M.init()
 	M.pbc = skynet.uniqueservice("pbc")
-	print('uniqueservice pbc')
+	print('uniqueservice pbc', M.pbc)
 end
 
 function M.register(file)
