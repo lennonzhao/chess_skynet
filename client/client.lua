@@ -23,7 +23,7 @@ for _,v in ipairs(pb_files) do
 	pb.register_file(v)
 end
 
-local fd = assert(socket.connect("127.0.0.1", 8888))
+local fd = assert(socket.connect("127.0.0.1", 60000))
 
 local function send_package(fd, msg)
 	local cmd = msg.request.code
