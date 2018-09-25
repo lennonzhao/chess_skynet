@@ -79,7 +79,8 @@ function M.unpack(str)
 	local msgHead = _decode("common.BaseReq", pbstr)
 	if not msgHead then print("cmd not register") return end
 
-	local pbName = _findPbName(msgHead.request.code)
+	local code = msgHead.request.code
+	local pbName = _findPbName(code)
 	local msg = _decode(pbName, pbstr)
 
 	print(string.format("recv: code(%0x04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
