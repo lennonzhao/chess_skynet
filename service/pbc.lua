@@ -2,7 +2,6 @@ local skynet = require "skynet"
 require "skynet.manager"
 local pb = require "protobuf"
 local protoPrase = require "protoParse"
-local command = require "command"
 
 local pb_files = {
 	"proto/common.pb",
