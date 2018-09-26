@@ -43,9 +43,8 @@ local function _encode(pbName, msg)
 end
 
 local function _decode(pbName, pbstr)
-	print('_decode 1', pbName, pbstr)
 	if skynet then
-		print('_decode 2', pbName, pbstr)
+		print('_decode', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
 	else
 		return pb.decode(pbName, pbstr)
@@ -54,6 +53,7 @@ end
 
 local function _findPbName(cmd)
 	if skynet then
+		print('_findPbName', cmd)
 		return skynet.call(M.pbc, "lua", "findPbName", cmd)
 	else
 		return "hall.LoginReq"
