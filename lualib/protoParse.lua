@@ -1,5 +1,5 @@
 local skynet = require "skynet"
-local path = skynet.getenv("app_root") .. "proto/"
+local root = skynet.getenv("app_root")
 local debug = skynet.getenv("daemon")
 
 local M = {}
@@ -9,9 +9,8 @@ local ProtoMessages = {}
 function M.parseFiles(files)
 	local protos = {}
 	for i, file in ipairs(files) do
-		local filePath = string.format('%s%s.proto', path, string.sub(file, 1, string.len(file) - 3))
-		print('filePath', filePath)
-		local content = io.readfile(filePath)
+		local path = string.format('%s%s.proto', root, string.sub(file, 1, string.len(file) - 3))
+		local content = io.readfile(path)
 		if content then
 			local start, last, key = string.find(content, "package (.-);")
 			table.insert(protos, {
@@ -19,7 +18,7 @@ function M.parseFiles(files)
 				content = content,
 			})
 		else
-			WARN('prase proto file: ', filePath, 'failed!')
+			WARN('prase proto file: ', path, 'failed!')
 		end
 	end
 
