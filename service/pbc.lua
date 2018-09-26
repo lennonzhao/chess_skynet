@@ -9,6 +9,17 @@ local pb_files = {
 	"proto/hall/hall_hz.pb",
 }
 
+local command_files = {
+	{
+		file = "command_hall", 
+		package = "hall."
+	},
+	{
+		file = "command_room", 
+		package = "room."
+	}
+}
+
 local cmd = {}
 local proto = {}
 
@@ -21,7 +32,9 @@ function cmd.init()
 	for _,v in ipairs(pb_files) do
 		cmd.register(v)
 	end
-	dump(command)
+	for i,v in ipairs(command_files) do
+		cmd.mergeCommand(v)
+	end
 end
 
 function cmd.register(file)
@@ -29,6 +42,18 @@ function cmd.register(file)
 	pb.register_file(file)
 	protoPrase.parseFiles({file})
 	proto[file] = true
+end
+
+function cmd.mergeCommand(config)
+	local command = require("network." .. config.name)
+	for key, cmd in pairs(command) do
+		local reqName = config.package .. key .. "Req"
+		recvCodeToName[cmd] = reqName
+		recvNameToCode[reqName] = code
+		local rspName = config.package .. key .. "Rsp"
+		sendCodeToName[cmd] = rspName
+		sendNameToCode[rspName] = code
+	end
 end
 
 function cmd.encode(pbName, msg)
@@ -43,7 +68,7 @@ end
 
 function cmd.findPbName(code)
 	skynet.error("findPbName ".. code)
-	return cmdToName[code]
+	return recvCodeToName[code]
 end
 
 function cmd.dump(pbName, msg, tag)
