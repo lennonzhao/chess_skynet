@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local root = skynet.getenv("app_root")
-local debug = skynet.getenv("daemon")
+local daemon = skynet.getenv("daemon")
 local unpack = unpack or table.unpack
 
 local M = {}
@@ -90,7 +90,7 @@ end
 
 local MAX_INDENT = 5
 function M.dumpMessage(pbName, packet, tag)
-	if not debug then return end
+	if daemon then return end
 	local getPbMessage = function(_pbName)
 		local _pbKeys = string.split(_pbName, ".")
 		local moduleName, messageName = unpack(_pbKeys)

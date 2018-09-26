@@ -89,7 +89,7 @@ function M.unpack(str)
 	local pbName = _findPbName(code)
 	local msg = _decode(pbName, pbstr)
 
-	print(string.format("recv: code(%0x04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
+	print(string.format("recv: code(0x%04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
     return code, msg, pbName, session
 end
 
