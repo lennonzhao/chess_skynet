@@ -1,15 +1,15 @@
 local skynet = require "skynet"
-local path = skynet.getenv("app_root").."proto/"
+local path = skynet.getenv("app_root") .. "proto/"
 local debug = skynet.getenv("daemon")
 
-local ProtoParse = {}
+local M = {}
 local ProtoMessages = {}
 
 -- 一次把所有的解析
-function ProtoParse.parseFiles(files)
+function M.parseFiles(files)
 	local protos = {}
 	for i, file in ipairs(files) do
-		local content = io.readfile(string.format('%s%s', path, string.sub(file, 1, string.len(file) - 3)) .. '.proto')
+		local content = io.readfile(string.format('%s%s', path, string.sub(file, 1, string.len(file) - 3)) .. '.proto'))
 		-- 第一行 
 		local start, last, key = string.find(content, "package (.-);")
 		table.insert(protos, {
@@ -19,7 +19,7 @@ function ProtoParse.parseFiles(files)
 	end
 
 	for i, proto in ipairs(protos) do
-		ProtoParse.parseContent(proto, ProtoMessages)
+		M.parseContent(proto, ProtoMessages)
 	end
 end
 
@@ -36,7 +36,7 @@ local BasicType = {
 local RecordType = {
 	"optional", "required", "repeated"	
 }
-function ProtoParse.parseContent(proto, tb)
+function M.parseContent(proto, tb)
 	local name = proto.name or ""
 	local content = proto.content or ""
 	tb[name] = tb[name] or {}
@@ -84,7 +84,7 @@ function ProtoParse.parseContent(proto, tb)
 end
 
 local MAX_INDENT = 5
-function ProtoParse.dumpMessage(pbName, packet, tag)
+function M.dumpMessage(pbName, packet, tag)
 	if not debug then return end
 	local getPbMessage = function(_pbName)
 		local _pbKeys = string.split(_pbName, ".")
