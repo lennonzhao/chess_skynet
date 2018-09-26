@@ -9,7 +9,8 @@ local ProtoMessages = {}
 function M.parseFiles(files)
 	local protos = {}
 	for i, file in ipairs(files) do
-		local content = io.readfile(string.format('%s%s', path, string.sub(file, 1, string.len(file) - 3)) .. '.proto'))
+		local filePath = string.format('%s%s.proto', path, string.sub(file, 1, string.len(file) - 3))
+		local content = io.readfile(filePath)
 		-- 第一行 
 		local start, last, key = string.find(content, "package (.-);")
 		table.insert(protos, {
