@@ -16,10 +16,16 @@ end
 local M = {}
 
 function M.register(file)
-	if skynet and skynet.call then
+	if skynet then
 		skynet.call(M.pbc, "lua", "register", file)
 	else
 		pb.register_file(file)
+	end
+end
+
+function M.dump(pbName, msg, name)
+	if skynet then
+		skynet.call(M.pbc, "lua", "dump", pbName, msg, tag)
 	end
 end
 
@@ -28,7 +34,7 @@ function M.merge(send, recv)
 end
 
 local function _encode(pbName, msg)
-	if skynet and skynet.call then
+	if skynet then
 		print('_encode', pbName, msg)
 		return skynet.call(M.pbc, "lua", "encode", pbName, msg)
 	else
@@ -38,7 +44,7 @@ end
 
 local function _decode(pbName, pbstr)
 	print('_decode 1', pbName, pbstr)
-	if skynet and skynet.call then
+	if skynet then
 		print('_decode 2', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
 	else
@@ -47,7 +53,7 @@ local function _decode(pbName, pbstr)
 end
 
 local function _findPbName(cmd)
-	if skynet and skynet.call then
+	if skynet then
 		return skynet.call(M.pbc, "lua", "findPbName", cmd)
 	else
 		return "hall.LoginReq"
@@ -84,7 +90,7 @@ function M.unpack(str)
 	local msg = _decode(pbName, pbstr)
 
 	print(string.format("recv: code(%0x04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
-    return code, pbName, msg, session
+    return code, msg, pbName, session
 end
 
 --本地测试解包使用,因为前两个字节是协议包大小。网络传递的会被拿掉。本地传递的不会
@@ -100,7 +106,7 @@ function M.local_unpack(str)
         return
     end
     local msg = pb.decode(cmd, pbstr)
-
+    
     print(string.format("recv:cmd(%s) check(%d) msg->%s", cmd, check, msg))
     return cmd, check, msg
 end

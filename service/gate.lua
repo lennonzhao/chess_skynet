@@ -25,7 +25,7 @@ function handler.message(fd, msg, sz)
 	local agent = c.agent
 	print('recv', msg, sz)
 	local str = skynet.tostring(msg, sz)
-	local cmd, pbName, msg, check = protopack.unpack(str)
+	local cmd, msg, pbName, check = protopack.unpack(str)
 	local source = skynet.self()
 	if not cmd then
 		print('kick')
@@ -33,9 +33,9 @@ function handler.message(fd, msg, sz)
 		return
 	end
 	if agent then
-		skynet.redirect(agent, c.client, "client", 1, skynet.pack(cmd, msg, check))
+		skynet.redirect(agent, c.client, "client", 1, skynet.pack(cmd, msg, pbName, check))
 	else
-		skynet.send(watchdog, "lua", "socket", "data", fd, cmd, msg, check)
+		skynet.send(watchdog, "lua", "socket", "data", fd, skynet.pack(cmd, msg, pbName, check))
 	end
 end
 

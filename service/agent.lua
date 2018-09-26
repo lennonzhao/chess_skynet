@@ -61,9 +61,10 @@ local function bin2hex(s)
     return s
 end
 
-local function client_dispatch(session, source, cmd, msg, check)
-	INFO("client_dispatch", session, source, cmd, msg, check)
-	
+local function client_dispatch(session, source, cmd, msg, pbName, check)
+	INFO("client_dispatch", session, source, cmd, msg, pbName, check)
+
+	protopack.dump(pbName, msg, string.format("0x%04x", cmd))
     -- local queue_id = get_queue_id(cmd)
     -- if not queue_id then
     --     client_dispatch_help(cmd, check, msg, fd, source)

@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 require "skynet.manager"
 local pb = require "protobuf"
+local protoPrase = require "protoParse"
 
 local pb_files = {
 	"proto/common.pb",
@@ -10,6 +11,8 @@ local pb_files = {
 local cmd = {}
 local proto = {}
 
+local cmdToName = {}
+local sendToName = {}
 function cmd.init()
 	for _,v in ipairs(pb_files) do
 		cmd.register(v)
@@ -19,6 +22,7 @@ end
 function cmd.register(file)
 	if proto[file] then return end
 	pb.register_file(file)
+	protoPrase.parseFiles({file})
 	proto[file] = true
 end
 
@@ -34,7 +38,15 @@ end
 
 function cmd.findPbName(code)
 	skynet.error("findPbName ".. code)
-	return "hall.LoginReq"
+	return cmdToName[code]
+end
+
+function cmd.dump(pbName, msg, tag)
+	protoPrase.dumpMessage(pbName, msg, tag)
+end
+
+function cmd.merge(send, recv)
+
 end
 
 function cmd.test()
