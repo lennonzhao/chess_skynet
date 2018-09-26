@@ -10,13 +10,17 @@ function M.parseFiles(files)
 	local protos = {}
 	for i, file in ipairs(files) do
 		local filePath = string.format('%s%s.proto', path, string.sub(file, 1, string.len(file) - 3))
+		print('filePath', filePath)
 		local content = io.readfile(filePath)
-		-- 第一行 
-		local start, last, key = string.find(content, "package (.-);")
-		table.insert(protos, {
-			name = key,
-			content = content,
-		})
+		if content then
+			local start, last, key = string.find(content, "package (.-);")
+			table.insert(protos, {
+				name = key,
+				content = content,
+			})
+		else
+			WARN('prase proto file: ', filePath, 'failed!')
+		end
 	end
 
 	for i, proto in ipairs(protos) do
