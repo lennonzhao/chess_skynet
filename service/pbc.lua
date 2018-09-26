@@ -44,7 +44,7 @@ function cmd.register(file)
 end
 
 function cmd.mergeCommand(config)
-	local command = require("network." .. config.name)
+	local command = require("network." .. config.file)
 	for key, cmd in pairs(command) do
 		local reqName = config.package .. key .. "Req"
 		recvCodeToName[cmd] = reqName
