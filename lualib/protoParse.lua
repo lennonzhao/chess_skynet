@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local root = skynet.getenv("app_root")
 local debug = skynet.getenv("daemon")
+local unpack = unpack or table.unpack
 
 local M = {}
 local ProtoMessages = {}
