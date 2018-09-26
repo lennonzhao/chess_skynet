@@ -2,6 +2,7 @@ local skynet = require "skynet"
 require "skynet.manager"
 local pb = require "protobuf"
 local protoPrase = require "protoParse"
+local command = require "command"
 
 local pb_files = {
 	"proto/common.pb",
@@ -17,6 +18,7 @@ function cmd.init()
 	for _,v in ipairs(pb_files) do
 		cmd.register(v)
 	end
+	dump(command)
 end
 
 function cmd.register(file)

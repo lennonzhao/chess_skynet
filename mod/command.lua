@@ -1,5 +1,9 @@
-if Command then return end
-module("Command")
+local table = table
+local Protocol = Protocol
+local base = _ENV
+
+local M = {}
+local _ENV = M
 
 HeartBeatReq 		=	0 		--心跳包
 HeartBeatRsp		=   HeartBeatReq
@@ -273,6 +277,7 @@ LeftClubRsp			= LeftClubReq
 
 GetMemberListReq	= 0x1112
 GetMemberListRsp	= GetMemberListReq
+
 --[[
 **********************
 	亲友圈相关  结束
@@ -281,3 +286,5 @@ GetMemberListRsp	= GetMemberListReq
 
 TransferredReq      = 0x2D
 TransferredRsp  	= TransferredReq
+
+return M
