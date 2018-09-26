@@ -12,8 +12,11 @@ local pb_files = {
 local cmd = {}
 local proto = {}
 
-local cmdToName = {}
-local sendToName = {}
+local recvCodeToName = {}
+local recvNameToCode = {}
+local sendCodeToName = {}
+local sendNameToCode = {}
+
 function cmd.init()
 	for _,v in ipairs(pb_files) do
 		cmd.register(v)
