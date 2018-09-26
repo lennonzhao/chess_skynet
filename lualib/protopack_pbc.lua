@@ -1,8 +1,8 @@
 local pb = require "protobuf"
-local skynet 
-pcall(function() 
-	skynet = require "skynet" 
+local ret, skynet = pcall(function() 
+	return require "skynet"
 end)
+if not ret then skynet = nil end
 
 --协议号映射表
 local print = skynet and skynet.error or print
@@ -106,7 +106,7 @@ function M.local_unpack(str)
         return
     end
     local msg = pb.decode(cmd, pbstr)
-    
+
     print(string.format("recv:cmd(%s) check(%d) msg->%s", cmd, check, msg))
     return cmd, check, msg
 end
