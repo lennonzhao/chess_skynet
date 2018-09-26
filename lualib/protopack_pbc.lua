@@ -64,7 +64,7 @@ function M.pack(gameId, pbName, msg, session)
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)
 	--组成发送字符串 前面两个字节表示包的总长度
-	local str = string.pack("<HI4I2I4s2", pblen + 10 + 2, pblen + 6, gameId, session, pbstr)
+	local str = string.pack(">HI4HI4s2", pblen + 10 + 2, pblen + 6, gameId, session, pbstr)
 
 	print("send:", bin2hex(str), string.len(str), pblen)
 	print(string.format("send: gameId(%d) cmd(0x%04x) pbName(%s) msg->%s session(%d)", gameId, msg.request.code, pbName, msg, session))
@@ -72,7 +72,7 @@ function M.pack(gameId, pbName, msg, session)
 end
 
 function M.unpack(str)
-	local len, gameId, session, pbstr = string.unpack("<I4I2I4s2", str)
+	local len, gameId, session, pbstr = string.unpack(">I4I2I4s2", str)
 	print("unpack", bin2hex(pbstr))
 	print("pblen", string.len(pbstr))
 
