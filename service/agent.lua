@@ -11,7 +11,7 @@ local Command = {}
 
 --[[发送包给玩家]]
 local function send_request(cmd, msg)
-	local package = protopack:pack(cmd, msg)
+	local package = protopack.pack(cmd, msg)
 	socket.write(client_fd, package)
 end
 
