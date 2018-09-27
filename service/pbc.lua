@@ -20,7 +20,7 @@ local command_files = {
 }
 
 local cmd = {}
-local command = {}
+local commandCache = {}
 local proto = {}
 
 local recvCodeToName = {}
@@ -49,12 +49,12 @@ function cmd.mergeCommand(config)
 	for key, cmd in pairs(commandMap) do
 		local reqName = config.package .. key .. "Req"
 		recvCodeToName[cmd] = reqName
-		recvNameToCode[reqName] = code
+		recvNameToCode[reqName] = cmd
 		local rspName = config.package .. key .. "Rsp"
 		sendCodeToName[cmd] = rspName
-		sendNameToCode[rspName] = code
+		sendNameToCode[rspName] = cmd
 
-		command[key] = cmd
+		commandCache[key] = cmd
 	end
 end
 
@@ -122,6 +122,6 @@ skynet.start(function ()
 		skynet.ret(skynet.pack(ret))
 	end)
 
-	Command = command
+	Command = commandCache
 	skynet.register("pbc")
 end)
