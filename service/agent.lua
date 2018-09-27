@@ -80,7 +80,6 @@ local function recv_request(session, source, cmd, msg, pbName, check)
                     money = 2000,
                     nick = "mx4",
                     sex = 0,
-                    signature = "",
                     vipLevel = 0,
                     winTimes = 0
                 },
