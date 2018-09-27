@@ -56,6 +56,7 @@ function cmd.mergeCommand(config)
 
 		command[key] = cmd
 	end
+	dump(command)
 end
 
 function cmd.encode(pbName, msg)
