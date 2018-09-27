@@ -20,6 +20,7 @@ local command_files = {
 }
 
 local cmd = {}
+local command = {}
 local proto = {}
 
 local recvCodeToName = {}
@@ -44,14 +45,16 @@ function cmd.register(file)
 end
 
 function cmd.mergeCommand(config)
-	local command = require("network." .. config.file)
-	for key, cmd in pairs(command) do
+	local commandMap = require("network." .. config.file)
+	for key, cmd in pairs(commandMap) do
 		local reqName = config.package .. key .. "Req"
 		recvCodeToName[cmd] = reqName
 		recvNameToCode[reqName] = code
 		local rspName = config.package .. key .. "Rsp"
 		sendCodeToName[cmd] = rspName
 		sendNameToCode[rspName] = code
+
+		command[key] = cmd
 	end
 end
 
@@ -103,8 +106,8 @@ end
 
 skynet.start(function ()
 	skynet.error("init pbc...")
+	Command = command
 	cmd.init()
-	-- cmd.test()
 	skynet.dispatch("lua", function (session, address, command, ...)
 		print('[pbc]', address, command, ...)
 		local f = cmd[command]
