@@ -9,12 +9,12 @@ local client_fd
 local CMD = {}
 local command = {}
 
-local REQUEST = {
-}
+-- local REQUEST = {
+-- }
 
-function REQUEST:hall.LoginReq()
-	skynet.call(WATCHDOG, "lua", "close", client_fd)
-end
+-- function REQUEST:hall.LoginReq()
+-- 	skynet.call(WATCHDOG, "lua", "close", client_fd)
+-- end
 
 --[[处理玩家发过来的包]]
 local function recv_request(session, source, cmd, msg, pbName, check)
