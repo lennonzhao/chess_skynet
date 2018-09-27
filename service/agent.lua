@@ -70,7 +70,6 @@ local function recv_request(session, source, cmd, msg, pbName, check)
                 isRegister = 0,
                 lastLoginTime = "",
                 playerInfo = {
-                    boxMoney = 0,
                     diamond = 72,
                     drawTimes = 0,
                     headUrl = "",
