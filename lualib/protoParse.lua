@@ -94,10 +94,9 @@ function M.dumpMessage(pbName, packet, tag)
 	local getPbMessage = function(_pbName)
 		local _pbKeys = string.split(_pbName, ".")
 		local moduleName, messageName = unpack(_pbKeys)
+		print("moduleName =", moduleName,  "messageName", messageName)
 		if moduleName and messageName then
 			return ProtoMessages[moduleName] and ProtoMessages[moduleName][messageName]
-		else
-			print("moduleName =", moduleName,  "messageName", messageName)
 		end
 	end
 	local indentTable = {}
