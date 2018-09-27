@@ -78,6 +78,7 @@ end
 -->I4:无符号int session 
 function M.pack(cmd, msg, session)
 	session = session or 0
+	local gameId = 0
 	local pbName = _findRspName(cmd)
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)
