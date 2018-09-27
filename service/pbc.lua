@@ -123,5 +123,6 @@ skynet.start(function ()
 	end)
 
 	Command = commandCache
+	dump(Command)
 	skynet.register("pbc")
 end)
