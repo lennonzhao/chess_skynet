@@ -20,6 +20,7 @@ local command = {}
 local function recv_request(session, source, cmd, msg, pbName, check)
 	INFO("client_dispatch", session, source, cmd, msg, pbName, check)
 	protopack.dump(pbName, msg, string.format("0x%04x", cmd))
+	dump(Command, "Command")
 	if cmd == Command.Login then
 		printInfo("玩家请求登录游戏，返回登录成功的包")
 		send_request(Command.Login, {
