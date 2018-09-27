@@ -112,36 +112,37 @@ function M.dumpMessage(pbName, packet, tag)
 		dump(pbMessage, "dumpMessageType getPbMessage")
 		for i, pb in ipairs(pbMessage) do
 			local value = packet[pb.key]
-			if pb.msgType == "repeated" then
-				-- 如果是基础类型
-				tb[pb.key] = {}
-				dump(value, "repeated")
-				if BasicType[pb.type] then
-					for i, val in ipairs(value) do
-						if pb.type == "string" or pb.type == "bytes" then
-							val = tostring(val)
+			if value then
+				if pb.msgType == "repeated" then
+					-- 如果是基础类型
+					tb[pb.key] = {}
+					if BasicType[pb.type] then
+						for i, val in ipairs(value) do
+							if pb.type == "string" or pb.type == "bytes" then
+								val = tostring(val)
+							end
+							table.insert(tb[pb.key], val)
 						end
-						table.insert(tb[pb.key], val)
+					else -- message
+						for i, record in ipairs(value) do
+							local _tb = {}
+							table.insert(tb[pb.key], _tb)
+							dumpMessageType(record, pb.type, _tb)
+						end
 					end
-				else -- message
-					for i, record in ipairs(value) do
-						local _tb = {}
-						table.insert(tb[pb.key], _tb)
-						dumpMessageType(record, pb.type, _tb)
+				elseif not BasicType[pb.type] then  --非基础类型
+					tb[pb.key] = {}
+					indentTable[pb.key] = indentTable[pb.key] or 0
+					indentTable[pb.key] = indentTable[pb.key] + 1
+					if indentTable[pb.key] <= MAX_INDENT then
+						dumpMessageType(value, pb.type, tb[pb.key])
 					end
+				else
+					if pb.type == "string" or pb.type == "bytes" then
+						value = tostring(value)
+					end
+					tb[pb.key] = value
 				end
-			elseif not BasicType[pb.type] then  --非基础类型
-				tb[pb.key] = {}
-				indentTable[pb.key] = indentTable[pb.key] or 0
-				indentTable[pb.key] = indentTable[pb.key] + 1
-				if indentTable[pb.key] <= MAX_INDENT then
-					dumpMessageType(value, pb.type, tb[pb.key])
-				end
-			else
-				if pb.type == "string" or pb.type == "bytes" then
-					value = tostring(value)
-				end
-				tb[pb.key] = value
 			end
 		end
 	end
