@@ -29,8 +29,10 @@ function M.dump(pbName, msg, name)
 	end
 end
 
-function M.merge(send, recv)
-	
+function M.getCommand()
+	if skynet then
+		skynet.call(M.pbc, "lua", "getCommand")
+	end
 end
 
 local function _encode(pbName, msg)

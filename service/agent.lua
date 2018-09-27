@@ -7,6 +7,7 @@ local protopack = require ("protopack_pbc")
 local WATCHDOG
 local client_fd
 local CMD = {}
+local Command = {}
 
 --[[处理玩家发过来的包]]
 local function recv_request(session, source, cmd, msg, pbName, check)
@@ -124,6 +125,8 @@ function CMD.disconnect()
 end
 
 skynet.start(function()
+	Command = protopack.getCommand()
+	
 	skynet.dispatch("lua", function(_,_, command, ...)
 		local f = CMD[command]
 		skynet.ret(skynet.pack(f(...)))

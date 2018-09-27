@@ -20,7 +20,7 @@ local command_files = {
 }
 
 local cmd = {}
-local commandCache = {}
+local Command = {}
 local proto = {}
 
 local recvCodeToName = {}
@@ -54,7 +54,7 @@ function cmd.mergeCommand(config)
 		sendCodeToName[cmd] = rspName
 		sendNameToCode[rspName] = cmd
 
-		commandCache[key] = cmd
+		Command[key] = cmd
 	end
 end
 
@@ -82,8 +82,8 @@ function cmd.dump(pbName, msg, tag)
 	protoPrase.dumpMessage(pbName, msg, tag)
 end
 
-function cmd.merge(send, recv)
-
+function cmd.getCommand()
+	return Command
 end
 
 function cmd.test()
@@ -122,7 +122,5 @@ skynet.start(function ()
 		skynet.ret(skynet.pack(ret))
 	end)
 
-	Command = commandCache
-	dump(Command)
 	skynet.register("pbc")
 end)
