@@ -9,6 +9,12 @@ local client_fd
 local CMD = {}
 local Command = {}
 
+--[[发送包给玩家]]
+local function send_request(cmd, msg)
+	local package = protopack:pack(cmd, msg)
+	socket.write(client_fd, package)
+end
+
 --[[处理玩家发过来的包]]
 local function recv_request(session, source, cmd, msg, pbName, check)
 	INFO("client_dispatch", session, source, cmd, msg, pbName, check)
@@ -88,12 +94,6 @@ local function recv_request(session, source, cmd, msg, pbName, check)
 	end
 end
 
---[[发送包给玩家]]
-local function send_request(cmd, msg)
-	local package = protopack:pack(cmd, msg)
-	socket.write(client_fd, package)
-end
-
 skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
@@ -126,7 +126,7 @@ end
 
 skynet.start(function()
 	Command = protopack.getCommand()
-	
+
 	skynet.dispatch("lua", function(_,_, command, ...)
 		local f = CMD[command]
 		skynet.ret(skynet.pack(f(...)))
