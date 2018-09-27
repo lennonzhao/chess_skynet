@@ -31,7 +31,7 @@ end
 
 function M.getCommand()
 	if skynet then
-		skynet.call(M.pbc, "lua", "getCommand")
+		return skynet.call(M.pbc, "lua", "getCommand")
 	end
 end
 
