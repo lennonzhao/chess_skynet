@@ -56,7 +56,6 @@ function cmd.mergeCommand(config)
 
 		command[key] = cmd
 	end
-	dump(command)
 end
 
 function cmd.encode(pbName, msg)
@@ -112,7 +111,6 @@ end
 
 skynet.start(function ()
 	skynet.error("init pbc...")
-	Command = command
 	cmd.init()
 	skynet.dispatch("lua", function (session, address, command, ...)
 		print('[pbc]', address, command, ...)
@@ -124,5 +122,6 @@ skynet.start(function ()
 		skynet.ret(skynet.pack(ret))
 	end)
 
+	Command = command
 	skynet.register("pbc")
 end)

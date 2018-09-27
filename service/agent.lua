@@ -7,14 +7,6 @@ local protopack = require ("protopack_pbc")
 local WATCHDOG
 local client_fd
 local CMD = {}
-local command = {}
-
--- local REQUEST = {
--- }
-
--- function REQUEST:hall.LoginReq()
--- 	skynet.call(WATCHDOG, "lua", "close", client_fd)
--- end
 
 --[[处理玩家发过来的包]]
 local function recv_request(session, source, cmd, msg, pbName, check)
@@ -116,7 +108,7 @@ function CMD.start(conf)
 	-- 发送心跳包
 	skynet.fork(function()
 		while true do
-			send_request(Command.HeartBeatReq, {})
+			send_request(Command.HeartBeat, {})
 			skynet.sleep(5000)
 		end
 	end)
