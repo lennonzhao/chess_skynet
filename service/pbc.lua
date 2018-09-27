@@ -84,7 +84,7 @@ function cmd.dump(pbName, msg, tag)
 			protoPrase.dumpMessage(pbName, msg, tag)
         end,
         function()
-            debug.traceback()
+            printWarn(debug.traceback())
         end
     )
 end
