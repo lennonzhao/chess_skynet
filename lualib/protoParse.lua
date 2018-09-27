@@ -48,13 +48,13 @@ function M.parseContent(proto, tb)
 	tb[name] = tb[name] or {}
 
 	for message in string.gmatch(content, "message.-{.-}") do
-       	-- print(message)
+       	print(message)
        	local start, last, key = string.find(message, "message (.-){")
        	if key then
        		key = string.gsub(string.trim(key), "{", "")
        		tb[name][key] = {}
        		local pbMessage = tb[name][key]
-	      	-- print("解析出协议" .. name .. "." .. key)
+	      	print("解析出协议" .. name .. "." .. key)
 	       	for i, recordType in ipairs(RecordType) do
 	       		for line in string.gmatch(message, recordType .. ".-=.-;") do
 		       		line = string.gsub(line, ";", "")
@@ -103,12 +103,13 @@ function M.dumpMessage(pbName, packet, tag)
 	local indentTable = {}
 	local function dumpMessageType(packet, _pbName, tb)
 		print(_pbName)
-		dump(tb, "dumpMessageType")
+		dump(tb, "dumpMessageType tb")
 		local pbMessage = getPbMessage(_pbName)
 		if not pbMessage then 
 			print("error dump: " .. _pbName)
 			return
 		end
+		dump(pbMessage, "dumpMessageType getPbMessage")
 		for i, pb in ipairs(pbMessage) do
 			local value = packet[pb.key]
 			if pb.msgType == "repeated" then
