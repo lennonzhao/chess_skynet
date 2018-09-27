@@ -79,12 +79,14 @@ function cmd.findRspName(code)
 end
 
 function cmd.dump(pbName, msg, tag)
-	local ret, msg = pcall(function()
-		protoPrase.dumpMessage(pbName, msg, tag)
-	end)
-	if not ret then
-		printError("dum error", msg)
-	end
+	xpcall(
+        function()
+			protoPrase.dumpMessage(pbName, msg, tag)
+        end,
+        function()
+            debug.traceback()
+        end
+    )
 end
 
 function cmd.getCommand()
