@@ -115,6 +115,7 @@ function M.dumpMessage(pbName, packet, tag)
 			if pb.msgType == "repeated" then
 				-- 如果是基础类型
 				tb[pb.key] = {}
+				dump(value, "repeated")
 				if BasicType[pb.type] then
 					for i, val in ipairs(value) do
 						if pb.type == "string" or pb.type == "bytes" then
