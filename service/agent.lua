@@ -26,7 +26,8 @@ local function recv_request(session, source, cmd, msg, pbName, check)
 end
 
 --[[发送包给玩家]]
-local function send_package(package)
+local function send_request(cmd, msg)
+	local package = protopack:pack(cmd, msg)
 	socket.write(client_fd, package)
 end
 
@@ -45,10 +46,7 @@ function CMD.start(conf)
 	-- 发送心跳包
 	skynet.fork(function()
 		while true do
-			protopack:pack(0, "hall.HeartBeatReq", {
-
-			})
-			-- send_package()
+			send_request(Command.HeartBeatReq, {})
 			skynet.sleep(5000)
 		end
 	end)

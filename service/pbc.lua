@@ -68,9 +68,14 @@ function cmd.decode(pbName, data)
 	return pb.decode(pbName, data)
 end
 
-function cmd.findPbName(code)
-	skynet.error("findPbName ".. code)
+function cmd.findReqName(code)
+	skynet.error("findReqName ".. code)
 	return recvCodeToName[code]
+end
+
+function cmd.findRspName(code)
+	skynet.error("findRspName ".. code)
+	return sendCodeToName[code]
 end
 
 function cmd.dump(pbName, msg, tag)

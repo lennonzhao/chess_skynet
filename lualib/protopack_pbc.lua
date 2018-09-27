@@ -51,10 +51,19 @@ local function _decode(pbName, pbstr)
 	end
 end
 
-local function _findPbName(cmd)
+local function _findReqName(cmd)
 	if skynet then
-		print('_findPbName', cmd)
-		return skynet.call(M.pbc, "lua", "findPbName", cmd)
+		print('_findReqName', cmd)
+		return skynet.call(M.pbc, "lua", "findReqName", cmd)
+	else
+		return "hall.LoginReq"
+	end
+end
+
+local function _findRspName(cmd)
+	if skynet then
+		print('_findRspName', cmd)
+		return skynet.call(M.pbc, "lua", "findRspName", cmd)
 	else
 		return "hall.LoginReq"
 	end
@@ -65,8 +74,9 @@ end
 -->I4:前面无符号int 后面内容的长度
 -->I2:无符号short 命令字
 -->I4:无符号int session 
-function M.pack(gameId, pbName, msg, session)
+function M.pack(cmd, msg, session)
 	session = session or 0
+	local pbName = _findRspName(cmd)
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)
 	--组成发送字符串 前面两个字节表示包的总长度
@@ -86,7 +96,7 @@ function M.unpack(str)
 	if not msgHead then print("cmd not register") return end
 
 	local code = msgHead.request.code
-	local pbName = _findPbName(code)
+	local pbName = _findReqName(code)
 	local msg = _decode(pbName, pbstr)
 
 	print(string.format("recv: code(0x%04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
