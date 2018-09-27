@@ -22,7 +22,7 @@ local function recv_request(session, source, cmd, msg, pbName, check)
 	protopack.dump(pbName, msg, string.format("0x%04x", cmd))
 	if cmd == Command.Login then
 		printInfo("玩家请求登录游戏，返回登录成功的包")
-	end	
+	end
 end
 
 --[[发送包给玩家]]
@@ -48,7 +48,7 @@ function CMD.start(conf)
 			protopack:pack(0, "hall.HeartBeatReq", {
 
 			})
-			send_package()
+			-- send_package()
 			skynet.sleep(5000)
 		end
 	end)
@@ -64,8 +64,6 @@ function CMD.disconnect()
 end
 
 skynet.start(function()
-	local command = 
-
 	skynet.dispatch("lua", function(_,_, command, ...)
 		local f = CMD[command]
 		skynet.ret(skynet.pack(f(...)))
