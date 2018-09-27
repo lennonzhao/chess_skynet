@@ -77,7 +77,8 @@ end
 -->I4:无符号int session 
 function M.pack(cmd, msg, session)
 	session = session or 0
-	msg.request = {
+	msg.result = msg.result or {}
+	msg.result.request = {
 		code = cmd,
 		api = runconfig.api,
 	}
