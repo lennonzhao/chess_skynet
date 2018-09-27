@@ -105,12 +105,12 @@ function CMD.start(conf)
 	WATCHDOG = conf.watchdog
 
 	-- 发送心跳包
-	skynet.fork(function()
-		while true do
-			send_request(Command.HeartBeat, {})
-			skynet.sleep(5000)
-		end
-	end)
+	-- skynet.fork(function()
+	-- 	while true do
+	-- 		send_request(Command.HeartBeat, {})
+	-- 		skynet.sleep(5000)
+	-- 	end
+	-- end)
 
 	client_fd = fd
 	skynet.call(gate, "lua", "forward", fd)
