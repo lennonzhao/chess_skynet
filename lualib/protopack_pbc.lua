@@ -1,4 +1,5 @@
 local pb = require "protobuf"
+local runconfig = require "runconfig"
 local ret, skynet = pcall(function() 
 	return require "skynet"
 end)
@@ -76,8 +77,11 @@ end
 -->I4:无符号int session 
 function M.pack(cmd, msg, session)
 	session = session or 0
+	msg.request = {
+		code = cmd,
+		api = runconfig.api,
+	}
 	local gameId = 0
-	msg.request.code = cmd
 	local pbName = _findRspName(cmd)
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)

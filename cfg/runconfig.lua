@@ -1,6 +1,8 @@
 return {
     TEST = true,
     version = "1.0.0",
+    api = 101,
+    
 	--集群地址配置
 	cluster = {
 		node1 = "127.0.0.1:2528", 
