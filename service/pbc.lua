@@ -69,12 +69,12 @@ function cmd.decode(pbName, data)
 end
 
 function cmd.findReqName(code)
-	skynet.error("findReqName ".. code)
+	skynet.error("findReqName ".. string.format("0x%04x", code))
 	return recvCodeToName[code]
 end
 
 function cmd.findRspName(code)
-	skynet.error("findRspName ".. code)
+	skynet.error("findRspName ".. string.format("0x%04x", code))
 	return sendCodeToName[code]
 end
 

@@ -55,7 +55,6 @@ end
 
 local function _findReqName(cmd)
 	if skynet then
-		print('_findReqName', cmd)
 		return skynet.call(M.pbc, "lua", "findReqName", cmd)
 	else
 		return "hall.LoginReq"
@@ -64,7 +63,6 @@ end
 
 local function _findRspName(cmd)
 	if skynet then
-		print('_findRspName', cmd)
 		return skynet.call(M.pbc, "lua", "findRspName", cmd)
 	else
 		return "hall.LoginReq"
@@ -79,6 +77,7 @@ end
 function M.pack(cmd, msg, session)
 	session = session or 0
 	local gameId = 0
+	msg.request.code = cmd
 	local pbName = _findRspName(cmd)
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)

@@ -102,6 +102,8 @@ function M.dumpMessage(pbName, packet, tag)
 	end
 	local indentTable = {}
 	local function dumpMessageType(packet, _pbName, tb)
+		print(_pbName)
+		dump(tb, "dumpMessageType")
 		local pbMessage = getPbMessage(_pbName)
 		if not pbMessage then 
 			print("error dump: " .. _pbName)
