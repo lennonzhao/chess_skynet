@@ -117,6 +117,7 @@ end
 skynet.start(function ()
 	skynet.error("init pbc...")
 	cmd.init()
+	cmd.test()
 	skynet.dispatch("lua", function (session, address, command, ...)
 		print('[pbc]', address, command, ...)
 		local f = cmd[command]
