@@ -104,7 +104,7 @@ function cmd.test()
 	})
 	skynet.error("pb encode: " .. type(data))
 
-	local __basepb = pb.decode("hall.LoginReq", data)
+	local __basepb = pb.decode("hall.BuildConfigsReq", data)
 	if __basepb then
 		skynet.error(__basepb.request.code)
 		skynet.error(__basepb.request.api)
