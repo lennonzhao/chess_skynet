@@ -9,6 +9,7 @@ message Basic {
 										// 0:游客登录
 										// 1:微信登录
 	optional uint32 hotCode	 = 4; 		// 热更新版本号
+	repeated uint32 gameTypes = 5;		// 财神
 }
 
 message HeartBeatReq {

@@ -1,11 +1,12 @@
 
-Ö‰
-hall/hall_hz.protohallcommon.proto"H
+é‰
+hall/hall_hz.protohallcommon.proto"[
 Basic
 api (
 verName (	
 userType (
-hotCode ("0
+hotCode (
+	gameTypes ("0
 HeartBeatReq 
 request (2.common.Request".
 HeartBeatRsp

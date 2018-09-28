@@ -54,7 +54,7 @@ function M.parseContent(proto, tb)
        		key = string.gsub(string.trim(key), "{", "")
        		tb[name][key] = {}
        		local pbMessage = tb[name][key]
-	      	print("解析出协议" .. name .. "." .. key)
+	      	-- print("解析出协议" .. name .. "." .. key)
 	       	for i, recordType in ipairs(RecordType) do
 	       		for line in string.gmatch(message, recordType .. ".-=.-;") do
 		       		line = string.gsub(line, ";", "")
