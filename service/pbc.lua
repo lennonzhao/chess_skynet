@@ -96,7 +96,7 @@ end
 function cmd.test()
 	skynet.error("pbc test...")
 
-	local data = pb.encode("hall.LoginReq", {
+	local data = pb.encode("hall.BuildConfigsReq", {
 		request = {
 			code = 0x1001,
 			api = 101,
@@ -108,7 +108,7 @@ function cmd.test()
 	if __basepb then
 		skynet.error(__basepb.request.code)
 		skynet.error(__basepb.request.api)
-		skynet.error("gameTypes", __basepb.basic.gameTypes)
+		skynet.error("gameTypes", __basepb.gameTypes)
 	else
 		skynet.error("error")
 	end
