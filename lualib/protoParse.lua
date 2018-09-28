@@ -113,6 +113,7 @@ function M.dumpMessage(pbName, packet, tag)
 		for i, pb in ipairs(pbMessage) do
 			local value = packet[pb.key]
 			print('key=', pb.key)
+			print('msgType=', pb.msgType)
 			print('value=', value)
 			if pb.msgType == "repeated" then
 				-- 如果是基础类型

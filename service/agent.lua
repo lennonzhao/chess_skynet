@@ -89,6 +89,8 @@ local function recv_request(session, source, cmd, msg, pbName, check)
             voiceUrl = "http://voice.bcewo.cn:7000",
             wechatPay = true
         })
+    elseif cmd == Command.BuildConfigs then
+    	dump(msg.gameTypes, "BuildConfigs")
 	end
 end
 
