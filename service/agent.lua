@@ -34,16 +34,22 @@ local function recv_request(session, source, cmd, msg, pbName, check)
             gameInfos = { {
                     flag = 0,
                     id = 12000,
-                    name = "经典斗牛",
+                    name = "四人安庆麻将",
                     online = "",
-                    type = 21
-                }, {
+                    type = 155
+                },  {
                     flag = 0,
-                    id = 10900,
-                    name = "四川两人两房",
+                    id = 12000,
+                    name = "三人安庆麻将",
                     online = "",
-                    type = 10
-                } },
+                    type = 154
+                },  {
+                    flag = 0,
+                    id = 12000,
+                    name = "二人安庆麻将",
+                    online = "",
+                    type = 153
+                }, },
             inviteUrl = "",
             ip = 1378703217,
             isAgent = false,
