@@ -84,6 +84,8 @@ function M.pack(cmd, msg, session)
 	}
 	local gameId = 0
 	local pbName = _findRspName(cmd)
+
+	dump(msg, "pack message")
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)
 	--组成发送字符串 前面两个字节表示包的总长度
