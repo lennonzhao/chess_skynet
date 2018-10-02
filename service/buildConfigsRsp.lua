@@ -1,5 +1,6 @@
 return {
-	buildInfos = {  {
+	buildInfos = {  
+		{
 	        buildJson = "",
 	        createInfo = {},
 	        gameType = 153,
@@ -197,7 +198,8 @@ return {
 	                mask = 3,
 	                payType = 3
 	            } }
-	    }},
+	    }
+	},
 	result = {
 	    gameId = 40000,
 	    message = "",
