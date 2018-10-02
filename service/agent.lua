@@ -3,7 +3,7 @@ local netpack = require "skynet.netpack"
 local socket = require "skynet.socket"
 local pb = require "protobuf"
 local protopack = require ("protopack_pbc")
-local buildConfigsData = require("buildConfigsRsp")
+local buildConfigsData = require("service.buildConfigsRsp")
 local WATCHDOG
 local client_fd
 local CMD = {}
