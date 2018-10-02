@@ -1,0 +1,824 @@
+package datas;
+import "common.proto";
+
+/*
+	用户登录
+*/
+message LoginReq {
+	required common.Request request = 1;  //请求码
+	required uint32 api  			= 2;  //渠道
+	required uint32 sim  			= 3;  //电话卡
+	required string imei  			= 4;  //机器码
+	required string tel  			= 5;  //电话号码
+	required string account  		= 6;  //帐号
+	required string password  		= 7;  //密码
+	required string ver  			= 8;  //版本
+	required string os  			= 9;  //平台
+	required string model  			= 10; //系统版本
+	required uint32 session  		= 11; //会话ID
+	optional string nick  			= 12; //昵称
+	optional uint32 sex 			= 13; //性别
+	optional string headUrl 		= 14; //头像地址
+	optional uint32 ip 				= 15; //IP
+}
+
+/*
+	用户登录
+*/
+message LoginRsp {
+	required common.Result result 	= 1;   	//结果状态
+	optional uint32 id 				= 2; 	//ID
+	optional uint32 sex 			= 3;	//性别
+	optional string nick 			= 4;	//名字
+	optional uint64 money 			= 5;	//金币
+	optional uint32 diamond 		= 6;	//钻石
+	optional uint32 winTimes 		= 7;	//胜
+	optional uint32 drawTimes 		= 8;	//平
+	optional uint32 loseTimes 		= 9;	//负
+	optional uint32 vipLevel 		= 10;	//vip等级
+	optional string headUrl 		= 11;	//头像地址
+	optional string headUrlSmall	= 12;	//小头像地址
+											//玩家状态
+	optional uint32 gameId 			= 13; 	//game id
+	optional uint32 roomId 			= 14;	//room id
+	optional uint32 tableId 		= 15;	//table id
+	optional uint32 ip 				= 16; 	//IP
+	optional bool new 				= 17; 	//新用户
+	optional uint32 lastLogin		= 18;	//最后登录时间
+	optional uint32 continuousLogin	= 19;	//连续登录n天
+	optional uint32 bankruptcy		= 20;	//破产次数
+}
+
+/*
+	用户登出
+*/
+message LogoutReq {
+	required common.Request request = 1;  // 请求码
+	required uint32 session  		= 2;  // 会话ID
+}
+
+/*
+	用户登出
+*/
+message LogoutRsp {
+	required common.Result result 	= 1;   	//结果状态
+}
+
+/*
+	排行榜
+*/
+message RankReq {
+	required common.Request request = 1;  // 请求码
+	required uint32 ver  			= 2;  // 排行榜版本号
+	required string rank  			= 3;  // 排行榜类型
+}
+
+/*
+	排行榜 项
+*/
+message Rank {
+	optional uint64 value 			= 1;	//关键值
+	optional uint32 id 				= 2; 	//ID
+	optional uint32 sex 			= 3;	//性别
+	optional string nick 			= 4;	//名字
+	optional string headUrl 		= 5;	//头像地址
+	optional string headUrlSmall	= 6;	//小头像地址
+}
+
+/*
+	排行榜
+*/
+message RankRsp {
+	required common.Result result 	= 1;   	//结果状态 
+	optional uint32 ver 			= 2; 	//版本
+	repeated Rank ranks 			= 3;	//项
+}
+
+/*
+	用户信息
+*/
+message UserInfoReq {
+	required common.Request request = 1;  // 请求码
+	optional uint32 uid  			= 2;  // 用户ID
+	optional uint32 session  		= 3;  // 用户SESSION
+	optional uint32 code  			= 4;  // 进房间验证码
+	optional uint32 gameId  		= 5;  // 游戏ID
+	optional uint32 roomId  		= 6;  // 房间ID
+	optional uint32 tableId  		= 7;  // 桌子ID
+}
+
+/*
+	用户信息
+*/
+message UserInfoRsp {
+	required common.Result result 	= 1;   	//结果状态
+	optional uint32 id 				= 2; 	//ID
+	optional uint32 gender 			= 3;	//性别
+	optional string nick 			= 4;	//名字
+	optional uint64 money 			= 5;	//金币
+	optional uint64 maxMoney 		= 6;	//金币
+	optional uint32 diamond 		= 7;	//钻石
+	optional uint32 win 			= 8;	//胜
+	optional uint32 draw 			= 9;	//平
+	optional uint32 lose 	 		= 10;	//负
+	optional uint32 vip 	 		= 11;	//vip等级
+	optional string headUrl 		= 12;	//头像地址
+	optional string headUrlSmall	= 13;	//小头像地址
+	optional uint32 lastLogin		= 14;	//最后登录时间
+	optional uint32 continuousLogin	= 15;	//连续登录n天
+	optional uint32 bankruptcy		= 16;	//破产次数
+	optional uint32 gameId			= 17;	//game id
+	optional uint32 roomId			= 18;	//room id
+	optional uint32 tableId			= 19;	//table id
+	optional uint32 masterId 		= 20; 	//房主Id
+	optional BuildInfo buildInfo 	= 21; 	//创建信息
+	optional bool AA 				= 22; 	//是否AA支付
+	optional uint32 createTime 		= 23;	//房间创建时间
+	optional uint32 session 		= 24;	//会话ID
+	optional uint32 ip 				= 25;	//ip
+}
+
+/*
+	某游戏房间在线信息
+*/
+message OnlineInfoReq {
+	required common.Request request = 1;  // 请求码
+	optional uint32 gameId  		= 2;  // 游戏ID
+}
+/*
+	某游戏桌子在线信息
+*/
+message TableOnlineInfo {
+	optional uint32 tableId  		= 1;  // 房间ID
+	optional uint32 count  			= 2;  // 房间在玩人数
+}
+/*
+	某游戏房间在线信息
+*/
+message RoomOnlineInfo {
+	optional uint32 roomId  		= 1;  	// 房间ID
+	repeated TableOnlineInfo tableInfos = 2; // 桌子
+}
+
+/*
+	房间在线信息
+*/
+message OnlineInfoRsp {
+	required common.Result result 	 = 1; // 结果状态
+	optional uint32 gameId 			 = 2; // ID
+	repeated RoomOnlineInfo roomInfos = 3; // 桌子
+}
+
+
+/*
+	游戏登录
+*/
+message LoginGameReq {
+	required common.Request request = 1;  // 请求码
+	required uint32 uid  			= 2;  // 玩家ID
+	required uint32 gameId  		= 3;  // 游戏ID
+	required uint32 roomId  		= 4;  // 房间ID
+	required uint32 tableId  		= 5;  // 桌子ID
+}
+
+/*
+	游戏登录
+*/
+message LoginGameRsp {
+	required common.Result result 	= 1;   	//结果状态
+}
+
+/*
+	游戏登出
+*/
+message LogoutGameReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 uids  			= 2;  // 玩家IDs
+}
+
+/*
+	游戏登出
+*/
+message LogoutGameRsp {
+	required common.Result result 	= 1;   	//结果状态
+}
+
+/*
+	加减钱
+*/
+message AddMoney {
+	required uint32 uid  			= 2;  // 玩家ID
+	required int32 money  			= 3;  // 加减钱
+}
+/*
+	加减钱
+*/
+message AddMoneyReq {
+	required common.Request request = 1;  // 请求码
+	repeated AddMoney add  			= 2;  // 玩家ID
+}
+
+/*
+	加减钱
+*/
+message AddMoneyRsp {
+	required common.Result result 	= 1;  //结果状态
+	repeated AddMoney moneyInfos  	= 2;  // 玩家金币信息
+}
+
+/*
+	加减钻石
+*/
+message AddDiamond {
+	required uint32 uid  			= 2;  // 玩家ID
+	required int32 diamond  		= 3;  // 加减钻石
+}
+/*
+	加减钻石
+*/
+message AddDiamondReq {
+	required common.Request request = 1;  // 请求码
+	repeated AddDiamond add  		= 2;  // 玩家ID
+}
+
+/*
+	加减钻石
+*/
+message AddDiamondRsp {
+	required common.Result result 	= 1;  //结果状态
+	repeated AddDiamond diamondInfos  = 2;  // 玩家钻石信息
+}
+
+/*
+	加减魅力值
+*/
+message AddCharm {
+	required uint32 uid  			= 2;  // 玩家ID
+	required int32 charm  		= 3;  // 加减魅力值
+}
+/*
+	加减魅力值
+*/
+message AddCharmReq {
+	required common.Request request = 1;  // 请求码
+	repeated AddCharm add  		= 2;  // 玩家ID
+}
+
+/*
+	加减魅力值
+*/
+message AddCharmRsp {
+	required common.Result result 	= 1;  //结果状态
+	repeated AddCharm charmInfos  = 2;  // 玩家魅力值信息
+}
+
+/*
+	斗牛结算
+*/
+message Settle {
+	required uint32 uid  			= 1;  // 玩家ID
+	required int32 money  			= 2;  // 加减钱
+	optional bool  play  			= 3;  // 是否在玩
+}
+
+message SettleReq {
+	required common.Request request = 1;  // 请求码
+	repeated Settle settles  		= 2;  // 结算信息
+}
+message SettleInfo {
+	required uint32 uid  			= 1;  // 玩家ID
+	required uint32 money  			= 2;  // 加减钱
+	required uint32 win  			= 3;  // 赢的次数
+	required uint32 draw  			= 4;  // 平的次数
+	required uint32 lose  			= 5;  // 输的次数
+}
+/*
+	斗牛结算
+*/
+message SettleRsp {
+	required common.Result result 	= 1;  //结果状态
+	repeated SettleInfo settles 	= 2;  //结算结果
+}
+
+/*
+	修改昵称
+*/
+message NickReq {
+	required common.Request request = 1;  // 请求码
+	required uint32 uid  			= 2;  // 用户ID
+	required string nick  			= 3;  // 昵称
+	required uint32 gender  		= 4;  // 性别
+}
+/*
+	修改昵称
+*/
+message NickRsp {
+	required common.Result result 	= 1;  //结果状态
+	required string nick  			= 2;  // 昵称
+	required uint32 gender  		= 3;  // 性别
+}
+
+/*
+	修改玩家信息
+*/
+message PlayerInfo {
+	optional uint32 id 				= 1; 	//ID
+	optional uint32 gender 			= 2;	//性别
+	optional string nick 			= 3;	//名字
+	optional uint64 money 			= 4;	//金币
+	optional uint64 maxMoney 		= 5;	//金币
+	optional uint32 diamond 		= 6;	//钻石
+	optional uint32 win 			= 7;	//胜
+	optional uint32 draw 			= 8;	//平
+	optional uint32 lose 			= 9;	//负
+	optional uint32 vip 			= 10;	//vip等级
+	optional string headUrl 		= 11;	//头像地址
+	optional string headUrlSmall	= 12;	//小头像地址
+}
+/*
+	修改玩家信息
+*/
+message PlayerInfoReq {
+	required common.Request request = 1;  // 请求码
+	optional PlayerInfo player 		= 2;  //玩家信息
+}
+/*
+	修改玩家信息
+*/
+message PlayerInfoRsp {
+	required common.Result result 	= 1;  //结果状态
+}
+
+/*
+	钱包
+*/
+message Wallet {
+	optional uint32 uid 			= 1;	//用户ID
+	optional int32  coin 			= 2;	//金币
+	optional int32  diamond 		= 3;	//钻石
+	optional int32  rmb 			= 4;	//人民币
+}
+/*
+	价格
+*/
+message Price {
+	optional uint32 amount 			= 1;	//数量
+	optional string currency		= 2;	//货币单位
+}
+/*
+	支付
+*/
+message PayReq {
+	required common.Request request = 1;  	// 请求码
+	optional uint32 uid 			= 2; 	// 用户ID
+	optional Price price 			= 3; 	// 价格
+}
+/*
+	支付
+*/
+message PayRsp {
+	required common.Result result 	= 1;  // 结果状态
+	optional Wallet wallet 			= 2;  // 钱包
+}
+
+/*
+	支付
+*/
+message SetWalletReq {
+	required common.Request request = 1;  // 请求码
+	optional Wallet wallet 			= 2;  // 钱包
+
+}
+/*
+	支付
+*/
+message SetWalletRsp {
+	required common.Result result 	= 1;  // 结果状态
+	optional Wallet wallet 			= 2;  // 钱包
+}
+/*
+	获取钱包
+*/
+message WalletReq {
+	required common.Request request = 1;  // 请求码
+	optional uint32 uid 			= 2; 	// 用户ID
+}
+message WalletRsp {
+	required common.Result result 	= 1;  // 结果状态
+	optional Wallet wallet 			= 2;  // 钱包
+}
+/*
+	加钱，钻石，人民币
+*/
+message AddWalletReq {
+	required common.Request request = 1;  // 请求码
+	optional Wallet wallet 			= 2;  // 钱包
+}
+message AddWalletRsp {
+	required common.Result result 	= 1;  // 结果状态
+	optional Wallet wallet 			= 2;  // 钱包
+}
+/*
+	加钱，钻石，人民币
+*/
+message CheckAddWalletReq {
+	required common.Request request = 1;  // 请求码
+	optional int32 coin 			= 2;  // 大于 才执行add操作
+	optional int32 diamond 			= 3;  // 大于 才执行add操作
+	optional int32 rmb 				= 4;  // 大于 才执行add操作
+	optional Wallet wallet 			= 5;  // 钱包
+}
+/*
+	加钱，钻石，人民币
+*/
+message CheckAddWalletRsp {
+	required common.Result result 	= 1;  // 结果状态
+	optional Wallet wallet 			= 2;  // 钱包
+}
+
+/*
+	获取SESSION
+*/
+message Session {
+	required uint32 uid 			= 1;  // 用户ID
+	required uint32 session 		= 2;  // 用户SESSION
+
+}
+/*
+	获取SESSION
+*/
+message SessionReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 uids 			= 2;  // 用户IDs
+
+}
+/*
+	获取SESSION
+*/
+message SessionRsp {
+	required common.Result result 	= 1;  // 结果状态
+	repeated Session sessions 		= 2;  // 用户SESSIONs
+}
+/*
+	用户的破产次数
+*/
+message BankruptInfo {
+	required uint32 uid 			= 1;  // 用户ID
+	required uint32 times 			= 2;  // 破产领取次数
+	required uint64 coin 			= 3;  // 我的当前金币
+}
+/*
+	获取用户的破产次数
+*/
+message BankruptInfoReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 uids 			= 2;  // 用户IDs
+}
+
+/*
+	获取用户的破产信息
+*/
+message BankruptInfoRsp {
+	required common.Result result 	= 1;  		// 结果状态
+	repeated BankruptInfo bankruptInfos = 2;  	// 破产信息
+}
+
+/*
+	用户的破产奖励信息
+*/
+message BankruptAwardInfo {
+	required uint32 uid 			= 1;  // 用户ID
+	required uint32 times 			= 2;  // 破产领取次数
+	required uint32 awardCoin 		= 3;  // 现有金币
+	required uint64 coin 			= 4;  // 我的当前金币
+}
+
+/*
+	请求破产奖励
+*/
+message BankruptAwardReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 uids 			= 2;  // 用户IDs
+	required uint32 critical 		= 3;  // 破产临界值
+	required uint32 maxTimes		= 4;  // 最大破产次数，如果大于等于，则没有奖励
+	required uint32 awardCoin 		= 5;  // 奖励多少金币
+
+}
+
+/*
+	请求破产奖励
+*/
+message BankruptAwardRsp {
+	required common.Result result 	= 1;  				// 结果状态
+	repeated BankruptAwardInfo bankruptAwardInfos = 2;  // 破产信息
+}
+
+
+/*
+	用户的破产次数
+*/
+message MoneyInfo {
+	required uint32 uid 			= 1;  // 用户ID
+	required uint64 coin 			= 2;  // 我的当前金币
+}
+/*
+	获取用户的破产次数
+*/
+message MoneyReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 uids 			= 2;  // 用户IDs
+}
+
+/*
+	获取用户的破产信息
+*/
+message MoneyRsp {
+	required common.Result result 	= 1;  	// 结果状态
+	repeated MoneyInfo moneyInfos = 2;  		// 金币信息
+}
+
+
+/*
+	获取全部SESSIONs
+*/
+message SessionsReq {
+	required common.Request request = 1;  // 请求码
+
+}
+/*
+	获取SESSION
+*/
+message SessionsRsp {
+	required common.Result result 	= 1;  // 结果状态
+	repeated uint32 sessions 		= 2;  // 用户SESSIONs
+}
+
+message FriendInfo {
+	optional uint32 uid 			= 1; 	//用户ID 
+	optional uint32 gender 			= 2; 	// 玩家性别(0:不修改 1:女 2:男)
+	optional string nick 			= 3; 	//用户昵称 
+	optional string headUrl 		= 4; 	//用户头像地址
+	optional uint64 diamond 		= 5; 	//钻石
+	optional uint32 session 		= 6; 	//session
+	optional uint32 gameId 			= 7;	//游戏ID
+	optional uint32 roomId 			= 8;	//房间ID
+	optional uint32 tableId 		= 9;	//桌子ID
+}
+
+/*
+	获取好友信息
+*/
+message FriendReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 friendIds 		= 2;  // 好友ID
+
+}
+
+/*
+	获取好友信息
+*/
+message FriendRsp {
+	required common.Result result 	= 1;  // 结果状态
+	repeated FriendInfo friendInfos = 2;  // 好友信息
+}
+/*
+	好友在线
+*/
+message FriendOnlineInfo {
+	optional uint32 uid 			= 1; 	//用户ID
+	optional uint32 session 		= 2; 	//session
+	optional uint32 gameId 			= 3;	//游戏ID
+	optional uint32 roomId 			= 4;	//房间ID
+	optional uint32 tableId 		= 5;	//桌子ID
+}
+
+/*
+	获取好友信息
+*/
+message FriendOnlineReq {
+	required common.Request request = 1;  // 请求码
+	repeated uint32 friendIds 		= 2;  // 好友ID
+
+}
+
+/*
+	获取好友信息
+*/
+message FriendOnlineRsp {
+	required common.Result result 	= 1;  // 结果状态
+	repeated FriendOnlineInfo friendOnlineInfos = 2;  // 好友信息
+}
+
+/*
+	创建信息 
+*/
+message BuildInfo {
+	optional uint32 round = 1; 			// 局数
+	optional uint32 diamond = 2; 		// 需要的钻石数
+	optional string buildJson = 3; 		// 私有配置
+}
+/*
+	创建 
+*/
+message BuildReq {
+	optional common.Request request = 1; 	// 请求码
+	optional BuildInfo buildInfo 	= 2; 	// 创建信息
+	optional bool AA 				= 3; 	// 是否AA支付
+	optional uint32 session 		= 4; 	// 玩家SESSION
+	optional uint32 gameId 			= 5; 	// 游戏ID
+	optional uint32 diamond 		= 6; 	// 需要花费的钻石
+
+}
+/*
+	创建 
+*/
+message BuildRsp {
+	optional common.Result result 	= 1;   	// 结果状态
+	optional uint32 code 			= 2; 	// 验证码(6位数)
+	optional uint64 diamond 		= 3;  	// 钻石
+	optional uint32 uid 			= 4; 	// 验证码(6位数)
+}
+/*
+	创建信息 
+*/
+message BuildInfoReq {
+	optional common.Request request = 1; 	// 请求码
+	optional uint32 code 			= 2; 	// 验证码(5位数)
+}
+/*
+	创建信息 
+*/
+message BuildInfoRsp {
+	optional common.Result result 	= 1;   	// 结果状态
+	optional BuildInfo buildInfo 	= 2; 	// 创建信息
+	optional bool AA 				= 3; 	// 是否AA支付
+}
+
+/*
+	销毁 
+*/
+message DestroyReq {
+	optional common.Request request = 1; 	// 请求码
+	optional uint32 session 		= 2; 	// 发起解除的玩家
+	optional uint32 code 			= 3; 	// 验证码(5位数)
+}
+
+/*
+	销毁 
+*/
+message DestroyRsp {
+	optional common.Result result 	= 1;   	// 结果状态 0:成功 1:失败
+	optional uint32 diamond 		= 2; 	// 可能退回的钻石
+	optional uint64 totalDiamond 	= 3; 	// 总钻石
+}
+
+/*
+	已创建的信息 
+*/
+message BuiltReq {
+	optional common.Request request = 1; 	// 请求码
+	optional uint32 session 		= 2; 	// 玩家session
+	
+}
+/*
+	已创建的信息 
+*/
+message BuiltRsp {
+	optional common.Result result 	= 1;   	// 结果状态 0:成功 1:失败
+	repeated uint32 codes			= 2; 	// 验证码(5位数) 
+											// 可返回多个
+	optional uint32 gameId 			= 3; 	// 									
+	optional uint32 roomId 			= 4; 	// 									
+	optional uint32 tableId 		= 5; 	//
+}
+
+/*
+	重建 
+*/
+message ReBuildReq {
+	optional common.Request request = 1; 	// 请求码
+	optional BuildInfo buildInfo 	= 2; 	// 重建信息
+	optional bool AA 				= 3; 	// 是否AA支付
+	optional uint32 masterId 		= 4; 	// 玩家ID
+	optional uint32 code 			= 5; 	// 验证码
+	optional uint32 gameId 			= 6; 	// 游戏ID
+	optional uint32 diamond 		= 7; 	// 需要花费的钻石
+}
+/*
+	重建 
+*/
+message ReBuildRsp {
+	optional common.Result result 	= 1;   	// 结果状态
+	optional uint32 code 			= 2; 	// 验证码(5位数)
+	optional uint64 diamond 		= 3;  	// 钻石
+}
+
+
+/*
+	加减手气值
+*/
+message AddPlay {
+	required uint32 uid  		= 2;  // 玩家ID
+	required int32 play  		= 3;  // 加减魅力值
+}
+/*
+	加减手气值
+*/
+message AddPlayReq {
+	required common.Request request = 1;  // 请求码
+	repeated AddPlay add  		= 2;  // 玩家ID
+}
+
+/*
+	加减手气值
+*/
+message AddPlayRsp {
+	required common.Result result 	= 1;  //结果状态
+	repeated AddPlay addPlays  		= 2;  // 玩家魅力值信息
+}
+
+/*
+	加减充值值
+*/
+message AddPay {
+	required uint32 uid  		= 2;  // 玩家ID
+	required int32 pay  		= 3;  // 支付
+}
+/*
+	加减充值值
+*/
+message AddPayReq {
+	required common.Request request = 1;  // 请求码
+	repeated AddPay add  		= 2;  // 玩家ID
+}
+
+/*
+	加减充值值
+*/
+message AddPayRsp {
+	required common.Result result 	= 1;  //结果状态
+}
+
+/*
+	发货
+*/
+message UpdateAwalletsReq {
+	required common.Request request = 1;  // 请求码
+	repeated Wallet wallets  		= 2;  // 玩家钱包
+}
+/*
+	钱包
+*/
+message WalletEx {
+	optional uint32 uid 			= 1;	//用户ID
+	optional uint32 session 		= 2;	//人民币
+	optional int32  coin 			= 3;	//金币
+	optional int32  diamond 		= 4;	//钻石
+	optional int32  rmb 			= 5;	//人民币
+}
+/*
+	发货
+*/
+message UpdateAwalletsRsp {
+	required common.Result result 	= 1;  //结果状态
+	repeated WalletEx wallets  		= 2;  //玩家钱包
+}
+
+/*
+	会话数
+*/
+message SessionCountReq {
+	required common.Request request = 1;  // 请求码
+}
+/*
+	会话数
+*/
+message SessionCountRsp {
+	required common.Result result 	= 1;  //结果状态
+	optional int32 count  			= 2;  //数量
+	optional uint32 logined			= 3;  //已登录
+	optional uint32 playing			= 4;  //在玩
+}
+
+/*
+	批量玩家数据 cmd = 35
+*/
+message UserInfos {
+	required uint32 id 		= 1;  //玩家ID 
+	required uint64 diamond 	= 2;  //玩家钻石
+}
+
+message UserInfosReq {
+	required common.Request request = 1;  //请求码
+	repeated uint32 uids 			= 2;  //玩家ID 
+}
+
+/*
+	批量玩家数据
+*/
+message UserInfosRsp {
+	required common.Result result 	= 1;  //结果状态
+										  //0:成功
+										  //1:参数错误
+	repeated UserInfos userInfos 	= 2;  //玩家信息
+}

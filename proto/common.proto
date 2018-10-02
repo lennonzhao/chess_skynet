@@ -42,9 +42,6 @@ message PlayerInfo {
 	optional string headUrlSmall= 11;	//小头像地址
 	optional string jsonStr		= 12;	//透传信息json("latitude"：纬度 "longitude"：经度)
 	optional uint64 redPacket 	= 13;	//红包券
-	optional uint32 yuekaNum 	= 14;	//月卡数
-	optional uint32 yuekaUseRounds 	= 15;	//已激活月卡钻石数
-	optional uint32 yuekaNotUseNum 	= 16;	//未激活卡数
 }
 
 message Wallet {
@@ -93,6 +90,7 @@ message Attr {
 message PayWay { 
 	optional int32 payType 		= 1;  // 1房主付 2AA付 3大赢家付  4代开房付
 	optional uint32 diamond 	= 2;
+	optional int32 mask         = 3;  // 01=1 普通 10=2俱乐部 01&10=11=3 都可见
 }
 /*
 	创建房间信息

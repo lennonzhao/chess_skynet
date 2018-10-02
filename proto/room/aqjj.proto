@@ -1,4 +1,4 @@
-package paodekuai;
+package aqjj;
 import "common.proto";
 import "room/room.proto";
 
@@ -7,7 +7,6 @@ import "room/room.proto";
 */
 message GameInfo{
 	optional uint32 ante 				= 1; 	//剩余每张牌的积分
-	optional uint32 bomb				= 2;	//炸弹积分
 	optional common.BuildInfo buildInfo = 3; 	//创建房间的配置信息
 	optional uint32 code 				= 4;	//房号
 }
@@ -23,10 +22,19 @@ message GamePlayer{
 	optional bool ready 			= 5;	//false 未准备 true 准备
 	optional uint32 cardsNum 		= 6; 	//牌数
 	repeated uint32 cards 			= 7; 	//牌
-	optional bool turn 				= 8; 	//false:没有轮到你操作 true:轮到你操作
-	repeated uint32 outcards 		= 9; 	//最后出的手牌 nil:没有 not nil:有
-	optional int32 points 			= 10; 	//总积分
-	optional int32 agree 			= 11; 	//0:未投 1:赞成 2:反对
+	optional bool exposeCards		= 8;    //是否摊牌
+	optional bool turn 				= 9; 	//false:没有轮到你操作 true:轮到你操作
+	repeated uint32 outcards 		= 10; 	//最后出的手牌 nil:没有 not nil:有
+	optional int32 points 			= 11; 	//总积分
+	optional int32 agree 			= 12; 	//0:未投 1:赞成 2:反对
+	optional int32 outtype 			= 13; 	//最后出的手牌的类型
+	optional uint32 winOrder 		= 14; 	//赢的次序
+	repeated uint32 laizis 	 		= 15;	//最后出的手牌的赖子
+	optional uint32 parterId		= 16;	//对家id
+	optional int32  side			= 17;   //哪一方， 庄家方0， 另一方为1, -1不确定
+	optional int32 happyScore		= 18;
+	optional int32 bombScore		= 19;
+	optional int32 score			= 20;
 }
 
 /*
@@ -60,8 +68,12 @@ message GameLoginRsp {
 	optional uint32 round 			= 7;	//第几局
 	optional uint32 totalRound 		= 8;	//总局数
 	repeated uint32 maxcards 		= 9; 	//出牌
-	optional VoteInfo destroyVoteInfo = 10;	//解散房间的投票信息
-	optional bool   bomb333			= 11;	//3条3是否当作炸弹
+	optional VoteInfo destroyVoteInfo	= 10;	//解散房间的投票信息
+	repeated uint32 maxLaizis 	 		= 11;	//赖子所要变的牌,
+	optional uint32 maxType			= 12; 		//要压的牌型
+	optional uint32 deskBombScore	= 13;	//桌面上的炸弹分
+	optional uint32 card			= 14;	//找对家时判断的牌
+	optional uint32 bankerId		= 15;	//庄家（第一个出牌的人）id
 }
 
 /*
@@ -102,6 +114,12 @@ message ReadyRsp {
 	optional uint32 uid 			= 2;	//准备玩家
 }
 
+
+message DealInfo {
+	optional uint32 uid 			= 1;   //玩家id
+	optional uint32 cardsNum 		= 2;   //发牌数目
+}
+
 /*
 	发牌(明牌)
 */
@@ -110,6 +128,7 @@ message DealRsp {
 	optional uint32 cardsNum        = 2;	//发牌数量
 	repeated uint32 cards 			= 3; 	//牌
 	optional uint32 firstUid 		= 4; 	//先出牌
+	repeated DealInfo dealInfos 	= 5;	//每个玩家发牌的消息
 }
 /*
 	轮到某玩家操作
@@ -119,13 +138,114 @@ message TurnRsp {
 	optional uint32 uid        		= 2;	//玩家id
 	optional uint32 opTime        	= 3;	//操作时间
 	repeated uint32 outcards 		= 4; 	//最后一个玩家出的牌 （新的一轮必为空表，例如，开局，或其俩人要不起）
+	repeated uint32 skipUids 		= 5; 	//跳过的玩家id
+	repeated uint32 laizis 	 		= 6;	//赖子所要变的牌, 不要乘4
+	optional uint32 outtype 		= 7; 	//最后一个玩家出的牌的类型
+	optional bool firstOp	 		= 8; 	//是不是第一个出牌
 }
+
+message Cards {
+	repeated uint32 cards = 1;
+}
+message HappyCards {
+	optional uint32 uid 			= 1;   //玩家id
+	repeated Cards  cardss	 		= 2;   //牌
+}
+
+message ParterInfo {
+	optional uint32 uid		 		= 1;   //玩家id
+	optional uint32 parterId		= 2;   // 0不确定
+	optional uint32 card	 		= 3;   //牌
+	optional int32  side			= 4;   //哪一方， 庄家方0， 另一方为1, 不确定-1
+}
+
+/*
+	系统广播喜牌\庄家叫对家 0x7F09
+	喜牌 0x7F09
+*/
+message HappyAndParterRsp {
+	optional common.Result result	= 1;	//结果状态
+	repeated HappyCards happyCards	= 2;
+	repeated ParterInfo parterInfo	= 3;
+	optional bool       knowParter	= 4;
+}
+
+message PlayerScore {
+	optional uint32 uid			= 1;	//玩家id
+	optional int32 happyScore	= 2;	//喜牌分
+	optional int32 bombScore	= 3;	//炸弹分
+	optional int32 score		= 4;	//最终分
+}
+
+/*
+	炸弹分（中间）
+*/
+message BombSocore {
+	optional uint32 uid				= 1;	//玩家id
+	optional int32	bombScore		= 2;	//炸弹分（中间）
+	optional uint32 own				= 3;	//0-显示屏幕中， 1-飞向某人  2-从屏幕上消去 3-只刷新左上角分数
+	optional int32	happyScore		= 4;	//喜牌分
+}
+
+/*
+	玩家分数   0x7F0A
+*/
+message ScoreRsp {
+	optional common.Result result	= 1;	//结果状态
+	repeated PlayerScore scores		= 2;
+	optional BombSocore bombScore	= 3;
+}
+
+/*
+	查看玩家的牌   0x7F0B
+*/
+message PlayerCards {
+	optional uint32 uid			= 1;	//玩家id
+	optional bool   exposeCards	= 2;	//玩家是否摊牌
+	repeated uint32 cards		= 3;	//玩家的牌
+}
+
+message PlayerCardsReq {
+	optional common.Request request		= 1; 	// 请求码
+}
+
+message PlayerCardsRsp {
+	optional common.Result result 		= 1;	//结果状态 0:操作合法 !0:操作非法 
+	repeated PlayerCards playerCards	= 2;
+}
+
+/*
+	玩家摊牌   0x7F0C
+*/
+message ExposeCardsReq {
+	optional common.Request request		= 1; 	// 请求码
+}
+
+message ExposeCardsRsp {
+	optional common.Result result 		= 1;	//结果状态 0:操作合法 1:操作非法 
+	optional PlayerCards playerCards	= 2;
+}
+
+/*
+	玩家弃牌   0x7F0D
+*/
+message DropCardsReq {
+	optional common.Request request		= 1; 	// 请求码
+}
+
+message DropCardsRsp {
+	optional common.Result result 		= 1;	//结果状态 0:操作合法 1:操作非法 
+	optional uint32 uid					= 2;	//弃牌的玩家id
+}
+
 /*
 	某玩家操作
 */
 message OperationReq {
 	optional common.Request request = 1; 	// 请求码
-	repeated uint32 outcards = 2;			//出牌 空表:要不起 非空表:出牌
+	repeated uint32 outcards		= 2;	// 出牌 空表:要不起 非空表:出牌
+	repeated uint32 laizis			= 3;	// 赖子所要变的牌, 不要乘4
+	optional uint32 outtype			= 4;	// 牌的类型
 }
 /*
 	某玩家操作返回
@@ -135,19 +255,29 @@ message OperationRsp {
 											//1:该玩家不存在 
 											//2:没有轮到该玩家出牌 
 											//3:第一次出牌，必须要出牌，不能Pass 
-											//4:你手上有大于上家的牌 
 											//5:牌型不对 
 											//6:你出的牌比上家的牌小 
 											//7:你出的牌不是你的牌
-											//8:下一玩家抱单，你必须出最大单张
-											//9:炸弹不可拆
-											//10:必出红桃3
-											//11:最后一手牌必压
-											//12:最后一手牌一定要出完
+											//8:有压必压
 	optional uint32 uid 			= 2;	//出牌玩家
 	repeated uint32 outcards 		= 3;	//出的牌
 	optional bool   lastOne			= 4;	//出牌后是否只剩一张  警报
-	optional bool   bomb333			= 5;	//3条3是否当作炸弹
+	optional uint32 winOrder 		= 6; 	//赢的次序(1为第一名 2为第二名 3为第三名 4为第四名)
+	repeated uint32 laizis 	 		= 7;	//赖子所要变的牌, 不要乘4
+	optional uint32 outtype			= 8;	// 牌的类型
+	optional uint32 cardsNum		= 9;	//出牌者出完牌后剩余的张数
+}
+
+message LostInfo {
+	optional uint32	uid				= 1;
+	optional int32	points			= 2;
+}
+
+message WinInfo {
+	optional uint32		type		= 1;
+	optional int32		points		= 2;
+	optional int32		params		= 3;
+	repeated LostInfo	lostInfos	= 4;
 }
 
 /*
@@ -163,13 +293,14 @@ message Outcards {
 message EndInfo {
 	optional uint32 uid 			= 1;	//玩家
 	repeated uint32 leftcards 		= 2;	//玩家剩余牌
-	optional uint32 bombNum 		= 3;	//炸弹数量
+	optional int32 bombPoints 		= 3;	//炸弹分
 	optional int32 points 			= 4;	//当局积分变动
-	optional int32 bombPoints 		= 5;	//当局因为炸弹而积分变动
-	optional int32 totalPoints 		= 6;	//当局积分变动
-	optional uint32 loseType 		= 7;	//输的原因 0:普通输赢 1:全关 2:包赔 3:不计全关 其他:未定义
-	repeated Outcards outcards 		= 8; 	//出牌列表
-	optional bool hongTaoShi 		= 9;	//是否有红桃十
+	optional int32 totalPoints 		= 5;	//总积分
+	repeated Outcards outcards 		= 6; 	//出牌列表
+	optional uint32 winOrder 		= 7; 	//赢的次序(1为第一名 2为第二名 3为第三名 4为第四名)
+	optional int32 happyPoints	 	= 8; 	//喜牌分
+	optional int32 bucklePoints	 	= 9; 	//单双扣分
+	optional WinInfo winInfos		= 10;
 }
 
 /*
@@ -216,6 +347,3 @@ message PointsRsp {
 	repeated Points points 			= 3;	//玩家积分
 }
 
-/*
-
-*/

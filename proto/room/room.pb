@@ -1,5 +1,5 @@
 
-®=
+Ø$
 room/room.protoroomcommon.proto"@
 Player&
 
@@ -196,11 +196,12 @@ expiryTime (":
 VoteRsp
 result (2.common.Result
 voteId (
-agree (":
+agree ("G
 
 VoteEndRsp
 result (2.common.Result
-pass ("<
+pass (
+uid ("<
 	PresetReq 
 request (2.common.Request
 cards ("+
@@ -245,159 +246,4 @@ ReBuildReq
 request (2.common.Request",
 
 ReBuildRsp
-result (2.common.Result"R
-MatchSignReq 
-request (2.common.Request
-gameType (
-cancel ("R
-MatchSignRsp
-result (2.common.Result
-gameType (
-playCode ("W
-MatchCfgReq 
-request (2.common.Request
-gameType (
-transmitType ("Z
-MatchRewardInfo
-rank (
-
-rewardType (
-	rewardNum (
-
-rewardDesc (	"ß
-	MatchInfo
-gameType (
-name (	
-round (
-capacity (
-	startTime (
-endTime (
-diamond (
-startNum (
-desc	 (	
-	matchType
- ()
-
-rewardInfo (2.room.MatchRewardInfo"L
-MatchCfgRsp
-result (2.common.Result
-info (2.room.MatchInfo"N
-MatchBuildRsp
-result (2.common.Result
-code (
-diamond ("ª
-MatchAwardRsp
-result (2.common.Result
-rank (
-point (
-
-rewardType (
-	rewardNum (
-inRoom (
-
-rewardTime (
-	matchName (	"7
-PushRsp
-result (2.common.Result
-json (	"¡
-MatchRecord
-gameType (
-rank (
-
-rewardType (
-	rewardNum (
-time (
-point (
-name (	
-title (	
-	matchType	 ("2
-MatchRecordReq 
-request (2.common.Request"S
-MatchRecordRsp
-result (2.common.Result!
-record (2.room.MatchRecord">
-MatchPointReq 
-request (2.common.Request
-uid ("¹
-MatchPointRsp
-result (2.common.Result
-gameType (
-point (
-rank (
-totalNum (
-maxPoint (
-minPoint (
-curRound (
-	leftTable	 ("C
-MatchCountReq 
-request (2.common.Request
-gameType ("P
-MatchCountRsp
-result (2.common.Result
-gameType (
-count ("e
-MatchStatusRsp
-result (2.common.Result
-gameType (
-hasSign (
-hasStart ("S
-MatchRoomRsp
-result (2.common.Result
-gameType (
-	roomLevel ("4
-MatchProgressReq 
-request (2.common.Request"Y
-MatchProgressRsp
-result (2.common.Result
-playerCount (
-curRound ("8
-ThroughMatchAwardReq 
-request (2.common.Request"m
-ThroughMatchAwardRsp
-result (2.common.Result
-gameType (
-	awardType (
-awardNum ("h
-ThroughMatchRoomRsp
-result (2.common.Result
-gameType (
-gameId (
-tableId ("I
-ThroughMatchRebirthReq 
-request (2.common.Request
-share ("
-ThroughMatchRebirthRsp
-result (2.common.Result
-gameType (
-share (
-diamond (
-rebirthCard (";
-ThroughMatchProgressReq 
-request (2.common.Request"æ
-ThroughMatchProgressRsp
-result (2.common.Result
-gameType (
-progress (
-progressStatus (
-rebirthDiamond (
-rebirthShare (
-maxProgress (
-rebirthCard (
-needRebirthCard	 ("ç
-ThroughSettleProgressRsp
-result (2.common.Result
-gameType (
-progress (
-progressStatus (
-rebirthDiamond (
-rebirthShare (
-maxProgress (
-rebirthCard (
-needRebirthCard	 ("Y
-ThroughMatchSignReq 
-request (2.common.Request
-gameType (
-cancel ("G
-ThroughMatchSignRsp
-result (2.common.Result
-gameType (
+result (2.common.Result

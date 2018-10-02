@@ -61,8 +61,10 @@ message GameLoginRsp {
 	optional uint32 totalRound 		= 8;	//总局数
 	repeated uint32 maxcards 		= 9; 	//出牌
 	optional VoteInfo destroyVoteInfo = 10;	//解散房间的投票信息
+	optional bool  bomb333			= 11;	//3条3是否当作炸弹
+	optional uint32  firstOutCard	= 12;	//必先出的牌
 }
-
+		
 /*
 	广播登录房间
 */
@@ -109,7 +111,8 @@ message DealRsp {
 	optional uint32 cardsNum        = 2;	//发牌数量
 	repeated uint32 cards 			= 3; 	//牌
 	optional uint32 firstUid 		= 4; 	//先出牌
-}
+	optional uint32 firstOutCard 	= 5; 	//必先出的牌
+} 
 /*
 	轮到某玩家操作
 */
@@ -140,9 +143,13 @@ message OperationRsp {
 											//7:你出的牌不是你的牌
 											//8:下一玩家抱单，你必须出最大单张
 											//9:炸弹不可拆
+											//10:必出红桃3
+											//11:最后一手牌必压
+											//12:最后一手牌一定要出完
 	optional uint32 uid 			= 2;	//出牌玩家
 	repeated uint32 outcards 		= 3;	//出的牌
 	optional bool   lastOne			= 4;	//出牌后是否只剩一张  警报
+	optional bool   bomb333			= 5;	//3条3是否当作炸弹
 }
 
 /*
@@ -168,15 +175,19 @@ message EndInfo {
 }
 
 /*
+	每局详情
+*/
+message RoundInfo {
+	optional int32 points 			= 1;	//玩家输赢
+	optional string infos			= 2;	//json格式，具体玩法具体定义
+}
+/*
 	总结算信息
 */
 message FinalInfo {
 	optional uint32 uid 			= 1;	//玩家
-	optional int32 maxPoints 		= 2;	//单局最高得分
-	optional int32 totalBombs 		= 3;	//总炸弹数量
-	optional int32 winTimes 		= 4;	//赢的次数
-	optional int32 lostTimes 		= 5;	//输的次数
-	optional int32 totalPoints 		= 6;	//总积分
+	repeated RoundInfo roundInfos 	= 2;	//每局详情
+	optional int32 totalPoints 		= 3;	//总分
 }
 
 /*

@@ -1,5 +1,5 @@
 
-‘
+ê
 room/paodekuai2.proto
 paodekuai2common.protoroom/room.proto"Z
 GameInfo
@@ -28,7 +28,7 @@ promoterId (
 time (
 
 expiryTime (
-leftTime ("—
+leftTime ("¾
 GameLoginRsp
 result (2.common.Result&
 gameInfo (2.paodekuai2.GameInfo'
@@ -41,7 +41,9 @@ expiryTime (
 totalRound (
 maxcards	 (-
 destroyVoteInfo
- (2.paodekuai2.VoteInfo"]
+ (2.paodekuai2.VoteInfo
+bomb333 (
+firstOutCard ("]
 GamePlayerLoginRsp
 result (2.common.Result'
 players (2.paodekuai2.GamePlayer"`
@@ -55,12 +57,13 @@ totalRound (
 request (2.common.Request"7
 ReadyRsp
 result (2.common.Result
-uid ("\
+uid ("r
 DealRsp
 result (2.common.Result
 cardsNum (
 cards (
-firstUid ("X
+firstUid (
+firstOutCard ("X
 TurnRsp
 result (2.common.Result
 uid (
@@ -68,12 +71,13 @@ totalRound (
 outcards ("B
 OperationReq 
 request (2.common.Request
-outcards ("^
+outcards ("o
 OperationRsp
 result (2.common.Result
 uid (
 outcards (
-lastOne ("
+lastOne (
+bomb333 ("
 Outcards
 cards ("Á
 EndInfo
@@ -87,15 +91,15 @@ bombPoints (
 loseType (&
 outcards (2.paodekuai2.Outcards
 
-hongTaoShi	 ("y
+hongTaoShi	 ("*
+	RoundInfo
+points (
+infos (	"X
 	FinalInfo
-uid (
-	maxPoints (
+uid ()
 
-totalBombs (
-winTimes (
-	lostTimes (
-totalPoints ("±
+roundInfos (2.paodekuai2.RoundInfo
+totalPoints ("±
 EndRsp
 result (2.common.Result
 	lastRound (%

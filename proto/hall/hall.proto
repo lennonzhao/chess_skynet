@@ -8,7 +8,6 @@ message Basic {
 	optional uint32 userType = 3;  		// 用户类型，登录方式
 										// 0:游客登录
 										// 1:微信登录
-	optional uint32 hotCode	 = 4; 		// 热更新版本号
 }
 
 message HeartBeatReq {
@@ -26,8 +25,16 @@ message UserInfo {
 	optional uint32 isRegister 				= 4;  	// 是否新注册登录
 	optional string session 				= 5;	// 异地登录权值
 	optional uint32 firstPayStatus 			= 6;	// 首冲状态 0:未达成 1:已达成
-	optional string md5                 = 7;  //session和时间组成的md5,对应唯一的id
+}
 
+/*
+	重连信息
+*/
+message ReConnInfo
+{
+	optional uint32 gameId 			= 1; 	//game id
+	optional uint32 roomId 			= 2;	//room id
+	optional uint32 tableId 		= 3;	//table id
 }
 
 /*
@@ -62,19 +69,13 @@ message LoginReq {
 */
 message LoginRsp {
 	optional common.Result result 	= 1;   	//结果状态
-											// 0:登录成功
-											// 1:参数非法
-											// 2:数据库错误
-											// 3:封号
-											// 4:热更版本过低
-
 	optional UserInfo userInfo 		= 2;	// 用户信息
 	optional uint32 userType 		= 3;	// 用户类型
 	optional uint32 isBinded 		= 4;	// 是否已绑定（当用户类型是游客时返回）
 											// 0:未绑定 1:已绑定
 	optional string thirdInfo 		= 5;	// 第三方信息(json串)
 	optional uint32 ip 				= 6;
-	optional string session			= 7;	//用户的session
+	optional ReConnInfo reConnInfo 	= 7; 	//重连信息
 	repeated GameInfo gameInfos 	= 8; 	//游戏列表
 	optional Config config 			= 9; 	//游戏配置
 	optional string proxyUrl 		= 10; 	//代理地址
@@ -86,14 +87,7 @@ message LoginRsp {
 											//false:禁用
 											//true:使用
 	optional string activityUrl 	= 16; 	//活动地址
-	optional uint32 builtCode 		= 17; 	//创建的房间
-	optional uint32 playCode 		= 18; 	//已在玩的房间(6位)
-	repeated uint32 builtCodes 		= 19; 	//已创建的房间(6位)
-	optional bool isAgent 			= 20; 	//是否是代理
-	optional string noticeUrl 		= 21; 	//公告地址
-	optional string broadcast 		= 22; 	//广播内容
-	optional string inviteUrl 		= 23; 	//绑定URL
-	optional uint32 clubGameId 		= 24; 	//俱乐部GMAE ID
+
 
 }
 
@@ -109,7 +103,6 @@ message GameInfo {
 	optional string name 			= 2;	// 游戏名称
 	optional uint32 type 			= 3;	// 游戏类型
 	optional string online 			= 4; 	// 在线人数
-	optional uint32 flag 			= 5;	// 附加类型 1 新玩法 
 }
 
 /*
@@ -125,7 +118,8 @@ message GameInfoRsp {
 */
 message RankInfoReq {
 	required common.Request request = 1; 	// 请求码
-	optional uint32 name 			= 2;	// 排行名称[1:今日排行, 2:昨日排行 3:本周排行 4:上周排行]
+	optional uint32 ver 			= 2;	// 排行版本
+	optional uint32 name 			= 3;	// 排行名称[1:money, 2:charm 3:手气榜 4:充值榜]
 }
 
 /*
@@ -133,58 +127,23 @@ message RankInfoReq {
 */
 message RankPlayer {
 	optional common.PlayerInfo playerInfo 	= 1; // 玩家信息
-	optional int32 rankPoints 				= 2; //积分(针对排行榜)
-	optional uint32 rankWinTimes 			= 3; //胜
-	optional uint32 rankDrawTimes 			= 4; //平
-	optional uint32 rankLoseTimes 			= 5; //负
-	optional uint32 award 					= 6; //奖励 钻石
+	optional uint32 earnMoney 				= 2; // 赚钱榜
+	optional uint32 earnCharm 				= 3; // 魅力榜
 }
-/*
-	排行内Money玩家信息
-*/
-message RankSelfPlayer {
-	optional RankPlayer rankPlayer 			= 1; // 玩家信息
-	optional uint32 ranking 				= 2; // 排名(0:未上榜)
-	optional uint32 rankAward 				= 3; // 奖励钻石的数量
-	optional bool acceptedAward 			= 4; // 是否已领取奖励
-	optional bool acceptable 				= 5; // 是否可以领取
-}
+
 /*
 	排行榜
 */
 message RankInfoRsp {
 	optional common.Result 		result 		= 1;   	// 结果状态
-													//1:玩家未登录
-													//2:参数不合法
-													//3:数据库异常
-	optional uint32 name 					= 2;	// 排行名称[1:今日排行, 2:昨日排行 3:本周排行 4:上周排行]
-	repeated RankPlayer  		rankPlayers = 3; 	// 排行榜列表
-	optional RankSelfPlayer  	selfPlayer 	= 4; 	// 自己
+													//1:参数错误码
+													//2:服务器异常
+	optional uint32 name 					= 2;	// 排行名称[1:money, 2:charm 3:手气榜 4:充值榜]
+	optional uint32 ver 					= 3;	// 排行版本
+	repeated RankPlayer  		players 	= 4; 	// 排行榜列表
 }
 
-/*
-	排行榜奖励 0x41
-*/
-message RankAwardReq {
-	required common.Request request = 1; 	// 请求码
-	optional uint32 name 			= 2;	// 排行名称[1:今日排行, 2:昨日排行 3:本周排行 4:上周排行]
-}
-/*
-	排行榜奖励 0x41
-*/
-message RankAwardRsp {
-	optional common.Result 		result 		= 1;   	// 结果状态
-													// 0:成功
-													// 1:玩家未登录
-													// 2:参数不合法
-													// 3:数据库异常
-													// 4:未上榜
-													// 5:已领取
-													// 6:未有奖励
-	optional uint32 name 					= 2;	// 排行名称[1:今日排行, 2:昨日排行 3:本周排行 
-	optional uint32 rankAward 				= 3; 	// 奖励钻石的数量
-	optional uint32 diamond 				= 4; 	// 玩家自身的总钻石数量
-}
+
 /*
 	任务请求 0x5
 */
@@ -300,9 +259,6 @@ message OrnamentInfo {
 */
 message MarketRsp {
 	optional common.Result 	result 						= 1;   	// 结果状态
-																// 0:成功
-																// 1:未登录
-																// 2:服务器异常
 	optional uint32 type								= 2;	// 请求的类型
 	repeated DiamondInfo diamondList					= 3; 	// 钻石列表
 	repeated GoldInfo goldList							= 4; 	// 金币列表
@@ -319,7 +275,7 @@ message MarketRsp {
 	optional uint32 userId = 2;   			// 玩家ID
 	optional string imei = 3;
 	optional string ip = 4;		  			// ip地址
-	optional uint32 goodId = 5;   			// 商品id
+	optional string goodId = 5;   			// 商品id
 	optional uint32 pmode = 6;    			// 支付码
 	optional string mac = 7;  
 	optional string imsi = 8;	  			// 手机imsi号
@@ -352,10 +308,7 @@ message OrderReq {
 */
 message OrderRsp {
 	optional common.Result result 	= 1;   	// 结果状态
-											// 0:成功
-											// 1:未登录
-											// 2:数据库错误
-	optional string orderId 		= 2; 	// 订单ID
+	optional string orderId 		= 2; 	// 商品ID
 	optional uint32 goodId 			= 3; 	// 商品ID
 	optional uint32 payType 		= 4; 	// 支付方式
 	optional string extraJson 		= 5; 	// 额外信息(json)
@@ -374,12 +327,6 @@ message ExchangeReq {
 //   请求兑换返回
 message ExchangeRsp {
 	optional common.Result result = 1;   	// 结果状态
-											// 0:成功
-											// 1:未登录
-											// 2:数据库错误
-											// 3:商品错误
-											// 4:钻石不足
-											// 5:未知错误
 	optional uint32 id 		 	  = 2;  	// 兑换的商品id
 	optional common.Wallet wallet = 3; 		// 玩家钱包
 	repeated common.Prop prop 	  = 4; 		// 兑换的道具
@@ -590,19 +537,20 @@ message SelfInfoRsp {
 */
 message UserInfoReq {
 	required common.Request request = 1; 	// 请求码
-	optional uint32  uid 			= 2;	// 玩家ID
+	optional uint32  id 			= 2;	// 已被赞多少
 }
 /*
 	获取其他玩家信息 返回
 */
 message UserInfoRsp {
 	optional common.Result result 		= 1;   	// 结果状态
-												// 0:成功
-												// 1:游戏未登录
-												// 2:所要查找的玩家不存在
 	required common.PlayerInfo baseInfo = 2; 	// 基础信息
-	optional uint32 ip 					= 3;	// ip地址
-	optional bool isAgent 				= 4;	// 是否是代理
+	optional uint64 maxMoney 			= 3;	// 财富最大值
+	optional int32 charm 				= 4;	// 魅力值
+	optional bool isLike 				= 5; 	// 是否被请求玩家点赞过
+	optional uint32 vipPoint 			= 6;	// VIP积分
+	optional uint32 vipMaxPoint 		= 7;	// 下次VIP升级的上限
+	optional uint32 ip 					= 8;	// ip地址
 }
 
 /*
@@ -699,7 +647,6 @@ message WorldChatBct {
 	optional uint32 type 			= 5;	// 消息类型 1:系统  2:玩家  3活动
 	optional uint32 vip 			= 6;	// 发送者VIP等级
 	optional string extra 			= 7;	// 扩展信息json 放头像地址等
-	optional uint32 count 			= 8; 	// 播放次数
 }
 /*
 	宝箱属性
@@ -998,9 +945,7 @@ message BindProxyRsp {
 											// 4:代理不存在
 											// 5:已绑定该代理
 											// 6:已绑定其他代理
-											// 7:不能互相绑定
-											// 8:不能绑定自己
-											// 9:其他错误
+											// 7:其他错误
 	optional uint32 proxyAccount = 2; 		// 成功绑定的代理帐号
 }
 
@@ -1022,10 +967,6 @@ message ProxyInfoRsp {
 											// 3:代理未绑定
 	optional string proxyUrl 	 	= 2; 	// 后台地址
 	optional uint32 bindCode   		= 3;	// 绑定过的邀请
-	optional string proxyWechatId 	= 4;	// 绑定代理的微信ID
-	optional string proxyWechatNick = 5;	// 绑定代理的微信昵称
-	optional bool changeBinding 	= 6;	// true:可改变 false:不可改变（注意，如果还没有绑定，那么该字段也是false）
-	optional uint32 changeFee 		= 7;	// 消耗的钻石
 }
 
 
@@ -1127,7 +1068,6 @@ message PdkDetailLogRsp {
 */
 message ShareReq {
 	required common.Request request = 1; 		// 请求码
-	optional string url             = 2;
 }
 /*  
 	分享奖励 0x2C
@@ -1236,13 +1176,30 @@ message BuildConfigsReq {
 }
 
 /*
+	创建信息 
+*/
+message BuildInfo {
+	optional uint32 round 	= 1; 		// 局数
+	optional uint32 diamond = 2; 		// 需要的钻石数
+	optional string buildJson = 3; 		// 长沙麻将:{"zhaNiao":扎鸟个数}
+}
+
+/*
+	单个游戏的配置
+*/
+message BuildConfig {
+	optional uint32 gameType		= 1;	// 游戏类型
+	repeated BuildInfo buildInfos 	= 2;	// 创建信息
+	optional bool AA 				= 3; 	// 是否支持AA支付
+	optional string buildJson 		= 4; 	// 长沙麻将:{zhaNiaos={2,4,6}}
+}
+
+/*
 	创建配置 0x31
 */
 message BuildConfigsRsp {
-	optional common.Result result 			= 1;   	// 结果状态
-													// 0:成功
-													// 1:数据库错误
-	repeated common.BuildInfo buildInfos 	= 2;	// 创建信息	
+	optional common.Result result 	= 1;   	// 结果状态
+	repeated BuildConfig configs 	= 2;	// 多个游戏开房配置	
 }
 
 /*
@@ -1260,13 +1217,12 @@ message PointsReq {
 	每场的信息
 */
 message PointsInfo {
-	optional uint32 code 				= 1; 	// 房号
-	optional uint32 masterId 			= 2; 	// 房主
-	optional uint32 time 				= 3; 	// 创建时间
-	optional uint32 round 				= 4; 	// 局数
-	optional int32  points 				= 5; 	// 积分变动
+	optional uint32 code 			= 1; 	// 房号
+	optional uint32 masterId 		= 2; 	// 房主
+	optional uint32 time 			= 3; 	// 时间
+	optional uint32 round 			= 4; 	// 局数
+	optional int32  points 			= 5; 	// 积分变动
 	repeated PointsDetail pointsDetails = 6; 	// 当局详情
-	optional uint32 gameType 			= 7;	// 游戏类型
 }
 
 /*
@@ -1299,8 +1255,6 @@ message PointsDetail {
 	optional string nick 			= 2; 	// 玩家ID
 	optional int32 points 			= 3; 	// 当局积分
 	optional int32 totalPoints 		= 4; 	// 总积分
-	optional string infos 			= 5; 	// 附加信息，具体玩法具体定义
-	optional string headUrl 		= 6; 	// 玩家头像地址
 }
 /*
 	某局详情
@@ -1309,7 +1263,6 @@ message RoundPoints {
 	optional uint32 round 				= 1; // 第几局
 	repeated PointsDetail PointsDetails = 2; // 当局详情
 	optional string playbackId 			= 3; // 回放ID
-	optional string endTime 			= 4; // 结束时间
 }
 
 /*
@@ -1347,35 +1300,6 @@ message ProxyWechatRsp {
 												// 3:服务器错误
 	repeated WechatInfo wechatInfos 	= 3; 	// 代理微信号
 }
-
-
-/*
-	创建 0x35
-*/
-
-message BuildReq {
-	optional common.Request request 		= 1; 	// 请求码
-	optional common.BuildInfo buildInfo 	= 2; 	// 创建信息
-}
-/*
-	创建 0x35
-*/
-message BuildRsp {
-	optional common.Result result 	= 1;   	// 结果状态 
-											// 0:正常
-											// 1:用户不存在
-											// 2:配置不匹配
-											// 3:已经创建了一个房间
-											// 5:余额不足
-											// 7:服务器错误
-											// 8:玩家创建房间数量超出上限
-											// 9:你有正未完成的牌局
-
-	optional uint32 code 			= 2; 	// 房间号(6位数)
-	optional uint64 diamond 		= 3;  	// 钻石
-}
-
-
 /*
 	牌局回放 0x36
 */
@@ -1404,538 +1328,4 @@ message PlaybackRsp {
 
 	repeated PlaybackInfo playbackInfos	= 2; 	// 回放数据
 	optional uint32 uid 				= 3;    // 回放的第一视角玩家
-}
-
-/*
-	金币场信息
-*/
-message CoinInfoReq {
-	required common.Request request = 1; 	// 请求码
-}
-
-message CoinInfo {
-	optional string name 			= 1;	// 游戏名称
-	optional uint32 type 			= 2;	// 游戏类型
-	optional uint32 capacity 		= 3;	// 人数
-	optional uint32 level 			= 4;	// 等级 
-	optional uint32 admittance 		= 5;	// 准入 
-	optional uint32 flag 			= 6;	// 标识 
-	optional string build_json 		= 7;	// 新玩法的结果选项 
-	optional uint32 ante 			= 8;	// 底注
-}
-/*
-	金币场信息
-*/
-message CoinInfoRsp {
-	optional common.Result 	result 	 = 1;   // 结果状态
-	repeated CoinInfo coinInfos 	 = 2; 	// 金币场列表
-}
-
-
-/*
-	状态信息获取接口 0x44
-*/
-message StateConfigReq {
-	required common.Request request = 1; 	// 请求码
-}
-
-/*
-	状态信息返回
-*/
-message StateConfigRsp {
-	optional common.Result 	result 	 = 1;   // 结果状态
-											// 0:成功
-											// 1:未登录
-											// 2:数据库错误
-	optional string dayJson 		 = 2;	// 每日状态配置 sign 有签到奖励可领, share 有分享奖励可领
-	optional string infoJson 		 = 3;	// 帐号终生状态配置
-	optional string matchAward   = 4; //比赛场奖励信息
-}
-
-/*
-	每日签到信息 0x45
-*/
-message DaySignInfoReq {
-	required common.Request request = 1; 	// 请求码
-}
-
-/*
-	每天签到信息
-*/
-message DaySignInfo {
-	optional uint32 day 	  = 1;   	// 签到天数
-	optional uint32 awardType = 2;   	// 奖励类型
-	optional uint32 awardNum  = 3;   	// 奖励数量
-}
-
-/*
-	签到信息
-*/
-message DaySignInfoRsp {
-	optional common.Result 	result 	 	= 1;    // 结果状态
-												// 0:成功
-												// 1:未登录
-												// 2:数据库错误
-	repeated DaySignInfo infos 			= 2;
-	optional uint32 continue 	 		= 3;	//当前连续天数
-	optional bool awarded 			= 4;	//0 未签到 1 已签到
-}
-
-/*
-	签到领奖 0x46
-*/
-message DaySignReq {
-	required common.Request request = 1; 	// 请求码
-}
-
-/*
-	签到结果
-*/
-message DaySignRsp {
-	optional common.Result 	result 	 	= 1;   // 结果状态
-												// 0:成功
-												// 1:未登录
-												// 2:数据库错误
-												// 3:已领取
-												// 4:连续登录天数出现异常
-												// 5:没有该奖励
-												// 6:未知错误
-	optional uint32 continue 			= 2;   // 当前连续天数
-	optional common.Wallet wallet 		= 3;   // 当前钱包
-}
-
-/*
-	邀请奖励信息 0x47
-*/
-message InviteInfoReq {
-	required common.Request request = 1; 	// 请求码
-}
-
-/*
-	受邀请玩家的信息
-*/
-message Invitee {
-	optional common.PlayerInfo playerInfo = 1; //玩家信息
-	optional uint32 curRounds 		   	   = 2; //当前玩了多少局
-	optional string inviteTime 		   	   = 3; //邀请时间
-}
-
-/*
-	单个邀请奖励信息
-*/
-message InviteInfo {
-	optional uint32 level 				= 1;	//奖励级别
-	optional uint32 totalInvitees 		= 2;	//总需要受邀请者的数量
-	optional uint32 awardType 			= 3;   	// 奖励类型
-	optional uint32 awardNum  			= 4;   	// 奖励数量
-	optional uint32 award 				= 5;	//（0:不可领 1:可领 2:已领）
-	
-}
-/*
-	邀请奖励信息
-*/
-message InviteInfoRsp {
-	optional common.Result 	result 	 	= 1;   // 结果状态
-												// 0:成功
-												// 1:未登录
-												// 2:数据库错误
-	repeated InviteInfo inviteInfos 	= 2;   // 奖励信息
-	optional uint32 totalRounds 		= 3;   // 总需玩了多少局
-	optional uint32 curInvitees 		= 4;	//当前受邀请者数量
-	repeated Invitee unfinishInvitees 	= 5;    // 未完成指标的受邀请者信息(邀请了，但没完成牌局数达标)
-}
-
-
-/*
-	邀请绑定 0x48
-*/
-message InviteBindReq {
-	required common.Request request = 1; 	// 请求码
-	optional uint32 inviter 		= 2; 	// 邀请者uid
-}
-
-/*
-	邀请绑定
-*/
-message InviteBindRsp {
-	optional common.Result 	result 	 	= 1;   // 结果状态
-												// 0:成功
-												// 1:未登录
-												// 2:参数错误
-												// 3:数据库错误
-												// 4:该玩家为老玩家，不能绑定
-												// 5:已绑定了该邀请者
-												// 6:已绑定了其他邀请者
-												// 7:邀请者不存在
-												// 8:其他未知错误
-}
-
-/*
-	领取邀请奖励 0x49
-*/
-message InviteAwardReq {
-	required common.Request request = 1; 	// 请求码
-	optional uint32 level 			= 2; 	// 奖励级别
-}
-
-/*
-	领取邀请奖励
-*/
-message InviteAwardRsp {
-	optional common.Result 	result 	 	= 1;   // 结果状态
-												// 0:成功
-												// 1:未登录
-												// 2:参数错误
-												// 3:数据库错误
-												// 4:该奖励等级不存在
-												// 5:未达到奖励状态
-												// 6:已领取奖励
-												// 7:未知错误
-	optional common.Wallet wallet 		= 2;	// 奖励
-	optional uint32 level 				= 3; 	// 奖励级别
-}
-
-
-
-/*
-	房间内道具配置 0x52
-*/
-message PropInfoReq {
-	required common.Request request 	= 1; 	// 请求码
-}
-/*
-	房间内道具配置
-*/
-message PropInfo {
-	optional uint32 id 				= 1; 	// 道具ID
-	optional string name 			= 2; 	// 名称
-	optional int32	costType 		= 3; 	// 消耗的货币类型(1.金币 2.钻石 3.红包劵)
-	optional int32	costValue 		= 4; 	// 消耗的货币值
-}
-
-/*
-	房间内道具配置
-*/
-message PropInfoRsp {
-	optional common.Result  result 	= 1;   	// 结果状态
-											// 1.玩家未登录
-											// 2.数据库错误
-	repeated PropInfo propInfos 	= 2; 	// 配置信息
-}
-
-/*
-	身份认证
-*/
-message AuthenticateReq {
-	required common.Request request = 1; 	// 请求码
-	optional string name 			= 2; 	// 姓名
-	optional string id 				= 3; 	// 身份证号码
-}
-/*
-	身份认证
-*/
-message AuthenticateRsp {
-	optional common.Result 	result 	 = 1;   // 结果状态
-											// 0:成功
-											// 1:未登录
-											// 2:参数不合法
-											// 3:已实名认证
-}
-/*
-	透传
-*/
-message ForwardReq {
-	required common.Request request = 1; 	// 请求码
-}
-/*
-	透传
-*/
-message ForwardRsp {
-	optional common.Result 	result 	 = 1;   // 结果状态
-	optional string data 			 = 2;	// 透传内容
-}
-
-/*
-	邀请者排行信息 0x110
-*/
-message InvitorRankInfoReq {
-	required common.Request request = 1; 	// 请求码
-}
-/*
-	邀请者信息
-*/
-message InvitorInfo {
-	optional string nick = 1; 				// 邀请者昵称
-	optional uint32 incomeMoney = 2; 		// 邀请者推广返利
-}
-
-/*
-	邀请者排行信息
-*/
-message InvitorRankInfoRsp {
-	optional common.Result 	result 	 	= 1;   	// 结果状态
-	repeated InvitorInfo invitorInfos 	= 2;	// 邀请者信息
-}
-
-
-/*
-	受邀请者排行信息 0x110
-*/
-message InviteeInfoReq {
-	required common.Request request = 1; 	// 请求码
-	optional uint32 start = 2; 				// 从哪一条开始请求，0为从第一条
-	optional uint32 count = 3; 				// 请求的数量
-}
-/*
-	受邀请者信息
-*/
-message InviteeInfo {
-	optional uint32 uid = 1; 			// 受邀请者昵称
-	optional string nick = 2; 			// 受邀请者昵称
-	optional uint32 chargeMoney = 3;	// 受邀请者充值
-	optional uint32 incomeMoney = 4; 	// 邀请者推广返利
-	optional string inviteTime 	= 5; 	// 邀请时间
-}
-
-/*
-	受邀请者排行信息
-*/
-message InviteeInfoRsp {
-	optional common.Result 	result 	 = 1;   // 结果状态
-	repeated InviteeInfo inviteeInfos= 2;	// 受邀请者信息
-}
-
-
-
-/*
-	受邀请者绑定 0x112
-*/
-message InviteeBindReq {
-	required common.Request request = 1; 	// 请求码
-	optional uint32 inviter 		= 2; 	// 邀请者uid
-}
-
-/*
-	邀请绑定
-*/
-message InviteeBindRsp {
-	optional common.Result 	result 	 	= 1;   // 结果状态
-												// 0:成功
-												// 1:未登录
-												// 2:参数错误
-												// 3:数据库错误
-												// 4:不能互相绑定
-												// 5:已绑定了该邀请者
-												// 6:已绑定了其他邀请者
-												// 7:邀请者不存在
-												// 8:不能邀请自己
-												// 9:其他未知错误
-}
-
-message MatchSignReq {
-	optional common.Request request = 1;
-	optional uint32 gameType = 2;
-	optional uint32 cancel = 3;
-}
-
-/*
-	0，成功
-	1，未登录
-	2.数据库错误
-	3.已经在排队了，返回的gameType是当前排的游戏
-	4.当前不是游戏时间
-	5.有未完成的牌局
- */
-message MatchSignRsp {
-	optional common.Result result = 1;
-	optional uint32 gameType = 2;
-	optional uint32 playCode = 3;
-}
-
-message MatchCfgReq {
-	optional common.Request request = 1;
-	optional uint32 gameType = 2;
-	optional uint32 playCode = 3;
-}
-
-message MatchCfgRsp {
-	optional common.Result result = 1;
-	optional uint32 gameType = 2;
-  optional uint32 startTime = 3;
-	optional uint32 endTime = 4;
-	optional uint32 onlineNum = 5;
-	optional uint32 canSign = 6;
-}
-
-message MatchAwardReq {
-	optional common.Request request = 1;
-}
-
-message MatchAwardRsp {
-	optional common.Result result = 1;
-	optional uint32 rank = 2;        //排名
-	optional int32 point = 3;       //分数
-	optional uint32 rewardType = 4; //奖励类型
-	optional uint32 rewardNum = 5;  //奖励类型
-	optional string rewardTime = 6; //奖励日期
-	optional string matchName = 7;  //比赛场类型，3是红包场，2是钻石场，1是金币场
-}
-
-message ActivityInfo {
-	optional uint32 id          = 1;  //活动id
-	optional string desc        = 2;  //活动描述
-	optional uint32 progress    = 3;  //活动进度
-	optional uint32 target      = 4;  //活动目标
-	optional uint32 rewardType  = 5;  //奖励类型,1金币，2房卡，3红包
-	optional uint32 rewardNum   = 6;  //奖励数量
-	optional uint32 hasAward    = 7;  //是否领奖,1未完成，2可领奖，3已经领
-}
-
-message ActivityCfgReq {
-	optional common.Request request = 1;
-}
-
-message ActivityCfgRsp {
-	optional common.Result result     = 1;
-	repeated ActivityInfo actList     = 2;
-	optional uint32 rewardType        = 3;  //活动能领取的总奖励类型
-	optional uint32 rewardNum         = 4;  //活动能领取的奖励数量
-	optional uint32 curNum            = 5;  //当前已经获得的奖励数量
-	optional uint32 hasCash           = 6;  //是否已经提现了
-}
-
-message ActivityAwardReq {
-	optional common.Request request = 1;
-	optional uint32 id              = 2;
-}
-
-/*
-	2,活动不存在，参数错误
-	3,任务没有完成，不可以领奖
-	4,已经领过奖了
- */
-message ActivityAwardRsp {
-	optional common.Result result     = 1;
-	optional uint32 rewardType        = 2;
-	optional uint32 rewardNum         = 3;
-	optional uint32 id                = 4;  //领奖的是哪个活动id
-}
-
-message ActivityCashReq {
-	optional common.Request request = 1;
-}
-
-/*
-	3,任务没有完成
-	4,已经提现过了
- */
-message ActivityCashRsp {
-	optional common.Result result     = 1;
-	optional uint32 rewardType        = 2;  //提现发放奖励类型和金额
-	optional uint32 rewardNum         = 3;
-}
-
-
-/*
-	RedPackets 0x120
-*/
-message RedPacketsReq {
-	optional common.Request request 	= 1;
-}
-
-/*
-	红包信息
-*/
-message RedPacketInfo {
-	optional uint32 id        		 	= 1;  //id
-	optional uint32 type        		= 2;  //红包类型，0：新手红包，1：游戏红包，2：分享红包
-	optional uint32 money       		= 3;  //红包总额，以分为单位
-	optional uint32 count   	   		= 4;  //需拆人数
-	optional uint32 open   	   			= 5;  //已拆人数
-	optional string beginTime   	    = 6;  //开始时间
-	optional string endTime   	   		= 7;  //结束时间
-	optional uint32 state   	    	= 8;  //0:未拆完 1:可提现 2:已提现 3:已过期
-}
-
-/*
-	RedPackets 返回
-*/
-message RedPacketsRsp {
-	optional common.Result result    		= 1;//0:成功
-												//1:未登录
-												//2:数据库错误
-	repeated RedPacketInfo redPacketInfos 	= 2;
-}
-
-
-/*
-	OpenRedPacket 0x121
-*/
-message OpenRedPacketReq {
-	optional common.Request request 	= 1;
-	optional uint32 redPacketId   	    = 2;
-}
-
-
-/*
-	OpenRedPacket 返回
-*/
-message OpenRedPacketRsp {
-	optional common.Result result    		= 1; //0:成功
-												 //1:未登录
-												 //2:数据库错误
-												 //3:该红包不存在
-												 //4:该红包已拆完
-												 //5:该红包已过期
-	optional uint32 openMoney   	    	= 2; //拆的总额，以分为单位
-	optional uint32 redPacket   	    	= 3; //玩家红包余额
-	optional uint32 redPacketId   	    	= 4; //红包id
-}
-
-
-
-/*
-	红包提现记录详情 RaiseRedPacketRecord 0x122
-*/
-message RaiseRedPacketRecordReq {
-	optional common.Request request 	= 1;
-	optional uint32 redPacketId   	    = 2;
-}
-
-/*
-	红包提现记录详情
-*/
-message RaiseRedPacketRecordInfo {
-	optional uint32 uid   	    		= 1; //
-	optional uint32 rmb   	    		= 2; //
-	optional uint32 state   	    	= 3; //
-	optional string startTime   	    = 4; //
-	optional string endTime   	    	= 5; //
-}
-
-/*
-	RaiseRedPacketRecord 返回
-*/
-message RaiseRedPacketRecordRsp {
-	optional common.Result result    								= 1; //0:成功
-																		 //1:未登录
-																		 //2:数据库错误
-	repeated RaiseRedPacketRecordInfo raiseRedPacketRecordInfos 	= 2; //
-}
-
-
-/*
-	红包来了 RedPacketComing 0x123
-*/
-message RedPacketComingReq {
-	optional common.Request request 	= 1;
-}
-
-/*
-	RedPacketComing 返回
-*/
-message RedPacketComingRsp {
-	optional common.Result result   = 1; //0:成功
-	optional uint32 uid   			= 2; //玩家id，注意，只有uid是自己的时候才播
-	optional uint32 redPacketId   	= 3; //红包id
 }

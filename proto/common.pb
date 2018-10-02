@@ -1,5 +1,5 @@
 
-¨
+ô
 common.protocommon"$
 Request
 code (
@@ -12,7 +12,7 @@
 message (	
 gameId (")
 BaseRsp
-result (2.common.Result"ª
+result (2.common.Result"è
 
 PlayerInfo
 
@@ -29,10 +29,7 @@ PlayerInfo
  (	
 headUrlSmall (	
 jsonStr (	
-	redPacket (
-yuekaNum (
-yuekaUseRounds (
-yuekaNotUseNum ("G
+	redPacket ("G
 Wallet
 coin (
 diamond (
@@ -51,10 +48,11 @@ PlayerInfo
 Attr
 
 id (
-count ("*
+count ("8
 PayWay
 payType (
-diamond ("‰
+diamond (
+mask ("‰
 	BuildInfo
 round (
 gameType (

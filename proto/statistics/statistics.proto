@@ -1,0 +1,67 @@
+package statistics;
+
+/*
+	消息类型
+*/
+message Type {
+	required uint32 code 	 = 1; //操作码
+	required uint32 platform = 2; //平台 1 android 2 ios
+	required uint32 game 	 = 3; //游戏类型(1 四川麻将 2 棋牌大厅)
+	required uint32 api 	 = 4; //渠道
+}
+
+/*
+	消息基类
+*/
+message Base {
+	optional Type type = 1; // 请求码
+}
+/*
+	用户登录
+*/
+message Login {
+	required Type 	type = 1; // 请求码
+	required uint32 uid  = 2; // 用户ID
+	required uint32 time = 3; // 登录时间
+}
+
+/*
+	牌局信息
+*/
+message CoinFlow {
+	required uint32 uid    = 1; //玩家ID
+	required int64  coin   = 2; //金币
+	required int64  delta  = 3; //差值
+	required uint32 reason = 4; //原因
+}
+
+/*
+	用户牌局
+*/
+message Game {
+	required Type 	  type 	   = 1; // 请求码
+	required uint32   gameId   = 2; // 游戏ID
+	required uint32   roomId   = 3; // 房间ID
+	required uint32   tableId  = 4; // 桌号ID
+	required uint32   roundId  = 5; // 牌局ID
+	repeated CoinFlow coinFlow = 6; // 玩家金币流
+	required uint32   time     = 7; // 时间
+}
+
+/*
+	用户行为
+*/
+message Action {
+	required Type   type 	= 1; // 请求码
+	required uint32 action 	= 2; // 动作(待定义)
+}
+
+/*
+	用户支付
+*/
+message Pay {
+	required Type 	type = 1; // 请求码
+	required uint32 uid  = 2; // 玩家ID
+	required uint32 rmb  = 3; // 充值金额(rmb)
+	required uint32 time = 4; // 支付时间
+}
