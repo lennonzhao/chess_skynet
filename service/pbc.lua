@@ -59,22 +59,22 @@ function cmd.mergeCommand(config)
 end
 
 function cmd.encode(pbName, msg)
-	skynet.error("encode"..pbName)
+	skynet.error("encode："..pbName)
 	return pb.encode(pbName, msg)
 end
 
 function cmd.decode(pbName, data)
-	skynet.error("decode ".. pbName.. " " .. type(data) .." " .. #data)
+	skynet.error("decode：".. pbName.. " " .. type(data) .." " .. #data)
 	return pb.decode(pbName, data)
 end
 
 function cmd.findReqName(code)
-	skynet.error("findReqName ".. string.format("0x%04x", code))
+	skynet.error("findReqName：".. string.format("0x%04x", code))
 	return recvCodeToName[code]
 end
 
 function cmd.findRspName(code)
-	skynet.error("findRspName ".. string.format("0x%04x", code))
+	skynet.error("findRspName：".. string.format("0x%04x", code))
 	return sendCodeToName[code]
 end
 
