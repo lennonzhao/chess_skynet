@@ -3,7 +3,7 @@ local netpack = require "skynet.netpack"
 local socket = require "skynet.socket"
 local pb = require "protobuf"
 local protopack = require ("protopack_pbc")
-
+local buildConfigsData = import(".buildConfigsRsp")
 local WATCHDOG
 local client_fd
 local CMD = {}
@@ -90,7 +90,8 @@ local function recv_request(session, source, cmd, msg, pbName, check)
             wechatPay = true
         })
     elseif cmd == Command.BuildConfigs then
-    	dump(msg.gameTypes, "BuildConfigs")
+    	-- dump(msg.gameTypes, "BuildConfigs")
+    	send_request(Command.BuildConfigs, buildConfigsData)
 	end
 end
 
