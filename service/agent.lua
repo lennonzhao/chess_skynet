@@ -19,84 +19,7 @@ local function recv_request(session, source, cmd, msg, pbName, check)
 	INFO("client_dispatch", session, source, cmd, msg, pbName, check)
 	protopack.dump(pbName, msg, string.format("0x%04x", cmd))
 	dump(Command, "Command")
-	if cmd == Command.Login then
-		-- 到验证服务器 拿到用户数据
-		local ret, info = 
-		printInfo("玩家请求登录游戏，返回登录成功的包")
-		send_request(Command.Login, {
-            activityUrl = "http://proxy.zg915.com/public/activity_103",
-            broadcast = "",
-            builtCode = 0,
-            builtCodes = {},
-            config = {
-                bindProxyAward = 5,
-                worldchatCost = 0
-            },
-            downloadUrl = "",
-            gameInfos = { {
-                    flag = 0,
-                    id = 12000,
-                    name = "四人安庆麻将",
-                    online = "",
-                    type = 155
-                },  {
-                    flag = 0,
-                    id = 12000,
-                    name = "三人安庆麻将",
-                    online = "",
-                    type = 154
-                },  {
-                    flag = 0,
-                    id = 12000,
-                    name = "二人安庆麻将",
-                    online = "",
-                    type = 153
-                }, },
-            inviteUrl = "",
-            ip = 1378703217,
-            isAgent = false,
-            isBinded = 0,
-            noticeUrl = "",
-            playCode = 0,
-            proxyUrl = "",
-            result = {
-                gameId = 40000,
-                message = "",
-                request = {
-                    api = 0,
-                    code = 1
-                },
-                status = 0
-            },
-            shareUrl = "http://proxy.zg915.com/public/authorize",
-            thirdInfo = "",
-            updateUrl = "",
-            userInfo = {
-                firstPayStatus = 0,
-                id = 202779,
-                isRegister = 0,
-                lastLoginTime = "",
-                playerInfo = {
-                    diamond = 72,
-                    drawTimes = 0,
-                    headUrl = "",
-                    headUrlSmall = "",
-                    id = 202779,
-                    jsonStr = "",
-                    loseTimes = 0,
-                    money = 2000,
-                    nick = "mx4",
-                    sex = 0,
-                    vipLevel = 0,
-                    winTimes = 0
-                },
-                session = ""
-            },
-            userType = 0,
-            voiceUrl = "http://voice.bcewo.cn:7000",
-            wechatPay = true
-        })
-    elseif cmd == Command.BuildConfigs then
+	if cmd == Command.BuildConfigs then
     	-- dump(msg.gameTypes, "BuildConfigs")
     	send_request(Command.BuildConfigs, {
 			buildInfos = {  
@@ -341,6 +264,83 @@ function CMD.disconnect()
 	-- todo: do something before exit
 	-- 玩家离开
 	skynet.exit()
+end
+
+function CMD.loginSuc(data)
+	-- 到验证服务器 拿到用户数据
+	send_request(Command.Login, {
+        activityUrl = "http://proxy.zg915.com/public/activity_103",
+        broadcast = "",
+        builtCode = 0,
+        builtCodes = {},
+        config = {
+            bindProxyAward = 5,
+            worldchatCost = 0
+        },
+        downloadUrl = "",
+        gameInfos = { {
+                flag = 0,
+                id = 12000,
+                name = "四人安庆麻将",
+                online = "",
+                type = 155
+            },  {
+                flag = 0,
+                id = 12000,
+                name = "三人安庆麻将",
+                online = "",
+                type = 154
+            },  {
+                flag = 0,
+                id = 12000,
+                name = "二人安庆麻将",
+                online = "",
+                type = 153
+            }, },
+        inviteUrl = "",
+        ip = 1378703217,
+        isAgent = false,
+        isBinded = 0,
+        noticeUrl = "",
+        playCode = 0,
+        proxyUrl = "",
+        result = {
+            gameId = 40000,
+            message = "",
+            request = {
+                api = 0,
+                code = 1
+            },
+            status = 0
+        },
+        shareUrl = "http://proxy.zg915.com/public/authorize",
+        thirdInfo = "",
+        updateUrl = "",
+        userInfo = {
+            firstPayStatus = 0,
+            id = 202779,
+            isRegister = 0,
+            lastLoginTime = "",
+            playerInfo = {
+                diamond = 72,
+                drawTimes = 0,
+                headUrl = "",
+                headUrlSmall = "",
+                id = 202779,
+                jsonStr = "",
+                loseTimes = 0,
+                money = 2000,
+                nick = "mx4",
+                sex = 0,
+                vipLevel = 0,
+                winTimes = 0
+            },
+            session = ""
+        },
+        userType = 0,
+        voiceUrl = "http://voice.bcewo.cn:7000",
+        wechatPay = true
+    })
 end
 
 skynet.start(function()
