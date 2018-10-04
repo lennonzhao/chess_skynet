@@ -23,7 +23,8 @@ function SOCKET.open(fd, addr)
 	
 	skynet.error("New client from : " .. c.ip)
 
-	skynet.call(gate, "lua", "forward", fd)
+	skynet.call(gate, "lua", "accept", fd)
+	-- skynet.call(gate, "lua", "forward", fd)
 end
 
 local function close_agent(fd)
