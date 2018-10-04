@@ -52,7 +52,7 @@ function CMD.execute(sql)
 end
 
 skynet.start(function()
-	skynet.dispatch("lua", function(session, cmd, ...)
+	skynet.dispatch("lua", function(session, addr, cmd, ...)
 		local f = CMD[cmd]
 		skynet.ret(skynet.pack(f(...)))
 	end)
