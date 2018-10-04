@@ -1,8 +1,10 @@
 local skynet = require "skynet"
 local gateserver = require "snax.gateserver"
 local netpack = require "skynet.netpack"
-local protopack = require "protopack"
+local runconf = require(skynet.getenv("runconfig"))
+local protopack = require("protopack_" .. runconf.protopack)
 
+local Command
 local watchdog
 local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
 local forwarding = {}	-- agent -> connection
@@ -13,7 +15,6 @@ skynet.register_protocol {
 }
 
 local handler = {}
-local CMD = {}
 
 function handler.open(source, conf)
 	watchdog = conf.watchdog or source
@@ -21,21 +22,17 @@ end
 
 function handler.message(fd, msg, sz)
 	-- recv a package, forward it
-	local c = connection[fd]
-	local agent = c.agent
-	print('recv', msg, sz)
-	local str = skynet.tostring(msg, sz)
-	local cmd, msg, pbName, check = protopack.unpack(str)
-	local source = skynet.self()
-	if not cmd then
-		print('kick')
-		CMD.kick(source, fd)
+	local c = assert(connection[fd])
+	local code, msg, pbName, session = protopack.unpack(msg)
+	if not code then
+		gateserver.closeclient(fd)
 		return
 	end
+	local agent = c.agent
 	if agent then
-		skynet.redirect(agent, c.client, "client", 1, skynet.pack(cmd, msg, pbName, check))
+		skynet.redirect(agent, c.client, "client", 1, code, msg)
 	else
-		skynet.send(watchdog, "lua", "socket", "data", fd, skynet.pack(cmd, msg, pbName, check))
+		skynet.send(watchdog, "lua", "socket", "data", fd, code, msg)
 	end
 end
 
@@ -78,6 +75,8 @@ function handler.warning(fd, size)
 	skynet.send(watchdog, "lua", "socket", "warning", fd, size)
 end
 
+local CMD = {}
+
 function CMD.forward(source, fd, client, address)
 	local c = assert(connection[fd])
 	unforward(c)
@@ -102,4 +101,5 @@ function handler.command(cmd, source, ...)
 	return f(source, ...)
 end
 
+Command = protopack.getCommand()
 gateserver.start(handler)

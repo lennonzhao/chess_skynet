@@ -20,6 +20,8 @@ local function recv_request(session, source, cmd, msg, pbName, check)
 	protopack.dump(pbName, msg, string.format("0x%04x", cmd))
 	dump(Command, "Command")
 	if cmd == Command.Login then
+		-- 到验证服务器 拿到用户数据
+		local ret, info = 
 		printInfo("玩家请求登录游戏，返回登录成功的包")
 		send_request(Command.Login, {
             activityUrl = "http://proxy.zg915.com/public/activity_103",

@@ -1,6 +1,4 @@
 local skynet = require "skynet"
-local sprotoloader = require "sprotoloader"
-
 local max_client = 64
 
 skynet.start(function()
@@ -12,6 +10,7 @@ skynet.start(function()
     skynet.newservice("debug_console",8000)
 
     skynet.uniqueservice("pbc")
+    skynet.uniqueservice("mysqldb")
     
     local watchdog = skynet.newservice("watchdog")
     skynet.call(watchdog, "lua", "start", {

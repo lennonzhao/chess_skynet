@@ -95,12 +95,27 @@ function M.pack(cmd, msg, session)
     return str
 end
 
-function M.unpack(str)
+function M.packHead(cmd, msg, session)
+	local pbstr = _encode("common.BaseRsp", {
+		result = {
+			request = {
+				code = cmd,
+				api = runconfig.api,
+			},
+			status = msg.result.status,
+		}
+	})
+end
+
+function M.unpackHead(str)
 	local len, gameId, session, pbstr = string.unpack(">I4I2I4s2", str)
 	print("unpack", bin2hex(pbstr))
 	print("pblen", string.len(pbstr))
+	return _decode("common.BaseReq", pbstr)
+end
 
-	local msgHead = _decode("common.BaseReq", pbstr)
+function M.unpack(str)
+	local msgHead = M.unpackHead(str)
 	if not msgHead then print("cmd not register") return end
 
 	local code = msgHead.request.code
