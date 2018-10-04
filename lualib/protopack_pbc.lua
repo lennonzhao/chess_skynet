@@ -105,6 +105,13 @@ function M.packHead(cmd, msg, session)
 			status = msg.result.status,
 		}
 	})
+	local pblen = string.len(pbstr)
+	--组成发送字符串 前面两个字节表示包的总长度
+	local str = string.pack(">HI4HI4s2", pblen + 10 + 2, pblen + 6, gameId, session, pbstr)
+
+	print("send:", bin2hex(str), string.len(str), pblen)
+	dump(msg, string.format("send: %s 0x%04x", pbName, cmd))
+    return str
 end
 
 function M.unpackHead(str)
