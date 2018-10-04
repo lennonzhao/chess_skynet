@@ -60,6 +60,7 @@ function SOCKET.data(fd, code, msg)
 		-- 登陆成功后 创建一个agent
 		if ret then
 			agent[fd] = skynet.newservice("agent")
+			skynet.call(gate, "lua", "forward", fd)
 			skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
 			skynet.call(agent[fd], "lua", "loginSuc", { info = info })
 		else
