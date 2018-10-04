@@ -22,7 +22,7 @@ end
 function handler.message(fd, msg, sz)
 	-- recv a package, forward it
 	local c = assert(connection[fd])
-	local code, msg, pbName, session = protopack.unpack(msg)
+	local code, msg, pbName, session = protopack.unpack(netpack.tostring(msg, sz))
 	if not code then
 		gateserver.closeclient(fd)
 		return
