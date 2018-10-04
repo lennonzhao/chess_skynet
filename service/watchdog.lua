@@ -56,7 +56,7 @@ function SOCKET.data(fd, code, msg)
 	-- print("socket data", fd, msg)
 	if code == Command.Login then
 		-- 认证后
-		local ret, info = skynet.call(login, "lua", "login", { client = fd, watchdog = skynet.self(), data = data})
+		local ret, info = skynet.call(login, "lua", "login", { client = fd, watchdog = skynet.self(), data = msg})
 		-- 登陆成功后 创建一个agent
 		if ret then
 			agent[fd] = skynet.newservice("agent")
