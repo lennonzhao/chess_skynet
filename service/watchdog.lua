@@ -58,19 +58,19 @@ function SOCKET.data(fd, code, msg)
 		-- 认证后
 		local ret, info = skynet.call(login, "lua", "login", { client = fd, watchdog = skynet.self(), data = msg})
 		-- 登陆成功后 创建一个agent
-		-- if ret then
-		-- 	agent[fd] = skynet.newservice("agent")
-		-- 	skynet.call(gate, "lua", "forward", fd)
-		-- 	skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
-		-- 	skynet.call(agent[fd], "lua", "loginSuc", { info = info })
-		-- else
+		if ret then
+			agent[fd] = skynet.newservice("agent")
+			skynet.call(gate, "lua", "forward", fd)
+			skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
+			skynet.call(agent[fd], "lua", "loginSuc", { info = info })
+		else
 			local package = protopack.packHead(Command.Login, {
 				result = {
 					status = 2,
 				}
 			})
 			socket.write(fd, package)
-		-- end
+		end
 	end
 end
 

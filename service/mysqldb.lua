@@ -37,8 +37,8 @@ function CMD.execute(sql)
 		max_packet_size = 1024 * 1024,
 		on_connect = on_connect
 	})
-	if db then
-		print("failed to connect")
+	if not db then
+		return false, "failed to connect"
 	end
 	print("success to connect to mysql server")
 	local ret = db:query(sql)
