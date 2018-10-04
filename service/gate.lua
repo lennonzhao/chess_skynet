@@ -22,16 +22,17 @@ end
 function handler.message(fd, msg, sz)
 	-- recv a package, forward it
 	local c = assert(connection[fd])
-	local code, msg, pbName, session = protopack.unpack(netpack.tostring(msg, sz))
+	local str = netpack.tostring(msg, sz)
+	local code, packet, pbName, session = protopack.unpack(str)
 	if not code then
 		gateserver.closeclient(fd)
 		return
 	end
 	local agent = c.agent
 	if agent then
-		skynet.redirect(agent, c.client, "client", 1, code, msg)
+		skynet.redirect(agent, c.client, "client", 1, skynet.pack(code, packet))
 	else
-		skynet.send(watchdog, "lua", "socket", "data", fd, code, msg)
+		skynet.send(watchdog, "lua", "socket", "data", skynet.pack(fd, code, packet))
 	end
 end
 
