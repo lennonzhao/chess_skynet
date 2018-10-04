@@ -15,7 +15,7 @@ function SOCKET.open(fd, addr)
 	uuid.seed()
 	local c = {}
 	c.fd = fd
-	c.ip = string.match(ip, "([%d.]+):(%d+)")
+	c.ip = string.match(addr, "([%d.]+):(%d+)")
 	c.agent = nil
 	c.agentaddr = nil
 	c.watchdog = skynet.self()
