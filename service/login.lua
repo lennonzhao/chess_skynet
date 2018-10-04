@@ -11,12 +11,11 @@ function CMD.login(bundle)
 	local data = bundle.data
 
 	dump(data)
-	local sql = string.format("select * from t_reg where imei = '%s';", data.imei)
+	local sql = string.format("select * from sx_game.t_reg where imei = '%s';", data.imei)
 	local ret, res = skynet.call(mysqldb, "lua", "execute", sql)
 	if ret then
-		return true, {
-
-		}
+		dump(res)
+		return true, res
 	else
 		return false, res
 	end

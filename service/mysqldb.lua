@@ -1,7 +1,7 @@
 local skynet = require "skynet"
 local mysql = require "mysql"
 local runconfig = require "runconfig"
-local config = runconfig.service.dbproxy_common
+local config = runconfig.service.dbproxy_common.accountdb
 
 local CMD = {}
 --[[
