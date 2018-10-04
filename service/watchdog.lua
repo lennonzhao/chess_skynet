@@ -69,7 +69,7 @@ function SOCKET.data(fd, code, msg)
 					status = 2,
 				}
 			})
-			socket.write(client_fd, package)
+			socket.write(fd, package)
 		-- end
 	end
 end
