@@ -32,7 +32,7 @@ function handler.message(fd, msg, sz)
 	if agent then
 		skynet.redirect(agent, c.client, "client", 1, skynet.pack(code, packet))
 	else
-		skynet.send(watchdog, "lua", "socket", "data", skynet.pack(fd, code, packet))
+		skynet.send(watchdog, "lua", "socket", "data", fd, code, packet)
 	end
 end
 
