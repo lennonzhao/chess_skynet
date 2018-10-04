@@ -4,7 +4,6 @@ local netpack = require "skynet.netpack"
 local runconf = require(skynet.getenv("runconfig"))
 local protopack = require("protopack_" .. runconf.protopack)
 
-local Command
 local watchdog
 local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
 local forwarding = {}	-- agent -> connection
@@ -101,5 +100,4 @@ function handler.command(cmd, source, ...)
 	return f(source, ...)
 end
 
-Command = protopack.getCommand()
 gateserver.start(handler)
