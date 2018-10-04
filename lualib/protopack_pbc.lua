@@ -96,15 +96,14 @@ function M.pack(cmd, msg, session)
 end
 
 function M.packHead(cmd, msg, session)
-	local pbstr = _encode("common.BaseRsp", {
-		result = {
-			request = {
-				code = cmd,
-				api = runconfig.api,
-			},
-			status = msg.result.status,
-		}
-	})
+	session = session or 0
+	msg.result = msg.result or {}
+	msg.result.request = {
+		code = cmd,
+		api = runconfig.api,
+	}
+	local gameId = 0
+	local pbstr = _encode("common.BaseRsp", msg)
 	local pblen = string.len(pbstr)
 	--组成发送字符串 前面两个字节表示包的总长度
 	local str = string.pack(">HI4HI4s2", pblen + 10 + 2, pblen + 6, gameId, session, pbstr)
