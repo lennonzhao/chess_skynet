@@ -55,6 +55,7 @@ local visitorLogin = function(data, session)
 			break
 		end
 		local result = res[1]
+		dump(res, '登陆结果')
 		dump(result, '登陆结果')
 		local RET = tonumber(result['@RET'])
 		if RET ~= 0 then
