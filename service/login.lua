@@ -32,7 +32,7 @@ local visitorLogin = function(data, session)
 			data.gender or 0,
 			string.escape(data.modelName),
 			data.headUrl or '',
-			'',
+			0,
 			'',
 			data.basic.hotCode or 0,
 			data.os)
