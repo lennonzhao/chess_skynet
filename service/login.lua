@@ -86,7 +86,7 @@ end
 
 function CMD.login(fd, data, session)
 	local status = AUTH_ERROR.login_success
-	local userType = data.basic.userType
+	local userType = data.basic.userType or 0
 	print('登录类型', userType, session)
 	if userType == UserType.Visitor then
 		print('游客登陆')
