@@ -88,8 +88,10 @@ function CMD.login(fd, data, session)
 	local status = AUTH_ERROR.login_success
 	local userType = data.basic.userType
 	if userType == UserType.Visitor then
+		print('游客登陆')
 		return visitorLogin(data, session)
 	elseif userType == UserType.Wechat then
+		print('微信登陆')
 		return wechatLogin(data, session)
 	end
 end
