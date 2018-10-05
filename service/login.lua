@@ -58,7 +58,7 @@ local visitorLogin = function(data, session)
 			printError("select sp_login empty")
 			break
 		end
-		tool.dump(res)
+		print('res', tool.dump(res))
 		local result = res[1]
 		dump(res, '登陆结果')
 		dump(result, '登陆结果')
