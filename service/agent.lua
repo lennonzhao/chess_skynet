@@ -20,7 +20,6 @@ local function recv_request(session, source, cmd, msg, pbName, check)
 	protopack.dump(pbName, msg, string.format("0x%04x", cmd))
 	dump(Command, "Command")
 	if cmd == Command.BuildConfigs then
-    	-- dump(msg.gameTypes, "BuildConfigs")
     	send_request(Command.BuildConfigs, {
 			buildInfos = {  
 				{
@@ -249,12 +248,13 @@ function CMD.start(conf)
 	WATCHDOG = conf.watchdog
 
 	-- 发送心跳包
-	-- skynet.fork(function()
-	-- 	while true do
-	-- 		send_request(Command.HeartBeat, {})
-	-- 		skynet.sleep(5000)
-	-- 	end
-	-- end)
+	skynet.fork(function()
+		while true do
+			send_request(Command.HeartBeat, {})
+			print('发送心跳包')
+			skynet.sleep(5000)
+		end
+	end)
 
 	client_fd = fd
 	skynet.call(gate, "lua", "forward", fd)

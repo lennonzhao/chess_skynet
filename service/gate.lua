@@ -3,6 +3,7 @@ local gateserver = require "snax.gateserver"
 local netpack = require "skynet.netpack"
 local runconf = require(skynet.getenv("runconfig"))
 local protopack = require("protopack_" .. runconf.protopack)
+local uuid = require "uuid"
 
 local watchdog
 local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
@@ -32,14 +33,16 @@ function handler.message(fd, msg, sz)
 	if agent then
 		skynet.redirect(agent, c.client, "client", 1, skynet.pack(code, packet))
 	else
-		skynet.send(watchdog, "lua", "socket", "data", fd, code, packet)
+		skynet.send(watchdog, "lua", "socket", "data", fd, code, packet, c.session)
 	end
 end
 
 function handler.connect(fd, addr)
+	uuid.seed()
 	local c = {
 		fd = fd,
 		ip = addr,
+		session = uuid(),	--session
 	}
 	connection[fd] = c
 	skynet.send(watchdog, "lua", "socket", "open", fd, addr)
@@ -83,7 +86,7 @@ function CMD.forward(source, fd, client, address)
 	c.client = client or 0
 	c.agent = address or source
 	forwarding[c.agent] = c
-	gateserver.openclient(fd)
+	-- gateserver.openclient(fd)
 end
 
 function CMD.accept(source, fd)

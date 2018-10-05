@@ -375,6 +375,21 @@ function string.formatnumberthousands(num)
     return formatted
 end
 
+--[[
+    转义
+]]
+function string.escape(str)
+    -- body
+    local _str = ''
+    for i = 1, string.len(str) do
+        local v = string.byte(str, i)
+        if v == 39 or v == 34  or v == 92 then
+            _str = _str .. '\\'
+        end
+        _str = _str .. string.sub(str, i, i)
+    end
+    return _str
+end
 
 local setmetatableindex = function(t, index)
     if type(t) == "table" then

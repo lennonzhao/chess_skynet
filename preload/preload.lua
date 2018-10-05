@@ -3,6 +3,7 @@ json = require "cjson"
 require "error_code"
 require "logger_api"
 require "functions"
+require "constants"
 
 local inspect_lib = require "inspect"
 local fixStart  = "\n||||||||||||||||t||||||||||||\n"

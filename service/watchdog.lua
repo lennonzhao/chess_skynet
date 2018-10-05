@@ -1,5 +1,4 @@
 local skynet = require "skynet"
-local uuid = require "uuid"
 local runconf = require(skynet.getenv("runconfig"))
 local protopack = require("protopack_" .. runconf.protopack)
 local socket = require "skynet.socket"
@@ -12,19 +11,8 @@ local login
 local agent = {}
 
 function SOCKET.open(fd, addr)
-	uuid.seed()
-	local c = {}
-	c.fd = fd
-	c.ip = string.match(addr, "([%d.]+):(%d+)")
-	c.agent = nil
-	c.agentaddr = nil
-	c.watchdog = skynet.self()
-	c.session = uuid()
-	
-	skynet.error("New client from : " .. c.ip)
-
+	skynet.error("New client from : " .. addr)
 	skynet.call(gate, "lua", "accept", fd)
-	-- skynet.call(gate, "lua", "forward", fd)
 end
 
 local function close_agent(fd)
@@ -52,21 +40,23 @@ function SOCKET.warning(fd, size)
 	print("socket warning", fd, size)
 end
 
-function SOCKET.data(fd, code, msg)
-	-- print("socket data", fd, msg)
+function SOCKET.data(fd, code, msg, session)
+	-- print("socket data", fd, msg, session)
 	if code == Command.Login then
 		-- 认证后
-		local ret, info = skynet.call(login, "lua", "login", { client = fd, watchdog = skynet.self(), data = msg})
+		local status, info = skynet.call(login, "lua", "login", fd, msg, session)
 		-- 登陆成功后 创建一个agent
-		if ret then
+		if status == AUTH_ERROR.login_success then
 			agent[fd] = skynet.newservice("agent")
-			skynet.call(gate, "lua", "forward", fd)
 			skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
-			skynet.call(agent[fd], "lua", "loginSuc", { info = info })
+
+			local package = protopack.pack(Command.Login, info)
+			socket.write(fd, package)
 		else
+			-- 登陆失败
 			local package = protopack.packHead(Command.Login, {
 				result = {
-					status = 2,
+					status = status,
 				}
 			})
 			socket.write(fd, package)
