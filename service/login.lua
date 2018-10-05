@@ -36,7 +36,7 @@ local visitorLogin = function(data, session)
 			'',
 			data.basic.hotCode or 0,
 			data.os)
-		local ret, info = skynet.call(mysqldb, "lua", "execute", sql)
+		local ret, res = skynet.call(mysqldb, "lua", "execute", sql)
 		if not ret then
 			status = AUTH_ERROR.db_error
 			printError("sp_login error", res)
