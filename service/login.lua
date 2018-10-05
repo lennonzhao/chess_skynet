@@ -55,7 +55,7 @@ local visitorLogin = function(data, session)
 			break
 		end
 		local result = res[1]
-		dump(result)
+		dump(result, '登陆结果')
 		local RET = tonumber(result['@RET'])
 		if RET ~= 0 then
 			status = AUTH_ERROR.db_error
@@ -75,6 +75,7 @@ local visitorLogin = function(data, session)
 			userType  = data.basic.userType,
 			isBinded = false,
 		}
+		dump(loginRsp, "登陆成功")
 	until true
 	return status, loginRsp
 end

@@ -54,6 +54,7 @@ function SOCKET.data(fd, code, msg, session)
 			socket.write(fd, package)
 		else
 			-- 登陆失败
+			print('登陆失败', status)
 			local package = protopack.packHead(Command.Login, {
 				result = {
 					status = status,
@@ -61,6 +62,8 @@ function SOCKET.data(fd, code, msg, session)
 			})
 			socket.write(fd, package)
 		end
+	else
+
 	end
 end
 

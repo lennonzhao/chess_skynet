@@ -38,7 +38,7 @@ end
 
 local function _encode(pbName, msg)
 	if skynet then
-		print('_encode', pbName, msg)
+		-- print('_encode', pbName, msg)
 		return skynet.call(M.pbc, "lua", "encode", pbName, msg)
 	else
 		return pb.encode(pbName, msg)
@@ -47,7 +47,7 @@ end
 
 local function _decode(pbName, pbstr)
 	if skynet then
-		print('_decode', pbName, pbstr)
+		-- print('_decode', pbName, pbstr)
 		return skynet.call(M.pbc, "lua", "decode", pbName, pbstr)
 	else
 		return pb.decode(pbName, pbstr)
@@ -90,8 +90,8 @@ function M.pack(cmd, msg, session)
 	--组成发送字符串 前面两个字节表示包的总长度
 	local str = string.pack(">HI4HI4s2", pblen + 10 + 2, pblen + 6, gameId, session, pbstr)
 
-	print("send:", bin2hex(str), string.len(str), pblen)
-	dump(msg, string.format("send: %s 0x%04x", pbName, cmd))
+	-- print("send:", bin2hex(str), string.len(str), pblen)
+	-- dump(msg, string.format("send: %s 0x%04x", pbName, cmd))
     return str
 end
 
@@ -108,15 +108,15 @@ function M.packHead(cmd, msg, session)
 	--组成发送字符串 前面两个字节表示包的总长度
 	local str = string.pack(">HI4HI4s2", pblen + 10 + 2, pblen + 6, gameId, session, pbstr)
 
-	print("send:", bin2hex(str), string.len(str), pblen)
-	dump(msg, string.format("send: %s 0x%04x", pbName, cmd))
+	-- print("send:", bin2hex(str), string.len(str), pblen)
+	-- dump(msg, string.format("send: %s 0x%04x", pbName, cmd))
     return str
 end
 
 function M.unpackHead(str)
 	local len, gameId, session, pbstr = string.unpack(">I4I2I4s2", str)
-	print("unpack", bin2hex(pbstr))
-	print("pblen", string.len(pbstr))
+	-- print("unpack", bin2hex(pbstr))
+	-- print("pblen", string.len(pbstr))
 	return _decode("common.BaseReq", pbstr), pbstr, session
 end
 
@@ -128,7 +128,7 @@ function M.unpack(str)
 	local pbName = _findReqName(code)
 	local msg = _decode(pbName, pbstr)
 
-	print(string.format("recv: code(0x%04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
+	-- print(string.format("recv: code(0x%04x) pbName(%s) msg->%s session(%d)", code, pbName, msg, session))
     return code, msg, pbName, session
 end
 
