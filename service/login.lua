@@ -46,6 +46,8 @@ local visitorLogin = function(data, session)
 		end
 		local sql = string.format('select @RET, @UID, @GENDER, @NICK, @DIAMOND, @MONEY, @RMB, @WIN, @LOSE, @DRAW, @HEAD_URL, @BUILT_ROOMS, @CUR_ROOM_ID, @AGENT, @VOICE_URL, @SHARE_URL, @DOWNLOAD_URL, @ACTIVITY_URL, @UPDATE_URL, @BIND_AWARD, @NOTICE_URL, @WECHAT_PAY, @BROADCAST, @RED_PACKET, @INVITE_URL, @REGISTER')
 		local ret, res = skynet.call(mysqldb, "lua", "execute", sql)
+		print('ret', ret)
+		print('res', res)
 		if not ret then
 			status = AUTH_ERROR.db_error
 			printError("select sp_login error", res)
