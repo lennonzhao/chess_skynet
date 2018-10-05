@@ -21,8 +21,8 @@ local visitorLogin = function(data, session)
 		local userType = data.basic.userType
 
 		local tel = data.tel
-		local sql = string.format("call sx_game.sp_login('%s','%s',%s,'%s','%s','%s',%s,%s,'%s','%s',%d,'%s',%d,'%s')", 
-			session,
+		local sql = string.format("call sx_game.sp_login(%d,'%s',%s,'%s','%s','%s',%s,%s,'%s','%s',%d,'%s',%d,'%s')", 
+			os.time(),
 			data.imei,
 			data.basic.api,
 			data.basic.verName,
