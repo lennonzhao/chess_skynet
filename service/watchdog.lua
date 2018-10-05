@@ -44,6 +44,7 @@ function SOCKET.data(fd, code, msg, session)
 	-- print("socket data", fd, msg, session)
 	if code == Command.Login then
 		-- 认证后
+		dump(msg, '登录请求')
 		local status, info = skynet.call(login, "lua", "login", fd, msg, session)
 		-- 登陆成功后 创建一个agent
 		if status == AUTH_ERROR.login_success then
