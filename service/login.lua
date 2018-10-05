@@ -59,6 +59,7 @@ local visitorLogin = function(data, session)
 		local RET = tonumber(result['@RET'])
 		if RET ~= 0 then
 			status = AUTH_ERROR.db_error
+			printError("select RET error", RET)
 			break
 		end
 		loginRsp = {
