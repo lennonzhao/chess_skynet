@@ -41,10 +41,11 @@ function CMD.execute(sql)
 		return false, "failed to connect"
 	end
 	print("success to connect to mysql server")
-	local ret = db:query(sql)
+	local ret, res = db:query(sql)
 	db:disconnect()
 
-	dump(ret, '执行sql结果')
+	dump(ret, '执行sql结果 2')
+	dump(res, '执行sql结果 1')
 	if ret.errno then
 		return false, ret.err .. "[" .. ret.errno .. "]"	
 	else
