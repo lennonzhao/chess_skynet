@@ -44,6 +44,7 @@ function CMD.execute(sql)
 	local ret = db:query(sql)
 	db:disconnect()
 
+	dump(ret, '执行sql结果')
 	if ret.errno then
 		return false, ret.err .. "[" .. ret.errno .. "]"	
 	else
