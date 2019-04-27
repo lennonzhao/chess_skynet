@@ -98,7 +98,7 @@ function cmd.getCommand()
 end
 
 function cmd.test()
-	skynet.error("pbc test...")
+	printWarn("pbc test...")
 
 	local data = pb.encode("hall.BuildConfigsReq", {
 		request = {
@@ -110,12 +110,11 @@ function cmd.test()
 
 	local __basepb = pb.decode("hall.BuildConfigsReq", data)
 	if __basepb then
-		skynet.error(__basepb.request.code)
-		skynet.error(__basepb.request.api)
-		skynet.error("gameTypes", __basepb.gameTypes)
-		dump(__basepb.gameTypes)
+		printWarn(__basepb.request.code)
+		printWarn(__basepb.request.api)
+		printWarn("gameTypes", #__basepb.gameTypes)
 	else
-		skynet.error("error")
+		printWarn("error")
 	end
 end
 
