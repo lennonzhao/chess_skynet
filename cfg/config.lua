@@ -13,25 +13,23 @@ start = "main"	-- main script
 nodename = "node1"
 -- snax_interface_g = "snax_g"
 
+-- skynet init
 lualoader 	= 	skynet_root  ..  "lualib/loader.lua"
 preload    	= 	app_root .. "preload/preload.lua"
 
-luaservice 	= 	skynet_root .. "service/?.lua;" .. 
-				skynet_root .. "test/?.lua;" .. 
-				skynet_root .. "examples/?.lua"
+luaservice 	= 	skynet_root .. "service/?.lua;"
 
 lua_path 	= 	skynet_root .. "lualib/?.lua;" .. 
 				skynet_root .. "lualib/compat10/?.lua;" .. 
-				skynet_root .. "lualib/?/init.lua;" .. 
-				skynet_root .. "examples/?.lua"
+				skynet_root .. "lualib/?/init.lua;"
 
 lua_cpath 	= 	skynet_root .. "luaclib/?.so"
 
-snax 		= 	skynet_root .. "examples/?.lua;" .. 
-				skynet_root .. "test/?.lua"
+snax 		= 	""
+
 cpath 		= 	skynet_root .. "cservice/?.so"
 
---our path
+-- our path
 luaservice  = 	app_root .. "service/?.lua;" .. 
 			 	app_root .. "service/?/main.lua;" .. 
 			 	app_root .. "service/?/?.lua;" .. 
