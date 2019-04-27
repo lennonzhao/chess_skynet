@@ -435,7 +435,6 @@ local function default_table(typename)
 			if 'table' ~= type(ret) then
 				return ret
 			end 
-			ERROR('default_table', typename, key)
 			ret = setmetatable({}, { __index = ret })
 			rawset(tb, key, ret)
 			return ret
