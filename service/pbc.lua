@@ -51,12 +51,15 @@ function cmd.mergeCommand(config)
 		local reqName = config.package .. key .. "Req"
 		recvCodeToName[cmd] = reqName
 		recvNameToCode[reqName] = cmd
+
 		local rspName = config.package .. key .. "Rsp"
 		sendCodeToName[cmd] = rspName
 		sendNameToCode[rspName] = cmd
 
 		Command[key] = cmd
 	end
+
+	dump(Command)
 end
 
 function cmd.encode(pbName, msg)
@@ -110,6 +113,7 @@ function cmd.test()
 		skynet.error(__basepb.request.code)
 		skynet.error(__basepb.request.api)
 		skynet.error("gameTypes", __basepb.gameTypes)
+		dump(__basepb.gameTypes)
 	else
 		skynet.error("error")
 	end
