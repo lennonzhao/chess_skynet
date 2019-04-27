@@ -2,7 +2,7 @@ app_root = "$ROOT/"
 skynet_root = "$SKYNET_ROOT/"
 
 logpath = app_root .. "run"
-log_level = "debug"
+log_level = 2
 
 thread = 1
 harbor = 0
@@ -15,7 +15,7 @@ nodename = "node1"
 
 -- skynet init
 lualoader 	= 	skynet_root  ..  "lualib/loader.lua"
-preload    	= 	app_root .. "preload/preload.lua"
+preload    	= 	app_root .. "preload/preload.lua"   --每个服务启动之前预先加载的配置
 
 luaservice 	= 	skynet_root .. "service/?.lua;"
 
@@ -40,7 +40,6 @@ lua_path 	= 	app_root .. "preload/?.lua;" ..
 				app_root .. "cfg/?.lua;" .. 
            		app_root .. "mod/?.lua;".. 
 				app_root .. "lualib/?.lua;" ..
-
 				lua_path
 
 lua_cpath 	= 	app_root .. "luaclib/?.so;" .. 
