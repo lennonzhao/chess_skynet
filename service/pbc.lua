@@ -105,6 +105,7 @@ function cmd.test()
 			code = 0x1001,
 			api = 101,
 		},
+		gameTypes = {1, 2, 3}
 	})
 	skynet.error("pb encode: " .. type(data))
 
@@ -113,6 +114,7 @@ function cmd.test()
 		printWarn(__basepb.request.code)
 		printWarn(__basepb.request.api)
 		printWarn("gameTypes", #__basepb.gameTypes)
+		dump(__basepb.gameTypes)
 	else
 		printWarn("error")
 	end
