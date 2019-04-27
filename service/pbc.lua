@@ -46,7 +46,7 @@ end
 
 function cmd.mergeCommand(config)
 	local commandMap = require("network." .. config.file)
-	
+	dump(commandMap)
 	for key, cmd in pairs(commandMap) do
 		local reqName = config.package .. key .. "Req"
 		recvCodeToName[cmd] = reqName

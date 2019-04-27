@@ -1,4 +1,3 @@
-Command = {}
 local skynet = require "skynet"
 local table = table
 
