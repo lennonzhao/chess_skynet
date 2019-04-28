@@ -16,3 +16,6 @@
 [submodule "3rd/lua-checker"]
 	path = 3rd/lua-checker
 	url = https://github.com/rjpower/lua-checker.git
+[submodule "3rd/lsocket"]
+	path = 3rd/lsocket
+	url = https://github.com/cloudwu/lsocket.git
