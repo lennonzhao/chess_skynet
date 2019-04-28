@@ -10,14 +10,17 @@ skynet.start(function()
     skynet.newservice("debug_console",8000)
 
     skynet.uniqueservice("pbc")
-    skynet.uniqueservice("mysqldb")
+    -- skynet.uniqueservice("mysqldb")
     
-    local watchdog = skynet.newservice("watchdog")
-    skynet.call(watchdog, "lua", "start", {
-        port = 60000,
-        maxclient = max_client,
-        nodelay = true,
-    })
+    -- local watchdog = skynet.newservice("watchdog")
+    -- skynet.call(watchdog, "lua", "start", {
+    --     port = 60000,
+    --     maxclient = max_client,
+    --     nodelay = true,
+    -- })
+    local hub = skynet.uniqueservice "hub"
+    skynet.call(hub, "lua", "open", "0.0.0.0", 8888)
+
     skynet.error("Watchdog listen on", 8888)
     skynet.exit()
 end)
