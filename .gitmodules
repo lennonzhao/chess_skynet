@@ -19,3 +19,6 @@
 [submodule "3rd/lsocket"]
 	path = 3rd/lsocket
 	url = https://github.com/cloudwu/lsocket.git
+[submodule "lsocket"]
+	path = lsocket
+	url = https://github.com/cloudwu/lsocket.git

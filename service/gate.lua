@@ -23,7 +23,7 @@ end
 function handler.message(fd, msg, sz)
 	-- recv a package, forward it
 	local c = assert(connection[fd])
-	local str = netpack.tostring(msg, sz)
+	local str = netpack.tostring(msg, sz) --C指针转成字符串，并释放
 	local code, packet, pbName, session = protopack.unpack(str)
 	if not code then
 		gateserver.closeclient(fd)
