@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local service = require "service"
-local runconf = require(skynet.getenv("runconfig"))
+local runconfig = require(skynet.getenv("runconfig"))
 local log = require "log"
 
 local manager = {}
