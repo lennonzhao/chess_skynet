@@ -48,7 +48,7 @@ service.init {
 	info = users,
 	init = function()
 		for i=1, runconfig.poolsize do
-			log('init pool')
+			log('init pool %d', runconfig.poolsize)
 			table.insert(pool, skynet.newservice "agent")
 		end
 	end
