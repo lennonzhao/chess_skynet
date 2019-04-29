@@ -25,8 +25,8 @@ skynet.start(function()
     })
     
     local hub = skynet.uniqueservice "hub"
-    skynet.call(hub, "lua", "open", "0.0.0.0", 8888)
+    skynet.call(hub, "lua", "open", "0.0.0.0", 7002)
 
-    skynet.error("Watchdog listen on", 8888)
+    skynet.error("Watchdog listen on", 7002)
     skynet.exit()
 end)

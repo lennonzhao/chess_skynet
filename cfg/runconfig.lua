@@ -15,6 +15,8 @@ return {
 		ddz = "libddz",
     },
 
+    poolsize = 1000,
+
 	--各个服务配置
 	service = {
 		--debug_console服务

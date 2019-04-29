@@ -1,18 +1,24 @@
 local skynet = require "skynet"
 local service = require "service"
+local runconf = require(skynet.getenv("runconfig"))
 local log = require "log"
 
 local manager = {}
 local users = {}
+local pool = {}
 
 local function new_agent()
-	-- todo: use a pool
-	return skynet.newservice "agent"
+	return table.remove(pool, 1) or skynet.newservice "agent"
 end
 
 local function free_agent(agent)
 	-- kill agent, todo: put it into a pool maybe better
-	skynet.kill(agent)
+	-- skynet.kill(agent)
+	if #pool >= runconfig.poolsize then
+		skynet.kill(agent)
+	else
+		table.insert(pool, agent)
+	end
 end
 
 function manager.assign(fd, userid)
@@ -40,6 +46,11 @@ end
 service.init {
 	command = manager,
 	info = users,
+	init = function()
+		for i=1, runconfig.poolsize do
+			table.insert(pool, skynet.newservice "agent")
+		end
+	end
 }
 
 

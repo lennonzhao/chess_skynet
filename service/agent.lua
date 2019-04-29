@@ -32,14 +32,12 @@ local function new_user(fd)
 	if data.fd == fd then
 		data.fd = nil
 		skynet.sleep(1000)	-- exit after 10s
-		if data.fd == nil then
-			-- double check
-			if not data.exit then
-				data.exit = true	-- mark exit
-				skynet.call(service.manager, "lua", "exit", data.userid)	-- report exit
-				log("user %s afk", data.userid)
-				skynet.exit()
-			end
+		-- double check
+		if data.fd == nil and not data.exit then
+			data.exit = true	-- mark exit
+			skynet.call(service.manager, "lua", "exit", data.userid)	-- report exit
+			log("user %s afk", data.userid)
+			skynet.exit()
 		end
 	end
 end

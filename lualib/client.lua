@@ -52,6 +52,7 @@ end
 
 function client.init(name)
 	return function ()
+		print('client init proto')
 		local protoloader = skynet.uniqueservice "protoloader"
 		local slot = skynet.call(protoloader, "lua", "index", name .. ".c2s")
 		host = sprotoloader.load(slot):host "package"
