@@ -6,7 +6,6 @@ if _VERSION ~= "Lua 5.3" then
 end
 
 local socket = require "client.socket"
-local proto = require "proto"
 local protopack = require ("protopack_pbc")
 
 local pb = require "protobuf"
