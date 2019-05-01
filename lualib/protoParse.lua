@@ -90,7 +90,7 @@ function M.parseContent(proto, tb)
 end
 
 local MAX_INDENT = 5
-function M.dumpMessage(pbName, packet, tag)
+function M.dump(pbName, packet, tag)
 	if daemon then return end
 	local getPbMessage = function(_pbName)
 		local _pbKeys = string.split(_pbName, ".")

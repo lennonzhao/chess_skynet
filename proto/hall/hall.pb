@@ -1,14 +1,15 @@
 
-õ_
-hall/hall.protohallcommon.proto"7
+˚à
+hall/hall_hz.protohallcommon.proto"H
 Basic
 api (
 verName (	
-userType ("0
+userType (
+hotCode ("0
 HeartBeatReq 
 request (2.common.Request".
 HeartBeatRsp
-result (2.common.Result"í
+result (2.common.Result"ü
 UserInfo
 
 id (&
@@ -18,12 +19,8 @@ playerInfo (2.common.PlayerInfo
 
 isRegister (
 session (	
-firstPayStatus ("=
-
-ReConnInfo
-gameId (
-roomId (
-tableId ("7
+firstPayStatus (
+md5 (	"7
 Config
 worldchatCost (
 bindProxyAward ("…
@@ -39,7 +36,7 @@ ReConnInfo
 account (	
 password	 (	
 	thirdInfo
- (	"¸
+ (	"˛
 LoginRsp
 result (2.common.Result 
 userInfo (2.hall.UserInfo
@@ -47,9 +44,8 @@ ReConnInfo
 isBinded (
 	thirdInfo (	
 
-ip ($
-
-reConnInfo (2.hall.ReConnInfo!
+ip (
+session (	!
 	gameInfos (2.hall.GameInfo
 config	 (2.hall.Config
 proxyUrl
@@ -59,33 +55,64 @@ reConnInfo (2.hall.ReConnInfo!
 shareUrl (	
 	updateUrl (	
 	wechatPay (
-activityUrl (	"/
+activityUrl (	
+	builtCode (
+playCode (
+
+builtCodes (
+isAgent (
+	noticeUrl (	
+	broadcast (	
+	inviteUrl (	
+
+clubGameId ("/
 GameInfoReq 
-request (2.common.Request"B
+request (2.common.Request"P
 GameInfo
 
 id (
 name (	
 type (
-online (	"P
+online (	
+flag ("P
 GameInfoRsp
 result (2.common.Result!
-	gameInfos (2.hall.GameInfo"J
+	gameInfos (2.hall.GameInfo"=
 RankInfoReq 
-request (2.common.Request
-ver (
-name ("Z
+request (2.common.Request
+name ("õ
 
 RankPlayer&
 
-playerInfo (2.common.PlayerInfo
-	earnMoney (
-	earnCharm ("k
+playerInfo (2.common.PlayerInfo
+
+rankPoints (
+rankWinTimes (
+rankDrawTimes (
+rankLoseTimes (
+award ("Ö
+RankSelfPlayer$
+
+rankPlayer (2.hall.RankPlayer
+ranking (
+	rankAward (
+acceptedAward (
+
+acceptable ("å
 RankInfoRsp
 result (2.common.Result
-name (
-ver (!
-players (2.hall.RankPlayer"/
+name (%
+rankPlayers (2.hall.RankPlayer(
+
+selfPlayer (2.hall.RankSelfPlayer">
+RankAwardReq 
+request (2.common.Request
+name ("`
+RankAwardRsp
+result (2.common.Result
+name (
+	rankAward (
+diamond ("/
 TaskInfoReq 
 request (2.common.Request"v
 SingleTaskInfo
@@ -283,21 +310,16 @@ MailboxRsp
 props (2.common.Prop
 charm (
 
-ip (";
+ip ("<
 UserInfoReq 
-request (2.common.Request
-
-id ("∑
+request (2.common.Request
+uid ("p
 UserInfoRsp
 result (2.common.Result$
-baseInfo (2.common.PlayerInfo
-maxMoney (
-charm (
-isLike (
-vipPoint (
-vipMaxPoint (
+baseInfo (2.common.PlayerInfo
 
-ip ("A
+ip (
+isAgent ("A
 BankruptInfoReq 
 request (2.common.Request
 type ("Ö
@@ -340,7 +362,7 @@ signInInfo (2.hall.SignInInfo!
 result (2.common.Result
 labaNum (
 money (
-diamond ("Ñ
+diamond ("ì
 WorldChatBct
 result (2.common.Result
 uid (
@@ -348,7 +370,8 @@ signInInfo (2.hall.SignInInfo!
 nick (	
 type (
 vip (
-extra (	"õ
+extra (	
+count ("õ
 AwardBox
 type (
 
@@ -484,11 +507,15 @@ FriendInfo
 result (2.common.Result
 proxyAccount ("0
 ProxyInfoReq 
-request (2.common.Request"R
+request (2.common.Request"¨
 ProxyInfoRsp
 result (2.common.Result
 proxyUrl (	
-bindCode (":
+bindCode (
+proxyWechatId (	
+proxyWechatNick (	
+changeBinding (
+	changeFee (":
 	FollowReq 
 request (2.common.Request
 uid ("i
@@ -529,9 +556,10 @@ PdkLogInfo
 PdkDetailLogRsp
 result (2.common.Result
 time (1
-pdkDetailLogInfos (2.hall.PdkDetailLogInfo",
+pdkDetailLogInfos (2.hall.PdkDetailLogInfo"9
 ShareReq 
-request (2.common.Request"*
+request (2.common.Request
+url (	"*
 ShareRsp
 result (2.common.Result"+
 Transferred
@@ -578,27 +606,17 @@ senderName (	
 result (2.common.Result"F
 BuildConfigsReq 
 request (2.common.Request
-	gameTypes (">
-	BuildInfo
-round (
-diamond (
-	buildJson (	"c
-BuildConfig
-gameType (#
-
-buildInfos (2.hall.BuildInfo
-
-AA (
-	buildJson (	"U
+	gameTypes ("X
 BuildConfigsRsp
-result (2.common.Result"
-configs (2.hall.BuildConfig"t
+result (2.common.Result%
+
+buildInfos (2.common.BuildInfo"t
 	PointsReq 
 request (2.common.Request
 gameType (
 start (
 max (
-needTodayPoints ("Ñ
+needTodayPoints ("ñ
 
 PointsInfo
 code (
@@ -606,7 +624,8 @@ PointsInfo
 time (
 round (
 points ()
-pointsDetails (2.hall.PointsDetail"é
+pointsDetails (2.hall.PointsDetail
+gameType ("é
 	PointsRsp
 result (2.common.Result
 gameType (%
@@ -616,17 +635,20 @@ PointsInfo
 PointsDetailReq 
 request (2.common.Request
 gameType (
-time ("N
+time ("n
 PointsDetail
 uid (
 nick (	
 points (
-totalPoints ("[
+totalPoints (
+infos (	
+headUrl (	"l
 RoundPoints
 round ()
 PointsDetails (2.hall.PointsDetail
 
-playbackId (	"y
+playbackId (	
+endTime (	"y
 PointsDetailRsp
 result (2.common.Result
 gameType (
@@ -639,7 +661,14 @@ WechatInfo
 account (	"W
 ProxyWechatRsp
 result (2.common.Result%
-wechatInfos (2.hall.WechatInfo"8
+wechatInfos (2.hall.WechatInfo"R
+BuildReq 
+request (2.common.Request$
+	buildInfo (2.common.BuildInfo"I
+BuildRsp
+result (2.common.Result
+code (
+diamond ("8
 PlaybackInfo
 uids (
 opTime (
@@ -652,4 +681,242 @@ WechatInfo
 PlaybackRsp
 result (2.common.Result)
 playbackInfos (2.hall.PlaybackInfo
-uid (
+uid ("/
+CoinInfoReq 
+request (2.common.Request"ã
+CoinInfo
+name (	
+type (
+capacity (
+level (
+
+admittance (
+flag (
+
+build_json (	
+ante ("P
+CoinInfoRsp
+result (2.common.Result!
+	coinInfos (2.hall.CoinInfo"2
+StateConfigReq 
+request (2.common.Request"g
+StateConfigRsp
+result (2.common.Result
+dayJson (	
+infoJson (	
+
+matchAward (	"2
+DaySignInfoReq 
+request (2.common.Request"?
+DaySignInfo
+day (
+	awardType (
+awardNum ("u
+DaySignInfoRsp
+result (2.common.Result 
+infos (2.hall.DaySignInfo
+continue (
+awarded (".
+
+DaySignReq 
+request (2.common.Request"^
+
+DaySignRsp
+result (2.common.Result
+continue (
+wallet (2.common.Wallet"1
+InviteInfoReq 
+request (2.common.Request"X
+Invitee&
+
+playerInfo (2.common.PlayerInfo
+	curRounds (
+
+inviteTime (	"f
+
+InviteInfo
+level (
+totalInvitees (
+	awardType (
+awardNum (
+award ("©
+InviteInfoRsp
+result (2.common.Result%
+inviteInfos (2.hall.InviteInfo
+totalRounds (
+curInvitees ('
+unfinishInvitees (2.hall.Invitee"B
+InviteBindReq 
+request (2.common.Request
+inviter ("/
+InviteBindRsp
+result (2.common.Result"A
+InviteAwardReq 
+request (2.common.Request
+level ("_
+InviteAwardRsp
+result (2.common.Result
+wallet (2.common.Wallet
+level ("/
+PropInfoReq 
+request (2.common.Request"I
+PropInfo
+
+id (
+name (	
+costType (
+	costValue ("P
+PropInfoRsp
+result (2.common.Result!
+	propInfos (2.hall.PropInfo"M
+AuthenticateReq 
+request (2.common.Request
+name (	
+
+id (	"1
+AuthenticateRsp
+result (2.common.Result".
+
+ForwardReq 
+request (2.common.Request":
+
+ForwardRsp
+result (2.common.Result
+data (	"6
+InvitorRankInfoReq 
+request (2.common.Request"0
+InvitorInfo
+nick (	
+incomeMoney ("]
+InvitorRankInfoRsp
+result (2.common.Result'
+invitorInfos (2.hall.InvitorInfo"P
+InviteeInfoReq 
+request (2.common.Request
+start (
+count ("f
+InviteeInfo
+uid (
+nick (	
+chargeMoney (
+incomeMoney (
+
+inviteTime (	"Y
+InviteeInfoRsp
+result (2.common.Result'
+inviteeInfos (2.hall.InviteeInfo"C
+InviteeBindReq 
+request (2.common.Request
+inviter ("0
+InviteeBindRsp
+result (2.common.Result"R
+MatchSignReq 
+request (2.common.Request
+gameType (
+cancel ("R
+MatchSignRsp
+result (2.common.Result
+gameType (
+playCode ("S
+MatchCfgReq 
+request (2.common.Request
+gameType (
+playCode ("á
+MatchCfgRsp
+result (2.common.Result
+gameType (
+	startTime (
+endTime (
+	onlineNum (
+canSign ("1
+MatchAwardReq 
+request (2.common.Request"ö
+MatchAwardRsp
+result (2.common.Result
+rank (
+point (
+
+rewardType (
+	rewardNum (
+
+rewardTime (	
+	matchName (	"É
+ActivityInfo
+
+id (
+desc (	
+progress (
+target (
+
+rewardType (
+	rewardNum (
+hasAward ("2
+ActivityCfgReq 
+request (2.common.Request"ù
+ActivityCfgRsp
+result (2.common.Result#
+actList (2.hall.ActivityInfo
+
+rewardType (
+	rewardNum (
+curNum (
+hasCash ("@
+ActivityAwardReq 
+request (2.common.Request
+
+id ("e
+ActivityAwardRsp
+result (2.common.Result
+
+rewardType (
+	rewardNum (
+
+id ("3
+ActivityCashReq 
+request (2.common.Request"X
+ActivityCashRsp
+result (2.common.Result
+
+rewardType (
+	rewardNum ("1
+RedPacketsReq 
+request (2.common.Request"à
+RedPacketInfo
+
+id (
+type (
+money (
+count (
+open (
+	beginTime (	
+endTime (	
+state ("\
+RedPacketsRsp
+result (2.common.Result+
+redPacketInfos (2.hall.RedPacketInfo"I
+OpenRedPacketReq 
+request (2.common.Request
+redPacketId ("m
+OpenRedPacketRsp
+result (2.common.Result
+	openMoney (
+	redPacket (
+redPacketId ("P
+RaiseRedPacketRecordReq 
+request (2.common.Request
+redPacketId ("g
+RaiseRedPacketRecordInfo
+uid (
+rmb (
+state (
+	startTime (	
+endTime (	"|
+RaiseRedPacketRecordRsp
+result (2.common.ResultA
+raiseRedPacketRecordInfos (2.hall.RaiseRedPacketRecordInfo"6
+RedPacketComingReq 
+request (2.common.Request"V
+RedPacketComingRsp
+result (2.common.Result
+uid (
+redPacketId (

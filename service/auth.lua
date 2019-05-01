@@ -35,6 +35,7 @@ function cli:ping()
 	log("ping")
 end
 
+-- 轮训等待客户端发送登录请求
 function auth.shakehand(fd)
 	local c = client.dispatch { fd = fd }
 	return c.userid
@@ -43,5 +44,4 @@ end
 service.init {
 	command = auth,
 	info = users,
-	init = client.init "proto",
 }

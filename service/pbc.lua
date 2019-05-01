@@ -5,7 +5,7 @@ local protoPrase = require "protoParse"
 
 local pb_files = {
 	"proto/common.pb",
-	"proto/hall/hall_hz.pb",
+	"proto/hall/hall.pb",
 }
 
 local command_files = {

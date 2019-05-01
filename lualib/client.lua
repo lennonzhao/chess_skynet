@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local proxy = require "socket_proxy"
-local sprotoloader = require "sprotoloader"
+local protopack = require "protopack_pbc"
 local log = require "log"
 
 local client = {}
@@ -18,12 +18,11 @@ function client.dispatch( c )
 	local ERROR = {}
 	while true do
 		local msg, sz = proxy.read(fd)
-		local type, name, args, response = host:dispatch(msg, sz)
-		assert(type == "REQUEST")
-		if c.exit then
-			return c
-		end
-		local f = handler[name]
+		local str = netpack.tostring(msg, sz) --C指针转成字符串，并释放
+		local code, packet, pbName, session = protopack.unpack(str)
+		assert(code)
+		if c.exit then return c end --握手成功
+		local f = handler[pbName]
 		if f then
 			-- f may block , so fork and run
 			skynet.fork(function()
