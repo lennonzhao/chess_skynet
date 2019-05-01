@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+local service = require "service"
 local runconf = require(skynet.getenv("runconfig"))
 local protopack = require("protopack_" .. runconf.protopack)
 
@@ -108,11 +109,9 @@ function CMD.logout()
 
 end
 
-skynet.start(function()
-	skynet.dispatch("lua", function(session, source, cmd, ...)
-		local f = CMD[cmd]
-		skynet.ret(skynet.pack(f(...)))
-	end)
-
-	mysqldb = skynet.queryservice('mysqldb')
-end)
+service.init {
+	command = CMD,
+	init = function()
+		mysqldb = skynet.queryservice('mysqldb')
+	end
+}

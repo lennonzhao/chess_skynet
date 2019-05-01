@@ -7,11 +7,7 @@ end
 
 local socket = require "client.socket"
 local proto = require "proto"
-local sproto = require "sproto"
 local protopack = require ("protopack_pbc")
-
-local host = sproto.new(proto.s2c):host "package"
-local request = host:attach(sproto.new(proto.c2s))
 
 local pb = require "protobuf"
 
@@ -137,16 +133,16 @@ send_request("hall.LoginReq", {
     thirdInfo = ""
 })
 -- send_request("set", { what = "hello", value = "world" })
--- while true do
--- 	dispatch_package()
--- 	-- local cmd = socket.readstdin()
--- 	-- if cmd then
--- 	-- 	if cmd == "quit" then
--- 	-- 		send_request("quit")
--- 	-- 	else
--- 	-- 		send_request("get", { what = cmd })
--- 	-- 	end
--- 	-- else
--- 	-- 	socket.usleep(100)
--- 	-- end
--- end
+while true do
+	dispatch_package()
+	local cmd = socket.readstdin()
+	if cmd then
+		if cmd == "quit" then
+			send_request("quit")
+		else
+			send_request("get", { what = cmd })
+		end
+	else
+		socket.usleep(100)
+	end
+end

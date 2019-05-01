@@ -118,19 +118,10 @@ function cmd.test()
 	end
 end
 
-skynet.start(function ()
-	skynet.error("init pbc...")
-	cmd.init()
-	cmd.test()
-	skynet.dispatch("lua", function (session, address, command, ...)
-		print('[pbc]', address, command, ...)
-		local f = cmd[command]
-		if not f then
-			skynet.ret(skynet.pack(nil, "Invalid command" .. command))
-		end
-		local ret = f(...)
-		skynet.ret(skynet.pack(ret))
-	end)
-
-	skynet.register("pbc")
-end)
+service.init {
+	command = cmd,
+	init = function()
+		cmd.init()
+		cmd.test()
+	end
+}
