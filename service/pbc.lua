@@ -1,3 +1,4 @@
+local service = require "service"
 local skynet = require "skynet"
 require "skynet.manager"
 local pb = require "protobuf"
