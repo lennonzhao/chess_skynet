@@ -7,7 +7,7 @@ package.cpath = string.format("%s/skynet/luaclib/?.so;%s/luaclib/?.so", PATH, PA
 
 local message = require "simplemessage"
 
-message.register(string.format("%s/proto/%s", PATH, "proto"))
+message.register()
 
 message.peer(IP, 5678)
 message.connect()
@@ -57,7 +57,25 @@ function event:push(args)
 	print("server push", args.text)
 end
 
-message.request("signin", { userid = "alice" })
+-- message.request("signin", { userid = "alice" })
+message.send_request("hall.LoginReq", {
+	request = {
+		code = 0x0001,
+		api = 122,
+	},
+    basic = {
+        api = 122,
+        hotCode = 999,
+        userType = 0,
+        verName = "1.0.4"
+    },
+    imei = "00b204e9800998ecf8427e6878553627",
+    modelName = "Coolpad 5219",
+    os = "windows",
+    simType = 0,
+    tel = "",
+    thirdInfo = ""
+})
 
 while true do
 	message.update()
