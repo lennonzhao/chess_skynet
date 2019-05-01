@@ -1,7 +1,6 @@
 local skynet = require "skynet"
 local runconf = require(skynet.getenv("runconfig"))
 local protopack = require("protopack_" .. runconf.protopack)
-local tool = require "tool"
 
 local mysqldb
 
@@ -59,7 +58,7 @@ local visitorLogin = function(data, session)
 			printError("select sp_login empty")
 			break
 		end
-		print('res', tool.dump(res))
+		print('res', dump(res))
 		local result = res[1]
 		dump(res, '登陆结果')
 		dump(result, '登陆结果')
