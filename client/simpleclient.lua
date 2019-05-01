@@ -1,5 +1,5 @@
 local PATH,IP = ...
-
+print(PATH, IP)
 IP = IP or "127.0.0.1"
 
 package.path = string.format("%s/client/?.lua;%s/skynet/lualib/?.lua", PATH, PATH)
