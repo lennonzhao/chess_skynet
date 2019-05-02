@@ -14,7 +14,7 @@ function message.register()
 		"proto/hall/hall.pb",
 	}
 	for _,v in ipairs(pb_files) do
-		protopack.register_file(v)
+		protopack.register(v)
 	end
 end
 
@@ -24,7 +24,9 @@ function message.peer(addr, port)
 end
 
 function message.connect()
+	print('connect', var.addr, var.port)
 	socket.connect(var.addr, var.port)
+	print('connect')
 	socket.isconnect()
 end
 
@@ -40,6 +42,7 @@ function message.request(name, args)
 end
 
 function message.send_request(name, msg)
+	print 'send_request'
 	var.session_id = var.session_id + 1
 	var.session_id[var.session_id] = {name = name, req = msg}
 	local package = protopack.pack(10000, name, msg, 0)

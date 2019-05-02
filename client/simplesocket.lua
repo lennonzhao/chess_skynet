@@ -8,15 +8,19 @@ socket.error = setmetatable({}, { __tostring = function() return "[socket error]
 
 function socket.connect(addr, port)
 	assert(fd == nil)
+	print 'lsocket connect'
 	fd = lsocket.connect(addr, port)
 	if fd == nil then
+		print('error', addr, port)
 		error(socket.error)
 	end
-
+	print 'select'
 	lsocket.select(nil, {fd})
 	local ok, errmsg = fd:status()
+	print('status', ok, errmsg)
 	if not ok then
-		error(socket.error)
+		print 'error not ok'
+		error(errmsg)
 	end
 
 	message = ""
