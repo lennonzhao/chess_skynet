@@ -2,7 +2,10 @@ local pb = require "protobuf"
 local ret, skynet = pcall(function() 
 	return require "skynet"
 end)
-if not ret then skynet = nil end
+if not ret then 
+	skynet = nil
+	require "pack"
+end
 
 --协议号映射表
 local print = skynet and skynet.error or print
@@ -69,7 +72,7 @@ local function _findRspName(cmd)
 	end
 end
 
-local function _pack(status, name, msg, msgType)
+function M.pack(status, name, msg, msgType)
 	--pb协议头
     status = status or 0
     local msg_head = {
@@ -83,31 +86,25 @@ local function _pack(status, name, msg, msgType)
     if status >= 0 then
 	    --pb协议数据
 	    local buf_body = _encode(name, msg)
-	    len = len + #buf_body + 1
+	    len = len + 2 + #buf_body + 1
 	    pack = string.pack(">Hs2s2c1", len, buf_head, buf_body, 't')
 	else
 		len	 = len + 1
-		pack = string.pack(">Hs2s1", len, buf_head, "", 't')
+		pack = string.pack(">Hs2s1", len, buf_head, 't')
 	end
-    -- if status == 0 then
-    -- 	local buf_body = skynet.call()
-    --     local buf_body = skynet.call(M.pbc, "lua", "encode", name, msg)
-    --     len = 2 + #buf_head + 2 + #buf_body + 1
-    --     pack = string.pack(">Hs2s2c1", len, buf_head, buf_body, 't')
-    -- else
-    --     --返回码不为0时，只下发pb协议头
-    --     len = 2 + #buf_head + 1
-    --     pack = string.pack(">Hs2s1", len, buf_head, 't')
-    -- end
     return pack
 end
 
-function M.pack(status, name, msg)
-	return _pack(status, name, msg, 2)
-end
-
 function M.packReq(name, msg)
-	return _pack(0, name, msg, 1) --请求
+    local msg_head = {
+        msgType = 1,  --请求包
+        pbName = name,
+    }
+    local buf_head = _encode("common.MsgHead", msg_head)
+	local buf_body = _encode(name, msg)
+	local len = 2 + #buf_head + 2 + #buf_body + 1
+	local pack = string.pack(">HPPb", len, buf_head, buf_body, string.byte('t'))
+    return pack
 end
 
 function M.unpack(data)
