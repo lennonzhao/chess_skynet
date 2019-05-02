@@ -58,11 +58,8 @@ function event:push(args)
 end
 
 -- message.request("signin", { userid = "alice" })
+print('string.unpack', string.unpack)
 message.send_request("hall.LoginReq", {
-	request = {
-		code = 0x0001,
-		api = 122,
-	},
     basic = {
         api = 122,
         hotCode = 999,

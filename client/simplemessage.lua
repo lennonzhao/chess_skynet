@@ -43,7 +43,6 @@ end
 
 function message.send_request(name, msg)
 	print 'send_request'
-	dump(msg)
 	var.session_id = var.session_id + 1
 	var.session[var.session_id] = {name = name, req = msg}
 	local pack = protopack.packReq(name, msg)
