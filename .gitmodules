@@ -22,3 +22,6 @@
 [submodule "3rd/lsocket"]
 	path = 3rd/lsocket
 	url = https://github.com/cloudwu/lsocket.git
+[submodule "3rd/lpack"]
+	path = 3rd/lpack
+	url = https://github.com/LuaDist/lpack.git
