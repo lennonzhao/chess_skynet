@@ -1,5 +1,4 @@
 local pb = require "protobuf"
-local runconfig = require "runconfig"
 local ret, skynet = pcall(function() 
 	return require "skynet"
 end)
@@ -80,7 +79,7 @@ function M.pack(cmd, msg, session)
 	msg.result = msg.result or {}
 	msg.result.request = {
 		code = cmd,
-		api = runconfig.api,
+		api = 102,
 	}
 	local gameId = 0
 	local pbName = _findRspName(cmd)
@@ -100,7 +99,7 @@ function M.packHead(cmd, msg, session)
 	msg.result = msg.result or {}
 	msg.result.request = {
 		code = cmd,
-		api = runconfig.api,
+		api = 102,
 	}
 	local gameId = 0
 	local pbstr = _encode("common.BaseRsp", msg)
