@@ -65,7 +65,7 @@ local function send_request(name, msg)
 	-- local str = request(name, msg, session)
 	-- send_package(fd, str)
 	-- print("Request:", session)
-	local package = protopack.pack(10000, name, msg, 0)
+	local package = protopack.pack(10000, msg, 0)
 	socket.send(fd, package)
 	-- local str = pb.encode(name, msg)
 	-- local package = string.pack(">s2", str)
@@ -132,16 +132,16 @@ send_request("hall.LoginReq", {
     thirdInfo = ""
 })
 -- send_request("set", { what = "hello", value = "world" })
-while true do
-	dispatch_package()
-	local cmd = socket.readstdin()
-	if cmd then
-		if cmd == "quit" then
-			send_request("quit")
-		else
-			send_request("get", { what = cmd })
-		end
-	else
-		socket.usleep(100)
-	end
-end
+-- while true do
+-- 	dispatch_package()
+-- 	local cmd = socket.readstdin()
+-- 	if cmd then
+-- 		if cmd == "quit" then
+-- 			send_request("quit")
+-- 		else
+-- 			send_request("get", { what = cmd })
+-- 		end
+-- 	else
+-- 		socket.usleep(100)
+-- 	end
+-- end
