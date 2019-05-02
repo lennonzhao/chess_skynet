@@ -3,7 +3,7 @@ print(PATH, IP)
 IP = IP or "127.0.0.1"
 
 package.path = string.format("%s/client/?.lua;%s/lualib/?.lua;%s/skynet/lualib/?.lua", PATH, PATH, PATH)
-package.cpath = string.format("%s/3rd/lsocket/?.so;%s/skynet/luaclib/?.so;%s/luaclib/?.so;%s/skynet/3rd/lua/?.so", PATH, PATH, PATH, PATH)
+package.cpath = string.format("%s/3rd/lsocket/?.so;%s/3rd/pbc/binding/lua/?.so;%s/skynet/luaclib/?.so;%s/skynet/3rd/lua/?.so", PATH, PATH, PATH, PATH)
 
 local message = require "simplemessage"
 
