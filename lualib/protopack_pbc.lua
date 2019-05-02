@@ -83,7 +83,7 @@ function M.pack(cmd, msg, session)
 	}
 	local gameId = 0
 	local pbName = _findRspName(cmd)
-
+	print(pbName)
 	local pbstr = _encode(pbName, msg)
 	local pblen = string.len(pbstr)
 	--组成发送字符串 前面两个字节表示包的总长度
@@ -110,6 +110,17 @@ function M.packHead(cmd, msg, session)
 	-- print("send:", bin2hex(str), string.len(str), pblen)
 	-- dump(msg, string.format("send: %s 0x%04x", pbName, cmd))
     return str
+end
+
+function M.packReq(cmd, msg, session)
+	session = session or 0
+	msg.request = msg.request or {}
+	msg.request.code = cmd
+	msg.request.api = 102
+
+	local gameId = 0
+	local pbstr = _encode("common.BaseReq")
+
 end
 
 function M.unpackHead(str)

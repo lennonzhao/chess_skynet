@@ -90,5 +90,5 @@ skynet.start(function()
 
 	Command = protopack.getCommand()
 	gate = skynet.newservice("gate")
-	login = skynet.newservice("login")
+	-- login = skynet.newservice("login")
 end)

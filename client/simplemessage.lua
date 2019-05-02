@@ -1,5 +1,5 @@
 local socket = require "simplesocket"
-local protopack = require "protopack_pbc"
+local protopack = require "lualib.protopack_pbc"
 
 local message = {}
 local var = {
@@ -37,15 +37,18 @@ end
 function message.request(name, args)
 	var.session_id = var.session_id + 1
 	var.session[var.session_id] = { name = name, req = args }
-	socket.write(var.request(name , args, var.session_id))
+	socket.write(var.request(name, args, var.session_id))
 	return var.session_id
 end
 
 function message.send_request(name, msg)
 	print 'send_request'
+	dump(msg)
 	var.session_id = var.session_id + 1
-	var.session_id[var.session_id] = {name = name, req = msg}
-	local package = protopack.pack(10000, name, msg, 0)
+	var.session[var.session_id] = {name = name, req = msg}
+	local str = protopack.packHead(10000, msg, 0)
+	local body = protopack.
+	local package = protopack.pack(10000, msg, 0)
 	socket.write(package)
 	return var.session_id
 end

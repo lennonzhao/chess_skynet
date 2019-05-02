@@ -343,11 +343,9 @@ function CMD.loginSuc(data)
     })
 end
 
-skynet.start(function()
-	Command = protopack.getCommand()
-
-	skynet.dispatch("lua", function(_,_, command, ...)
-		local f = CMD[command]
-		skynet.ret(skynet.pack(f(...)))
-	end)
-end)
+service.init {
+	command = CMD,
+	init = function()
+		Command = protopack.getCommand()
+	end
+}

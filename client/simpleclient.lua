@@ -9,7 +9,7 @@ local message = require "simplemessage"
 
 message.register()
 print "register"
-message.peer(IP, 62000)
+message.peer(IP, 7009)
 message.connect()
 print "connected"
 local event = {}
