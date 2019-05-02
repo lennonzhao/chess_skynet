@@ -41,7 +41,7 @@ function SOCKET.warning(fd, size)
 end
 
 function SOCKET.data(fd, msg)
-	print('socket data', msg)
+	print('222222222socket data', msg)
 
 	-- if code == Command.Login then
 	-- 	-- 认证后
