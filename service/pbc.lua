@@ -98,31 +98,9 @@ function cmd.getCommand()
 	return Command
 end
 
-function cmd.test()
-	printWarn("pbc test...")
-
-	local data = pb.encode("hall.BuildConfigsReq", {
-		request = {
-			code = 0x1001,
-			api = 101,
-		},
-	})
-	skynet.error("pb encode: " .. type(data))
-
-	local __basepb = pb.decode("hall.BuildConfigsReq", data)
-	if __basepb then
-		printWarn(__basepb.request.code)
-		printWarn(__basepb.request.api)
-		printWarn("gameTypes", #__basepb.gameTypes)
-	else
-		printWarn("error")
-	end
-end
-
 service.init {
 	command = cmd,
 	init = function()
 		cmd.init()
-		cmd.test()
 	end
 }
