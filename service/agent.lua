@@ -16,7 +16,7 @@ end
 
 --[[处理玩家发过来的包]]
 local function recv_request(session, source, msg, sz)
-	print('recv_request 11111111111')
+	log('recv_request 11111111111')
 	local str = netpack.tostring(msg, sz)
 	local pbName, msg, status = protopack.unpack(str)
 	log(pbName)
