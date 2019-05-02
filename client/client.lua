@@ -1,4 +1,4 @@
-package.cpath = "luaclib/?.so;skynet/luaclib/?.so"
+package.cpath = "3rd/pbc/binding/lua/?.so;skynet/luaclib/?.so"
 package.path = "client/?.lua;lualib/?.lua;skynet/lualib/?.lua;cfg/?.lua;"
 
 if _VERSION ~= "Lua 5.3" then
