@@ -2,7 +2,7 @@ local PATH,IP = ...
 print(PATH, IP)
 IP = IP or "127.0.0.1"
 
-package.path = string.format("%s/client/?.lua;;%s/skynet/lualib/?.lua", PATH, PATH)
+package.path = string.format("%s/?.lua;%s/client/?.lua;%s/skynet/lualib/?.lua", PATH, PATH, PATH)
 package.cpath = string.format("%s/3rd/lsocket/?.so;%s/3rd/pbc/binding/lua/?.so;%s/skynet/luaclib/?.so;%s/skynet/3rd/lua/?.so", PATH, PATH, PATH, PATH)
 
 local message = require "simplemessage"
@@ -59,10 +59,6 @@ end
 
 -- message.request("signin", { userid = "alice" })
 message.send_request("hall.LoginReq", {
-	request = {
-		code = 0x0001,
-		api = 122,
-	},
     basic = {
         api = 122,
         hotCode = 999,

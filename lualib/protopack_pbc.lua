@@ -79,7 +79,7 @@ local function _pack(status, name, msg, msgType)
     }
     local buf_head = _encode("common.MsgHead", msg_head)
     local pack
-    local len = 2 + #buf_body
+    local len = 2 + #buf_head
     if status >= 0 then
 	    --pb协议数据
 	    local buf_body = _encode(name, msg)
