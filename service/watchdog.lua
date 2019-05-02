@@ -42,7 +42,9 @@ end
 
 function SOCKET.data(fd, msg)
 	skynet.error('222222222socket data')
-	local 
+	local pbName, msg = protopack.unpack(msg)
+	skynet.error(pbName)
+	skynet.error(msg)
 	-- if code == Command.Login then
 	-- 	-- 认证后
 	-- 	dump(msg, '登录请求')
