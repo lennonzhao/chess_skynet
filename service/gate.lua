@@ -45,6 +45,7 @@ function handler.connect(fd, addr)
 		session = uuid(),	--session
 	}
 	connection[fd] = c
+	print('connect')
 	skynet.send(watchdog, "lua", "socket", "open", fd, addr)
 end
 
