@@ -1,18 +1,10 @@
 
-ô
-common.protocommon"$
-Request
-code (
-api ("+
-BaseReq 
-request (2.common.Request"[
-Result 
-request (2.common.Request
-status (
-message (	
-gameId (")
-BaseRsp
-result (2.common.Result"è
+Õ
+common.protocommon":
+MsgHead
+msgType (
+pbName (	
+status ("è
 
 PlayerInfo
 

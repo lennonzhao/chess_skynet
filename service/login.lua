@@ -112,6 +112,6 @@ end
 service.init {
 	command = CMD,
 	init = function()
-		mysqldb = skynet.queryservice('mysqldb')
+		-- mysqldb = skynet.queryservice('mysqldb')
 	end
 }

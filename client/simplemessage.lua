@@ -46,10 +46,8 @@ function message.send_request(name, msg)
 	dump(msg)
 	var.session_id = var.session_id + 1
 	var.session[var.session_id] = {name = name, req = msg}
-	local str = protopack.packHead(10000, msg, 0)
-	local body = protopack.
-	local package = protopack.pack(10000, msg, 0)
-	socket.write(package)
+	local pack = protopack.packReq(name, msg)
+	socket.write(pack)
 	return var.session_id
 end
 

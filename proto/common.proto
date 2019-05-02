@@ -1,27 +1,9 @@
 package common;
-/*
-	请求基本信息
-*/
-message Request {
-	required uint32 code = 1; 		//操作码
-	optional uint32 api  = 2; 		//API
-}
 
-message BaseReq {
-	required Request request = 1; 	//请求码
-}
-/*
-	请求结果基本信息
-*/
-message Result {
-	optional Request 	request 	= 1; 	//操作码
-	optional uint32 	status 		= 2;  	//状态码
-	optional string  	message  	= 3; 	//提示信息
-	optional uint32 	gameId 		= 4;  	//游戏ID
-}
-
-message BaseRsp {
-	optional common.Result result 	= 1;   	//结果状态
+message MsgHead {
+	required uint32 msgType = 1;    //协议数据类型 1表示请求包 2表示响应包 3 推送包
+    required string pbName  = 2;    //协议结构名
+    required int32 status   = 3;    //通讯协议出错码 只用在响应包中 非0表示失败 小于0将无协议头
 }
 
 /*
