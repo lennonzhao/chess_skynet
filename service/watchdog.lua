@@ -40,32 +40,33 @@ function SOCKET.warning(fd, size)
 	print("socket warning", fd, size)
 end
 
-function SOCKET.data(fd, code, msg, session)
-	-- print("socket data", fd, msg, session)
-	if code == Command.Login then
-		-- 认证后
-		dump(msg, '登录请求')
-		local status, info = skynet.call(login, "lua", "login", fd, msg, session)
-		-- 登陆成功后 创建一个agent
-		if status == AUTH_ERROR.login_success then
-			agent[fd] = skynet.newservice("agent")
-			skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
+function SOCKET.data(fd, msg)
+	print('socket data', msg)
 
-			local package = protopack.pack(Command.Login, info)
-			socket.write(fd, package)
-		else
-			-- 登陆失败
-			print('登陆失败', status)
-			local package = protopack.packHead(Command.Login, {
-				result = {
-					status = status,
-				}
-			})
-			socket.write(fd, package)
-		end
-	else
+	-- if code == Command.Login then
+	-- 	-- 认证后
+	-- 	dump(msg, '登录请求')
+	-- 	local status, info = skynet.call(login, "lua", "login", fd, msg, session)
+	-- 	-- 登陆成功后 创建一个agent
+	-- 	if status == AUTH_ERROR.login_success then
+	-- 		agent[fd] = skynet.newservice("agent")
+	-- 		skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
 
-	end
+	-- 		local package = protopack.pack(Command.Login, info)
+	-- 		socket.write(fd, package)
+	-- 	else
+	-- 		-- 登陆失败
+	-- 		print('登陆失败', status)
+	-- 		local package = protopack.packHead(Command.Login, {
+	-- 			result = {
+	-- 				status = status,
+	-- 			}
+	-- 		})
+	-- 		socket.write(fd, package)
+	-- 	end
+	-- else
+
+	-- end
 end
 
 function CMD.start(conf)
