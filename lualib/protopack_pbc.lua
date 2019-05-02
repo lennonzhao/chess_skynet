@@ -111,7 +111,7 @@ function M.unpack(data)
     print("---------------Unpack")
     local buf_head, buf_body, ch_end = string.unpack(">s2s2c1", data)
     local msg_head = _decode("common.MsgHead", buf_head)
-    local msg_body = _decode(msgHead.pbName, buf_body)
+    local msg_body = _decode(msg_head.pbName, buf_body)
     return msg_head.msgname, msg_body, msg_head.status
 end
 
