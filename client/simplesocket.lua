@@ -60,8 +60,7 @@ function socket.read(ti)
 	end
 end
 
-function socket.write(msg)
-	local pack = string.pack(">s2", msg)
+function socket.write(pack)
 	repeat
 		local bytes = fd:send(pack)
 		if not bytes then
