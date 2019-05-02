@@ -38,25 +38,26 @@ function socket.close()
 end
 
 function socket.read(ti)
+	
 	while true do
-		local ok, msg, n = pcall(string.unpack, ">s2", message)
-		if not ok then
-			local rd = lsocket.select({fd}, ti) 
-			if not rd then
-				return nil
-			end
-			if next(rd) == nil then
-				return nil
-			end
-			local p = fd:recv()
-			if not p then
-				error(socket.error)
-			end
-			message = message .. p
-		else
-			message = message:sub(n)
-			return msg
-		end
+		-- local ok, msg, n = pcall(string.unpack, ">s2", message)
+		-- if not ok then
+		-- 	local rd = lsocket.select({fd}, ti) 
+		-- 	if not rd then
+		-- 		return nil
+		-- 	end
+		-- 	if next(rd) == nil then
+		-- 		return nil
+		-- 	end
+		-- 	local p = fd:recv()
+		-- 	if not p then
+		-- 		error(socket.error)
+		-- 	end
+		-- 	message = message .. p
+		-- else
+		-- 	message = message:sub(n)
+		-- 	return msg
+		-- end
 	end
 end
 
