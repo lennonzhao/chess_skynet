@@ -16,11 +16,11 @@ end
 
 --[[处理玩家发过来的包]]
 local function recv_request(session, source, msg, sz)
-	log('recv_request 11111111111')
+	skynet.error('recv_request 11111111111')
 	local str = netpack.tostring(msg, sz)
 	local pbName, msg, status = protopack.unpack(str)
-	log(pbName)
-	log(status)
+	skynet.error(pbName)
+	skynet.error(status)
 	-- INFO("client_dispatch", session, source, cmd, msg, pbName, check)
 	-- protopack.dump(pbName, msg, string.format("0x%04x", cmd))
 	-- dump(Command, "Command")

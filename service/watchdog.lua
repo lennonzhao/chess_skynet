@@ -41,7 +41,7 @@ function SOCKET.warning(fd, size)
 end
 
 function SOCKET.data(fd, msg)
-	log('222222222socket data', msg)
+	skynet.error('222222222socket data', msg)
 
 	-- if code == Command.Login then
 	-- 	-- 认证后
