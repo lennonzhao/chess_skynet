@@ -45,6 +45,12 @@ function SOCKET.data(fd, msg)
 	local pbName, msg = protopack.unpack(msg)
 	skynet.error(pbName)
 	skynet.error(msg)
+
+	-- 登录验证之后在创建agent 处理业务
+	if pbName == "hall.LoginReq" then
+		
+
+	end
 	-- if code == Command.Login then
 	-- 	-- 认证后
 	-- 	dump(msg, '登录请求')
