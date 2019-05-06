@@ -1,3 +1,4 @@
+local service = require "service"
 local skynet = require "skynet"
 local netpack = require "skynet.netpack"
 local socket = require "skynet.socket"
