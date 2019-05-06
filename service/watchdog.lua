@@ -48,8 +48,8 @@ function SOCKET.data(fd, msg)
 
 	-- 登录验证之后在创建agent 处理业务
 	if pbName == "hall.LoginReq" then
-		
-
+		agent[fd] = skynet.newservice("agent")
+		skynet.call(agent[fd], "lua", "start", {gate = gate, client = fd, watchdog = skynet.self()})
 	end
 	-- if code == Command.Login then
 	-- 	-- 认证后
@@ -73,7 +73,6 @@ function SOCKET.data(fd, msg)
 	-- 		socket.write(fd, package)
 	-- 	end
 	-- else
-
 	-- end
 end
 
