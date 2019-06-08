@@ -31,12 +31,12 @@ end
 
 
 local M = {
-  printTrace = logger("[trace]", log_level.LOG_TRACE, "\x1b[35m"),
-  printDebug = logger("[debug]", log_level.LOG_DEBUG, "\x1b[32m"),
-  printInfo  = logger("[info]", log_level.LOG_INFO, "\x1b[34m"),
-  printWarn  = logger("[warning]", log_level.LOG_WARN, "\x1b[33m"),
-  printError = logger("[error]", log_level.LOG_ERROR, "\x1b[31m"),
-  printFatal = logger("[fatal]", log_level.LOG_FATAL,"\x1b[31m")
+  trace = logger("[trace]", log_level.LOG_TRACE, "\x1b[35m"),
+  debug = logger("[debug]", log_level.LOG_DEBUG, "\x1b[32m"),
+  info  = logger("[info]", log_level.LOG_INFO, "\x1b[34m"),
+  warn  = logger("[warning]", log_level.LOG_WARN, "\x1b[33m"),
+  error = logger("[error]", log_level.LOG_ERROR, "\x1b[31m"),
+  fatal = logger("[fatal]", log_level.LOG_FATAL,"\x1b[31m")
 }
 
 -- 错误日志 --

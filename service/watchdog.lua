@@ -42,7 +42,7 @@ end
 
 function SOCKET.data(fd, msg)
 	local pbName, msg = protopack.unpack(msg)
-	logger.printInfo('receive a message : ', pbName)
+	logger.error('receive a message : ', pbName)
 
 	-- 登录验证之后在创建agent 处理业务
 	if pbName == "hall.LoginReq" then
