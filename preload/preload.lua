@@ -1,7 +1,7 @@
 json = require "cjson"
 
 require "error_code"
-require "logger_api"
+logger = require "logger_api"
 require "functions"
 require "constants"
 

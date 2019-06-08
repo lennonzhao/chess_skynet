@@ -41,10 +41,8 @@ function SOCKET.warning(fd, size)
 end
 
 function SOCKET.data(fd, msg)
-	skynet.error('222222222socket data')
 	local pbName, msg = protopack.unpack(msg)
-	skynet.error(pbName)
-	skynet.error(msg)
+	logger.printInfo('receive a message : ', pbName)
 
 	-- 登录验证之后在创建agent 处理业务
 	if pbName == "hall.LoginReq" then

@@ -256,7 +256,6 @@ function CMD.start(conf)
 	-- 发送心跳包
 	skynet.fork(function()
 		while true do
-			print('发送心跳包')
 			send_request(Command.HeartBeat, {})
 			skynet.sleep(5000)
 		end
